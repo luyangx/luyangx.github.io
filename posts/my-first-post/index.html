@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+
+<html lang="zh-cn">
+    <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="format-detection" content="telephone=no"/>
+
+    <title>references in php | 扬</title>
+    
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+    <link rel="manifest" href="/manifest.json">
+    <link rel="mask-icon" href="/safari-pinned-tab.svg" color="#FF3DB4">
+    <meta name="theme-color" content="#ffffff">
+
+    
+    
+    
+    <link rel="stylesheet" href="http://luyangx.github.io/css/main.min.15431d6c334f65809fe2bc329da3f2c81c6e3027ab1e25b56afb2bb85fa7fd64.css"/>
+
+    
+    
+    
+
+    
+    
+ 
+    </head>
+
+    <body>
+        
+<nav>
+  <header>
+    <div class="site-title">
+        <a href="/">扬</a>
+    </div>  
+</header>
+
+  <div class="nav-menu">
+  
+  <a class="color-link nav-link" href="http://luyangx.github.io/index.xml" target="_blank" rel="noopener" type="application/rss+xml">RSS</a>
+</div>
+<footer class="footer">
+	<div class="social-icons">
+        
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    
+    
+
+    
+    
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+</div>
+
+
+
+
+	<p><a href="https://github.com/kimcc/hugo-theme-noteworthy" target="_blank" rel="noopener">Noteworthy theme</a></p>
+	<p><a href="https://gohugo.io" target="_blank" rel="noopener">Built with Hugo</a></p>
+
+	<script src="http://luyangx.github.io/js/main.min.fa5c2b23e07b5d9bfad267a52b4b24fdb053e6fb7524993383594926a3ac270c.js" integrity="sha256-+lwrI+B7XZv60melK0sk/bBT5vt1JJkzg1lJJqOsJww=" crossorigin="anonymous"></script>
+</footer>
+</nav>
+
+        <div id="content" class="content-container">
+        
+
+<h1 class="post-title">references in php</h1>
+    
+    <time>November 3, 2014</time>
+    
+    <div>
+        <p>
+        <p>PHP中的变量都是存储在一个叫zval的容器中(数据结构), 这个zval中存储着变量的相关信息，其中就包括变量的引用状态(is_ref)和引用次数(refcount)。</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-c" data-lang="c"><span style="color:#66d9ef">typedef</span> <span style="color:#66d9ef">struct</span> _zval_struct zval;
+<span style="color:#66d9ef">struct</span> _zval_struct {
+    <span style="color:#75715e">/* Variable information */</span>
+    zvalue_value value;     <span style="color:#75715e">/* 存储变量的值*/</span>
+    zend_uint refcount__gc; <span style="color:#75715e">/* 引用计数 */</span>
+    zend_uchar type;        <span style="color:#75715e">/* 变量具体类型*/</span>
+    zend_uchar is_ref__gc;  <span style="color:#75715e">/* 是否引用 1为引用，0不是*/</span>
+};
+</code></pre></div><p>PHP的变量都存储在一个类似于关联数组(associative array)的符号表(symbol table)中，如下图</p>
+<p><img src="http://ww2.sinaimg.cn/large/9a667c8dgw1ely6s4hrb7j20bo0643yo.jpg" alt=""></p>
+<h3 id="引用计数reference-counting">引用计数(Reference Counting)</h3>
+<p>$a = $b, 在这个赋值语句中, PHP不会为变量$b创建一个$a的副本，只是将$a的zval中refcount字段增加1</p>
+<p><img src="http://ww1.sinaimg.cn/large/9a667c8dgw1ely72q3kt6j20ep0jgt9x.jpg" alt=""></p>
+<ol>
+<li>变量$a存储着一个『this is』字符串, 它的refcount=1(默认)</li>
+<li>将变量$a分别赋值(assign)给$b,$c, 这时没有任何zval的拷贝，只是根据赋值次数对$a的refcount依次增加1, 最终$a的refcount=3(2次赋值操作)</li>
+<li>当$c的值发生变化时, 这时会有2个相关的操作, 其所指向$a的refcount减1, 同时创建一个新的zval来保存$c的新值, 其中$c的refcount＝1(默认)</li>
+<li>unset($b), 会将其链接$a的refcount减1, 此时$a的refcount为1, 变成了它原先的样子</li>
+<li>unset($c), 将$c的rerfcount减1, 这时refcount &lt; 1, PHP会销毁用于保存$c的zval所占用的空间</li>
+</ol>
+<h3 id="passing-variables-to-functions">Passing Variables to Functions</h3>
+<p>在PHP中会有一个全局的符号表(global symbol table), 来保存相关的变量信息, 同样的当执行一个函数(function)时, 也会创建一个符号表来保存函数的局部变量, 当该函数通过return或其他隐式方式返回时, 其创建的符号表也会随之销毁.</p>
+<p><img src="http://ww3.sinaimg.cn/large/9a667c8dgw1ely82mpr6pj20tq0k141m.jpg" alt=""></p>
+<ol>
+<li>我们将$a='this is'传递给函数do_something(), 函数将其保存在形参$s中</li>
+<li>接下来你看到的操作跟前面说过的$b=$a几乎相同, 除了变量所在的符号表不同-$s存储在调用函数的符号表中, $a的refcount增加2, 而不是1次, 因为在函数的stack中也包含$a的一个reference</li>
+<li>当我们给$s赋值一个新值时, $s之前所指向的zval对应refcount减1, 同时一个用来保存$s新值的容器会被创建</li>
+<li>当return返回时, 返回值$b获得了一个进入全局符号表的机会, 对应的refcount增加1</li>
+<li>当函数执行完毕时, 函数的符号表将会销毁,  在销毁期间PHP引擎将会检查函数符号表中的每一个变量, 对其zval的refcount减1, 如果其refcount等于0, 将启动垃圾回收机制</li>
+</ol>
+<h3 id="introducing-references">Introducing References</h3>
+<p>引用也就是一个变量有2个名字, 也就是说在一个符号表中存在2个不同的key指向同一个zval, 可以通过 =&amp; 引用赋值来创建一个变量的引用</p>
+<p><img src="http://ww1.sinaimg.cn/mw690/9a667c8dgw1em0iw3x850j20ep0jgt9x.jpg" alt=""></p>
+<ol>
+<li>变量$a存储着一个『this is』字符串, 它的is_ref=0, refcount=1(默认)</li>
+<li>执行$b =&amp; $a 和 $c =&amp; $a之后, $a的refcount增加2变为3, 由于是引用赋值, $a的is_ref变为1. 当is_ref为0时, 有指向zval的变量有变化时, PHP引擎会创建一个新的zval来保存新值, 原始zval的refcount减1, 但是, 当is_ref为1时, 就不是这样了, PHP引擎回直接更新当前zval中的值</li>
+<li>如上所说, $b = 42的结果是$a, $b, $c的值都为42</li>
+<li>当使用unset($b)时, zval对应的refcount减1, 跟之前描述的一样</li>
+<li>再次unset($c), 同上一步一样, zval的refcount减1, 当refcount为1时, is_ref会重置为0, 因为只有2个以上变量指向同一个zval时, 才是一个引用变量, is_ref才会为1</li>
+</ol>
+<h3 id="mixing-assign-by-value-and-assign-by-reference">Mixing Assign-by-Value and Assign-by-Reference</h3>
+<p>= 赋值和 =&amp; 引用赋值</p>
+<p><img src="http://ww3.sinaimg.cn/large/9a667c8dgw1em3fxlwip6j20e709fwey.jpg" alt=""></p>
+<ol>
+<li>创建2个变量, $a = &lsquo;this is&rsquo;; $b = $a; 这是普通的赋值操作, 这时$a,$b所指向的zval的refcount=2, is_ref=0</li>
+<li>$c = &amp;b, 这时PHP引擎会创建一个$b所指向zval的副本, $a还是指向原来的zval, 只不过对应的refcount减1, 而$b和$c则会指向刚刚创建的zval, 同时该zval的refcount = 2, is_ref = 1</li>
+</ol>
+<p>这种情况使用引用不会为你节省内存空间, 有可能适得其反. 因为PHP引擎要保证变量再赋值(reassignment)操作正确, 所以在=和=&amp;混用的情况下,会有zval的副本产生. 再看下, 将上述赋值顺序颠倒一下的情况</p>
+<p><img src="http://ww1.sinaimg.cn/large/9a667c8dgw1em3gm93zqjj20dt094gm3.jpg" alt=""></p>
+<ol>
+<li>这次反过来 $a = &lsquo;this is&rsquo;; $b =&amp; $a; 引用赋值, 此时$a, $b所指向的zval的refcount=2, is_ref=1</li>
+<li>$c = $a, 普通赋值, PHP引擎为了变量的再赋值操作的处理, 这里又新建了一个zval的副本来存放$c的值, 此时$c的refcount=1, is_ref=0</li>
+</ol>
+        </p>
+    </div>
+    
+
+    
+
+    <div class="page-footer">
+        
+    </div>
+
+
+        
+        </div>
+        <footer class="footer-mobile">
+	<div class="social-icons">
+        
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    
+    
+
+    
+    
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+</div>
+
+
+
+
+	<div class="footer-mobile-links">
+		<p><a href="https://github.com/kimcc/hugo-theme-noteworthy" target="_blank" rel="noopener">Noteworthy theme</a></p>
+		<span class="divider-bar">|</span>
+		<p><a href="https://gohugo.io" target="_blank" rel="noopener">Built with Hugo</a></p>
+	</div>
+
+	<script src="http://luyangx.github.io/js/main.min.fa5c2b23e07b5d9bfad267a52b4b24fdb053e6fb7524993383594926a3ac270c.js" integrity="sha256-+lwrI+B7XZv60melK0sk/bBT5vt1JJkzg1lJJqOsJww=" crossorigin="anonymous"></script>
+</footer>
+    </body>
+</html>

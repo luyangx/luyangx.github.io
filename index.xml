@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>扬</title>
+    <link>http://luyangx.github.io/</link>
+    <description>Recent content on 扬</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>zh-cn</language>
+    <lastBuildDate>Mon, 03 Nov 2014 22:20:49 +2002</lastBuildDate>
+    
+	<atom:link href="http://luyangx.github.io/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>references in php</title>
+      <link>http://luyangx.github.io/posts/my-first-post/</link>
+      <pubDate>Mon, 03 Nov 2014 22:20:49 +2002</pubDate>
+      
+      <guid>http://luyangx.github.io/posts/my-first-post/</guid>
+      <description>&lt;p&gt;PHP中的变量都是存储在一个叫zval的容器中(数据结构), 这个zval中存储着变量的相关信息，其中就包括变量的引用状态(is_ref)和引用次数(refcount)。&lt;/p&gt;</description>
+    </item>
+    
+  </channel>
+</rss>
