@@ -1,0 +1,501 @@
+<!DOCTYPE html>
+
+<html lang="zh-cn">
+    <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="format-detection" content="telephone=no"/>
+
+    <title>Dynamic Memory Management | 扬</title>
+    
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+    <link rel="manifest" href="/manifest.json">
+    <link rel="mask-icon" href="/safari-pinned-tab.svg" color="#FF3DB4">
+    <meta name="theme-color" content="#ffffff">
+
+    
+    
+    
+    <link rel="stylesheet" href="https://luyangx.github.io/css/main.min.15431d6c334f65809fe2bc329da3f2c81c6e3027ab1e25b56afb2bb85fa7fd64.css"/>
+
+    
+    
+    
+
+    
+    
+ 
+    </head>
+
+    <body>
+        
+<nav>
+  <header>
+    <div class="site-title">
+        <a href="/">扬</a>
+    </div>  
+</header>
+
+  <div class="nav-menu">
+  
+  <a class="color-link nav-link" href="https://luyangx.github.io/index.xml" target="_blank" rel="noopener" type="application/rss+xml">RSS</a>
+</div>
+<footer class="footer">
+	<div class="social-icons">
+        
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    
+    
+
+    
+    
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+</div>
+
+
+
+
+	<p><a href="https://github.com/kimcc/hugo-theme-noteworthy" target="_blank" rel="noopener">Noteworthy theme</a></p>
+	<p><a href="https://gohugo.io" target="_blank" rel="noopener">Built with Hugo</a></p>
+
+	<script src="https://luyangx.github.io/js/main.min.fa5c2b23e07b5d9bfad267a52b4b24fdb053e6fb7524993383594926a3ac270c.js" integrity="sha256-+lwrI+B7XZv60melK0sk/bBT5vt1JJkzg1lJJqOsJww=" crossorigin="anonymous"></script>
+</footer>
+</nav>
+
+        <div id="content" class="content-container">
+        
+
+<h1 class="post-title">Dynamic Memory Management</h1>
+    
+    <time>April 18, 2016</time>
+    
+    <div>
+        <p>
+        <p>&laquo;C in a Nutshell&raquo;笔记 - 内存管理</p>
+<p><strong>malloc(), calloc()</strong> 分配一块新的内存</p>
+<p><strong>realloc()</strong> 调整已分配内存块大小</p>
+<p><strong>free()</strong> 释放已分配内存</p>
+<h2 id="allocating-memory-dynamically">Allocating Memory Dynamically</h2>
+<blockquote>
+<p><strong>void *malloc( size_t size );</strong></p>
+</blockquote>
+<p>分配一块至少 size 大小的内存块, 其内容是未确定的</p>
+<blockquote>
+<p><strong>void *calloc( size_t count, size_t size );</strong></p>
+</blockquote>
+<p>分配一块至少 size * coount 大小的内存块, 换句话说, 可以有足够的空间装下 array 每个 size 大小的 element, 其内容初始化为0</p>
+<p>2个函数返回 void 指针也叫 typeleff pointer(无类型指针). 指针的值为分配内存的第一个byte的地址, 失败返回 null pointer</p>
+<p>如果将 void pointer 分配给其他类型的 pointer, compiler会隐式的将 void pointer 转换成合适的类型, 也可以显式的进行类型转换. pointer 什么类型, 访问内存内容就是什么类型</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-C" data-lang="C">    <span style="color:#75715e">#include</span> <span style="color:#75715e">&lt;stdlib.h&gt; // Provides function prototypes</span><span style="color:#75715e">
+</span><span style="color:#75715e"></span>    <span style="color:#66d9ef">typedef</span> <span style="color:#66d9ef">struct</span> { <span style="color:#66d9ef">long</span> key; } Record; <span style="color:#75715e">// A structure type
+</span><span style="color:#75715e"></span>
+    <span style="color:#66d9ef">float</span> <span style="color:#f92672">*</span><span style="color:#a6e22e">myFunc</span>( size_t n ) {
+        <span style="color:#75715e">// Reserve storage for an object of type double
+</span><span style="color:#75715e"></span>        <span style="color:#66d9ef">double</span> <span style="color:#f92672">*</span>dPtr <span style="color:#f92672">=</span> malloc( <span style="color:#66d9ef">sizeof</span>(<span style="color:#66d9ef">double</span>) );
+        <span style="color:#66d9ef">if</span> ( dptr <span style="color:#f92672">==</span> NULL ) { <span style="color:#75715e">// Insufficient memory
+</span><span style="color:#75715e"></span>            <span style="color:#66d9ef">return</span> NULL;
+        } <span style="color:#66d9ef">else</span> { <span style="color:#75715e">// Got the memory: use it
+</span><span style="color:#75715e"></span>            <span style="color:#f92672">*</span>dPtr <span style="color:#f92672">=</span> <span style="color:#ae81ff">0.07</span>;
+        }
+    }
+</code></pre></div><p>calloc()在需要将申请的内存块初始化为0时很有用, 虽然速度会慢点</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-C" data-lang="C">    <span style="color:#75715e">// Get storage for an object of type double
+</span><span style="color:#75715e"></span>    <span style="color:#66d9ef">double</span> <span style="color:#f92672">*</span>dPtr <span style="color:#f92672">=</span> calloc( <span style="color:#ae81ff">1</span>, <span style="color:#66d9ef">sizeof</span>( <span style="color:#66d9ef">double</span> ) );
+
+    <span style="color:#75715e">// Get storage for two objects of type Record
+</span><span style="color:#75715e"></span>    Record <span style="color:#f92672">*</span>rPtr;
+    <span style="color:#66d9ef">if</span> ( ( rPtr <span style="color:#f92672">=</span> calloc( <span style="color:#ae81ff">2</span>, <span style="color:#66d9ef">sizeof</span>(Record) ) <span style="color:#f92672">==</span> NULL ) {
+        <span style="color:#75715e">/* Handle the insufficient-memory error ... */</span>
+    }
+
+    <span style="color:#75715e">// Get storage for an array of n elements of type float
+</span><span style="color:#75715e"></span>    <span style="color:#66d9ef">float</span> <span style="color:#f92672">*</span>fPtr <span style="color:#f92672">=</span> calloc( n, <span style="color:#66d9ef">sizeof</span>(<span style="color:#66d9ef">float</span>));
+</code></pre></div><h2 id="characteristics-of-allocated-memory">Characteristics of Allocated Memory</h2>
+<p>一块申请成功的内存块有一个指向其开始地址的 pointer, 该内存是对齐的</p>
+<p>已分配内存的 lifetime 为, 从开始分配到释放, 或是程序结束</p>
+<h2 id="resizing-and-releasing-memory">Resizing and Releasing Memory</h2>
+<p>已分配的内存不在需要可以还给操作系统, 也可以通过调用 realloc() 增加或减少其大小</p>
+<blockquote>
+<p><strong>void free( void *ptr ):</strong></p>
+</blockquote>
+<p>释放 ptr 指向开始地址的动态分配的内存块, null pointer 也可以, 只不过没啥影响</p>
+<blockquote>
+<p>*<em>void <em>realloc( void *ptr, size_t size );</em></em></p>
+</blockquote>
+<p>释放 ptr 指向的内存块同时申请一块新的大小为 size 的内存块, 返回其内存地址, 该新地址可能与 ptr 相同. 会保留原内存块中的内容, 或是将原始内容 copy 到新内存块中. 如果新内存块比旧内存块大, 额外的 byte 内容未指定</p>
+<p>可以传递一个 null pointer, 这样类似于 malloc()</p>
+<p>不能分配一块指定大小的内存块, 返回一个 null pointer, 不会释放原内存块或修改它的内容</p>
+<p>传递给 free() 和 realloc() 的参数, 如果不是一个 null pointer, 必须是一个指向一块动态分配的内存开始地址的 pointer并且该内存块没有被 free 过. 否则程序行为未定义</p>
+<p>内存管理函数维护每块分配内存的信息, 这也就是 free() 和 realloc() 只需要一个 pointer. 也无需判断 free() 是否调用成功, 因为它没有返回值</p>
+<h2 id="an-all-purpose-binary-tree">An All-Purpose Binary Tree</h2>
+<p>动态分配内存是实现动态数据结构的基础, 例如 linked list, tree</p>
+<p>binary search tree(BST) 二叉搜索树, 按照节点值排放每个节点, 在查找数据时可以运用二分查找算法 binary search algorithm</p>
+<h3 id="characteristics">Characteristics</h3>
+<p>二叉树由一些数据 node 组成, 结构特点:</p>
+<ul>
+<li>每个 node 最多有2个直接子节点</li>
+<li>有一个 node 是 tree 的根节点, 成为 root, 没有父节点, 其他节点都有一个父节点</li>
+<li>node 的排放根据如下规则: 节点的值大于或等于其左分支后代节点的值, 小余或等于其右分钟后代节点的值
+<img src="/images/14600966817796.jpg" alt=""></li>
+</ul>
+<p>没有子节点的节点称作 leaf (叶子节点), 每一个 node 都可以与其后代节点组成一个 subtree(子树), 该 node 为该 subtree 的 root 节点</p>
+<p>二叉树一个重要的属性 height, 从 root 到 leaf 最长 path. 也就是 该 path 经过的 node 数量, 不包括 root. 只有一个 root node 的 tree, 其 height 为0</p>
+<h3 id="implementation">Implementation</h3>
+<p>BSTree.h</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-C" data-lang="C">    <span style="color:#66d9ef">typedef</span> <span style="color:#66d9ef">const</span> <span style="color:#66d9ef">void</span> <span style="color:#f92672">*</span><span style="color:#a6e22e">GetKeyFunc_t</span>( <span style="color:#66d9ef">const</span> <span style="color:#66d9ef">void</span> <span style="color:#f92672">*</span>dData );
+    <span style="color:#66d9ef">typedef</span> <span style="color:#66d9ef">int</span> <span style="color:#a6e22e">CmpFunc_t</span>( <span style="color:#66d9ef">const</span> <span style="color:#66d9ef">void</span> <span style="color:#f92672">*</span>pKey1, <span style="color:#66d9ef">const</span> <span style="color:#66d9ef">void</span> <span style="color:#f92672">*</span>pKey2 );
+
+    <span style="color:#66d9ef">typedef</span> <span style="color:#66d9ef">struct</span> Node {
+        <span style="color:#66d9ef">struct</span> Node <span style="color:#f92672">*</span>left, <span style="color:#f92672">*</span>right;
+        size_t size;
+        <span style="color:#66d9ef">char</span> data[];
+    } Node_t;
+
+    <span style="color:#66d9ef">typedef</span> <span style="color:#66d9ef">struct</span> {
+        <span style="color:#66d9ef">struct</span> Node <span style="color:#f92672">*</span>pRoot;
+        CmpFunc_t <span style="color:#f92672">*</span>cmp;
+        GetKeyFunc_t <span style="color:#f92672">*</span>getKey;
+    } BST_t;
+
+    <span style="color:#75715e">// 初始化 BST
+</span><span style="color:#75715e"></span>    BST_t <span style="color:#f92672">*</span><span style="color:#a6e22e">newBST</span>( CmpFunc_t <span style="color:#f92672">*</span>cmp, GetKeyFunc_t <span style="color:#f92672">*</span>getKey);
+    <span style="color:#75715e">// 插入一个节点
+</span><span style="color:#75715e"></span>    _Bool <span style="color:#a6e22e">BST_insert</span>(BST_t <span style="color:#f92672">*</span>pBST, <span style="color:#66d9ef">const</span> <span style="color:#66d9ef">void</span> <span style="color:#f92672">*</span>pData, size_t size);
+    <span style="color:#75715e">// 搜索
+</span><span style="color:#75715e"></span>    <span style="color:#66d9ef">const</span> <span style="color:#66d9ef">void</span> <span style="color:#f92672">*</span><span style="color:#a6e22e">BST_search</span>(BST_t <span style="color:#f92672">*</span>pBst, <span style="color:#66d9ef">const</span> <span style="color:#66d9ef">void</span> <span style="color:#f92672">*</span>pKey);
+    <span style="color:#75715e">// 删除一个节点
+</span><span style="color:#75715e"></span>    _Bool <span style="color:#a6e22e">BST_erase</span>(BST_t <span style="color:#f92672">*</span>pBST, <span style="color:#66d9ef">const</span> <span style="color:#66d9ef">void</span> <span style="color:#f92672">*</span>pKey);
+    <span style="color:#75715e">// 清空树
+</span><span style="color:#75715e"></span>    <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">BST_clear</span>(BST_t <span style="color:#f92672">*</span>pBST);
+    <span style="color:#75715e">// 树的遍历顺序
+</span><span style="color:#75715e"></span>    <span style="color:#75715e">// 中序
+</span><span style="color:#75715e"></span>    <span style="color:#66d9ef">int</span> <span style="color:#a6e22e">BST_inorder</span>(BST_t <span style="color:#f92672">*</span>pBst, _Bool (<span style="color:#f92672">*</span>action)(<span style="color:#66d9ef">void</span> <span style="color:#f92672">*</span>pData));
+    <span style="color:#66d9ef">int</span> <span style="color:#a6e22e">BST_rev_inorder</span>(BST_t <span style="color:#f92672">*</span>pBst, _Bool (<span style="color:#f92672">*</span>action)(<span style="color:#66d9ef">void</span> <span style="color:#f92672">*</span>pData));
+    <span style="color:#75715e">// 前序
+</span><span style="color:#75715e"></span>    <span style="color:#66d9ef">int</span> <span style="color:#a6e22e">BST_preorder</span>(BST_t <span style="color:#f92672">*</span>pBST, __Bool (<span style="color:#f92672">*</span>action)(<span style="color:#66d9ef">void</span> <span style="color:#f92672">*</span>pData));
+    <span style="color:#75715e">// 后序
+</span><span style="color:#75715e"></span>    <span style="color:#66d9ef">int</span> <span style="color:#a6e22e">BST_postorder</span>(BST_t <span style="color:#f92672">*</span>pBST, _Bool (<span style="color:#f92672">*</span>action)(<span style="color:#66d9ef">void</span> <span style="color:#f92672">*</span>pData));
+</code></pre></div><h3 id="generationg-an-empty-tree">Generationg an Empty Tree</h3>
+<p>创建一个新的 BST</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-C" data-lang="C">    <span style="color:#66d9ef">const</span> <span style="color:#66d9ef">void</span> <span style="color:#f92672">*</span><span style="color:#a6e22e">defaultGetKey</span>(<span style="color:#66d9ef">const</span> <span style="color:#66d9ef">void</span> <span style="color:#f92672">*</span>pData) {
+        <span style="color:#66d9ef">return</span> pData;
+    }
+
+    BST_t <span style="color:#f92672">*</span><span style="color:#a6e22e">newBST</span>(CmpFunc_t <span style="color:#f92672">*</span>cmp, GetKeyFunc_t <span style="color:#f92672">*</span>getKey) {
+        BST_t <span style="color:#f92672">*</span>pBST <span style="color:#f92672">=</span> NULL;
+        <span style="color:#66d9ef">if</span> (cmp <span style="color:#f92672">!=</span> NULL) {
+            pBST <span style="color:#f92672">=</span> malloc(<span style="color:#66d9ef">sizeof</span>(BST_t));
+        }
+        <span style="color:#66d9ef">if</span> (pBST <span style="color:#f92672">!=</span> NULL) {
+            pBST<span style="color:#f92672">-&gt;</span>pRoot <span style="color:#f92672">=</span> NULL;
+            pBST<span style="color:#f92672">-&gt;</span>cmp <span style="color:#f92672">=</span> cmp;
+            pBST<span style="color:#f92672">-&gt;</span>getKey <span style="color:#f92672">=</span> (getKey <span style="color:#f92672">!=</span> NULL) <span style="color:#f92672">?</span> getKey : defaultGetKey;
+        }
+
+        <span style="color:#66d9ef">return</span> pBST;
+    }
+</code></pre></div><h3 id="inserting-new-data">Inserting New Data</h3>
+<p>插入新数据</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-C" data-lang="C">    <span style="color:#66d9ef">static</span> _Bool <span style="color:#a6e22e">insert</span>(BST_t <span style="color:#f92672">*</span>pBST, Node_t <span style="color:#f92672">**</span>ppNode, <span style="color:#66d9ef">const</span> <span style="color:#66d9ef">void</span> <span style="color:#f92672">*</span>pData, size_t size);
+
+    _Bool <span style="color:#a6e22e">BST_insert</span>(BST_t <span style="color:#f92672">*</span>pBST, <span style="color:#66d9ef">const</span> <span style="color:#66d9ef">void</span> <span style="color:#f92672">*</span>pData, size_t size) {
+        <span style="color:#66d9ef">if</span> (pBST <span style="color:#f92672">==</span> NULL <span style="color:#f92672">||</span> pData <span style="color:#f92672">==</span> NULL <span style="color:#f92672">||</span> size <span style="color:#f92672">==</span> <span style="color:#ae81ff">0</span>) {
+            <span style="color:#66d9ef">return</span> false;
+        }
+        <span style="color:#66d9ef">return</span> insert(pBST, <span style="color:#f92672">&amp;</span>(pBST<span style="color:#f92672">-&gt;</span>pRoot), pData, size);
+    }
+
+    <span style="color:#66d9ef">static</span> _Bool <span style="color:#a6e22e">insert</span>(BST_t <span style="color:#f92672">*</span>pBST, Node_t <span style="color:#f92672">**</span>ppNode, <span style="color:#66d9ef">const</span> <span style="color:#66d9ef">void</span> <span style="color:#f92672">*</span>pData, size_t size) {
+        Node_t <span style="color:#f92672">*</span>pNode <span style="color:#f92672">=</span> <span style="color:#f92672">*</span>ppNode; <span style="color:#75715e">// Pointer to the root node of the subtree to insert the new node in.
+</span><span style="color:#75715e"></span>
+   <span style="color:#66d9ef">if</span> (pNode <span style="color:#f92672">==</span> NULL) {
+        pNode <span style="color:#f92672">=</span> malloc(<span style="color:#66d9ef">sizeof</span>(Node_t) <span style="color:#f92672">+</span> size);
+        <span style="color:#66d9ef">if</span> (pNode <span style="color:#f92672">!=</span> NULL) {
+            <span style="color:#75715e">// Thers is a place for a new leaf here.
+</span><span style="color:#75715e"></span>            pNode<span style="color:#f92672">-&gt;</span>left <span style="color:#f92672">=</span> pNode<span style="color:#f92672">-&gt;</span>right <span style="color:#f92672">=</span> NULL; <span style="color:#75715e">// Initialize the new node&#39;s members
+</span><span style="color:#75715e"></span>            memcpy(pNode<span style="color:#f92672">-&gt;</span>data, pData, size);
+            <span style="color:#f92672">*</span>ppNode <span style="color:#f92672">=</span> pNode;
+            <span style="color:#66d9ef">return</span> true;
+        } <span style="color:#66d9ef">else</span> {
+            <span style="color:#66d9ef">return</span> false;
+        }
+    } <span style="color:#66d9ef">else</span> {
+        <span style="color:#66d9ef">const</span> <span style="color:#66d9ef">void</span> <span style="color:#f92672">*</span>key1 <span style="color:#f92672">=</span> pBST<span style="color:#f92672">-&gt;</span>getKey(pData),
+                   <span style="color:#f92672">*</span>key2 <span style="color:#f92672">=</span> pBST<span style="color:#f92672">-&gt;</span>getKey(pNode<span style="color:#f92672">-&gt;</span>data);
+        <span style="color:#66d9ef">if</span> (pBST<span style="color:#f92672">-&gt;</span>cmp(key1, key2) <span style="color:#f92672">&lt;</span> <span style="color:#ae81ff">0</span>) { <span style="color:#75715e">// in the left subtree
+</span><span style="color:#75715e"></span>            <span style="color:#66d9ef">return</span> insert(pBST, <span style="color:#f92672">&amp;</span>(pNode<span style="color:#f92672">-&gt;</span>left), pData, size);
+        } <span style="color:#66d9ef">else</span> { <span style="color:#75715e">// in the right subtree
+</span><span style="color:#75715e"></span>            <span style="color:#66d9ef">return</span> insert(pBST, <span style="color:#f92672">&amp;</span>(pNode<span style="color:#f92672">-&gt;</span>right), pData, size);
+        }
+    }
+</code></pre></div><h3 id="finding-data-in-the-tree">Finding Data in the Tree</h3>
+<p>binary search algorithm(二分查找)来查找数据</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-C" data-lang="C">    <span style="color:#66d9ef">static</span> <span style="color:#66d9ef">const</span> <span style="color:#66d9ef">void</span> <span style="color:#f92672">*</span><span style="color:#a6e22e">search</span>(BST_t <span style="color:#f92672">*</span>pBST, <span style="color:#66d9ef">const</span> Node_t <span style="color:#f92672">*</span>pNode, <span style="color:#66d9ef">const</span> <span style="color:#66d9ef">void</span> <span style="color:#f92672">*</span>pKey);
+
+    <span style="color:#66d9ef">const</span> <span style="color:#66d9ef">void</span> <span style="color:#f92672">*</span><span style="color:#a6e22e">BST_search</span>(BST_t <span style="color:#f92672">*</span>pBST, <span style="color:#66d9ef">const</span> <span style="color:#66d9ef">void</span> <span style="color:#f92672">*</span>pKey) {
+        <span style="color:#66d9ef">if</span> (pBST <span style="color:#f92672">==</span> NULL <span style="color:#f92672">||</span> pKey <span style="color:#f92672">==</span> NULL) {
+            <span style="color:#66d9ef">return</span> NULL;
+        }
+
+        <span style="color:#66d9ef">return</span> search(pBST, pBST<span style="color:#f92672">-&gt;</span>pRoot, pKey); <span style="color:#75715e">// Start at the root of the tree
+</span><span style="color:#75715e"></span>    }
+
+    <span style="color:#66d9ef">static</span> <span style="color:#66d9ef">const</span> <span style="color:#66d9ef">void</span> <span style="color:#f92672">*</span><span style="color:#a6e22e">search</span>(BST_t <span style="color:#f92672">*</span>pBST, <span style="color:#66d9ef">const</span> Node_t <span style="color:#f92672">*</span>pNode, <span style="color:#66d9ef">const</span> <span style="color:#66d9ef">void</span> <span style="color:#f92672">*</span>pKey) {
+        <span style="color:#66d9ef">if</span> (pNode <span style="color:#f92672">==</span> NULL) {
+            <span style="color:#66d9ef">return</span> NULL;
+        } <span style="color:#66d9ef">else</span> {
+            <span style="color:#75715e">// Compare data
+</span><span style="color:#75715e"></span>            <span style="color:#66d9ef">int</span> cmp_res <span style="color:#f92672">=</span> pBST<span style="color:#f92672">-&gt;</span>cmp(pKey, pBST<span style="color:#f92672">-&gt;</span>getKey(pNode<span style="color:#f92672">-&gt;</span>data));
+            <span style="color:#66d9ef">if</span> (cmp_res <span style="color:#f92672">==</span> <span style="color:#ae81ff">0</span>) { <span style="color:#75715e">// Found a match
+</span><span style="color:#75715e"></span>                <span style="color:#66d9ef">return</span> pNode<span style="color:#f92672">-&gt;</span>data;
+            } <span style="color:#66d9ef">else</span> <span style="color:#66d9ef">if</span> (cmp_res <span style="color:#f92672">&lt;</span> <span style="color:#ae81ff">0</span>) { <span style="color:#75715e">// Continue the search in the left subtree
+</span><span style="color:#75715e"></span>                <span style="color:#66d9ef">return</span> search(pBST, pNode<span style="color:#f92672">-&gt;</span>left, pKey);
+            } <span style="color:#66d9ef">else</span> { <span style="color:#75715e">// or in the right subtree
+</span><span style="color:#75715e"></span>                <span style="color:#66d9ef">return</span> search(pBST, pNode<span style="color:#f92672">-&gt;</span>right, pKey);
+            }
+        }
+    }
+</code></pre></div><h3 id="removing-data-from-the-tree">Removing Data from the Tree</h3>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-C" data-lang="C">    <span style="color:#66d9ef">static</span> Node_t <span style="color:#f92672">*</span><span style="color:#a6e22e">detachMin</span>(Node_t <span style="color:#f92672">**</span>ppNode) {
+        Node_t <span style="color:#f92672">*</span>pNode <span style="color:#f92672">=</span> <span style="color:#f92672">*</span>ppNode; <span style="color:#75715e">// A pointer to the current node
+</span><span style="color:#75715e"></span>        <span style="color:#66d9ef">if</span> (pNode <span style="color:#f92672">==</span> NULL) {
+            <span style="color:#66d9ef">return</span> NULL;
+        } <span style="color:#66d9ef">else</span> <span style="color:#66d9ef">if</span> (pNode<span style="color:#f92672">-&gt;</span>left <span style="color:#f92672">!=</span> NULL) {
+            <span style="color:#66d9ef">return</span> detachMin( <span style="color:#f92672">&amp;</span>(pNode<span style="color:#f92672">-&gt;</span>left) ); <span style="color:#75715e">// The minimum is in the left subtree
+</span><span style="color:#75715e"></span>        } <span style="color:#66d9ef">else</span> {
+            <span style="color:#f92672">*</span>ppNode <span style="color:#f92672">=</span> pNode<span style="color:#f92672">-&gt;</span>right; <span style="color:#75715e">// pNode points to the minimum node
+</span><span style="color:#75715e"></span>            <span style="color:#66d9ef">return</span> pNode; <span style="color:#75715e">// Attach the right child to the parent
+</span><span style="color:#75715e"></span>        }
+    }
+
+    <span style="color:#66d9ef">static</span> _Bool <span style="color:#a6e22e">erase</span>(BST_t <span style="color:#f92672">*</span>pBsT, Node_t <span style="color:#f92672">**</span>ppNode, <span style="color:#66d9ef">const</span> <span style="color:#66d9ef">void</span> <span style="color:#f92672">*</span>pKey);
+
+    _Bool <span style="color:#a6e22e">BST_erase</span>(BST_t <span style="color:#f92672">*</span>pBST, <span style="color:#66d9ef">const</span> <span style="color:#66d9ef">void</span> <span style="color:#f92672">*</span>pKey) {
+        <span style="color:#66d9ef">if</span> (pBST <span style="color:#f92672">==</span> NULL <span style="color:#f92672">||</span> pKey <span style="color:#f92672">==</span> NULL) {
+            <span style="color:#66d9ef">return</span> false;
+        }
+        <span style="color:#66d9ef">return</span> erase(pBST, <span style="color:#f92672">&amp;</span>(pBST<span style="color:#f92672">-&gt;</span>pRoot), pKey); <span style="color:#75715e">// Start at the root of the tree
+</span><span style="color:#75715e"></span>    }
+
+    <span style="color:#66d9ef">static</span> _Bool <span style="color:#a6e22e">erase</span>(BST_t <span style="color:#f92672">*</span>pBST, Node_t <span style="color:#f92672">**</span>ppNode, <span style="color:#66d9ef">const</span> <span style="color:#66d9ef">void</span> <span style="color:#f92672">*</span>pKey) {
+        Node_t <span style="color:#f92672">*</span>pNode <span style="color:#f92672">=</span> <span style="color:#f92672">*</span>ppNode; <span style="color:#75715e">// Pointer to the current node
+</span><span style="color:#75715e"></span>        <span style="color:#66d9ef">if</span> (pNode <span style="color:#f92672">==</span> NULL) {
+            <span style="color:#66d9ef">return</span> false;
+        }
+
+        <span style="color:#66d9ef">int</span> cmp_res <span style="color:#f92672">=</span> pBST<span style="color:#f92672">-&gt;</span>cmp(pKey, pBST<span style="color:#f92672">-&gt;</span>getKey(pNode<span style="color:#f92672">-&gt;</span>data));
+
+        <span style="color:#66d9ef">if</span> (cmp_res <span style="color:#f92672">&lt;</span> <span style="color:#ae81ff">0</span>) {
+            <span style="color:#66d9ef">return</span> erase(pBst, <span style="color:#f92672">&amp;</span>(pNode<span style="color:#f92672">-&gt;</span>left), pKey);
+        } <span style="color:#66d9ef">else</span> <span style="color:#66d9ef">if</span> (cmp_res <span style="color:#f92672">&gt;</span> <span style="color:#ae81ff">0</span>) {
+            <span style="color:#66d9ef">return</span> erase(pBst, <span style="color:#f92672">&amp;</span>(pNode<span style="color:#f92672">-&gt;</span>right), pKey);
+        } <span style="color:#66d9ef">else</span> {    <span style="color:#75715e">// Found the node to be deleted
+</span><span style="color:#75715e"></span>            <span style="color:#66d9ef">if</span> (pNode<span style="color:#f92672">-&gt;</span>left <span style="color:#f92672">==</span> NULL) {  <span style="color:#75715e">// If no more than one child
+</span><span style="color:#75715e"></span>                <span style="color:#f92672">*</span>ppNode <span style="color:#f92672">=</span> pNode<span style="color:#f92672">-&gt;</span>right; <span style="color:#75715e">// attach the child to the parent
+</span><span style="color:#75715e"></span>            } <span style="color:#66d9ef">else</span> <span style="color:#66d9ef">if</span> (pNode<span style="color:#f92672">-&gt;</span>right <span style="color:#f92672">==</span> NULL) {
+                <span style="color:#f92672">*</span>ppNode <span style="color:#f92672">=</span> pNode<span style="color:#f92672">-&gt;</span>left;
+            } <span style="color:#66d9ef">else</span> {    <span style="color:#75715e">// Graft is onto the deleted node&#39;s parent
+</span><span style="color:#75715e"></span>                Node_t <span style="color:#f92672">*</span>pMin <span style="color:#f92672">=</span> detachMin(<span style="color:#f92672">&amp;</span>(pNode<span style="color:#f92672">-&gt;</span>right));
+                <span style="color:#f92672">*</span>ppNode <span style="color:#f92672">=</span> pMin;
+                pMin<span style="color:#f92672">-&gt;</span>left <span style="color:#f92672">=</span> pNode<span style="color:#f92672">-&gt;</span>left;
+                pMin<span style="color:#f92672">-&gt;</span>right <span style="color:#f92672">=</span> pNode<span style="color:#f92672">-&gt;</span>right;
+            }
+            free(pNode);
+            <span style="color:#66d9ef">return</span> true;
+        }
+    }
+
+    <span style="color:#66d9ef">static</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">clear</span>(NOde_t <span style="color:#f92672">*</span>pNode);
+
+    <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">BST_clear</span>(BST_t <span style="color:#f92672">*</span>pBST) {
+        <span style="color:#66d9ef">if</span> (pBST <span style="color:#f92672">!=</span> NULL) {
+            clear(pBST<span style="color:#f92672">-&gt;</span>root);
+            pBST<span style="color:#f92672">-&gt;</span>pRoot <span style="color:#f92672">=</span> NULL;
+        }
+    }
+
+    <span style="color:#66d9ef">static</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">clear</span>(Node_t <span style="color:#f92672">*</span>pNode) {
+        <span style="color:#66d9ef">if</span> (pNode <span style="color:#f92672">!=</span> NULL) {
+            clear(pNode<span style="color:#f92672">-&gt;</span>left);
+            clear(pNode<span style="color:#f92672">-&gt;</span>right);
+            free(pNode);
+        }
+    }
+</code></pre></div><h3 id="traversiong-a-tree">Traversiong a Tree</h3>
+<p>L = left subtree, R = right subtree, N = node itself</p>
+<ul>
+<li>
+<p>In-order or LNR traversal
+left subtree =&gt; node itself =&gt; right subtree</p>
+</li>
+<li>
+<p>Pre-order or NLR traversal
+node itself =&gt; left subtree =&gt; right subtree</p>
+</li>
+<li>
+<p>Post-order or LRN traversal
+left subtree =&gt; right subtree =&gt; node itself</p>
+</li>
+</ul>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-C" data-lang="C">    <span style="color:#66d9ef">static</span> <span style="color:#66d9ef">int</span> <span style="color:#a6e22e">inorder</span>(Node_t <span style="color:#f92672">*</span>pNode, _Bool (<span style="color:#f92672">*</span>action)(<span style="color:#66d9ef">void</span> <span style="color:#f92672">*</span>pData));
+
+    <span style="color:#66d9ef">int</span> <span style="color:#a6e22e">BST_inorder</span>(BST_t <span style="color:#f92672">*</span>pNST, _Bool (<span style="color:#f92672">*</span>action)(<span style="color:#66d9ef">void</span> <span style="color:#f92672">*</span>pData)) {
+        <span style="color:#66d9ef">if</span> (pBST <span style="color:#f92672">==</span> NULL <span style="color:#f92672">||</span> action <span style="color:#f92672">==</span> NULL) {
+            <span style="color:#66d9ef">return</span> <span style="color:#ae81ff">0</span>;
+        } <span style="color:#66d9ef">else</span> {
+            <span style="color:#66d9ef">return</span> inorder(pBST<span style="color:#f92672">-&gt;</span>Root, action);
+        }
+    }
+
+    <span style="color:#66d9ef">static</span> <span style="color:#66d9ef">int</span> <span style="color:#a6e22e">inorder</span>(Node_t <span style="color:#f92672">*</span>pNode, _Bool (<span style="color:#f92672">*</span>action)(<span style="color:#66d9ef">void</span> <span style="color:#f92672">*</span>pData)) {
+        <span style="color:#66d9ef">int</span> count <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>;
+        <span style="color:#66d9ef">if</span> (pNode <span style="color:#f92672">==</span> NULL) {
+            <span style="color:#66d9ef">return</span> <span style="color:#ae81ff">0</span>;
+        }
+
+        count <span style="color:#f92672">=</span> inorder(pNode<span style="color:#f92672">-&gt;</span>left, action); <span style="color:#75715e">// L: Traverse the left tree
+</span><span style="color:#75715e"></span>        <span style="color:#66d9ef">if</span> (action(pNode<span style="color:#f92672">-&gt;</span>data)) { <span style="color:#75715e">// N: Visit the current node itself
+</span><span style="color:#75715e"></span>             <span style="color:#f92672">++</span>count;
+        }
+
+        count <span style="color:#f92672">+=</span> inorder(pNode<span style="color:#f92672">-&gt;</span>right, action); <span style="color:#75715e">// R: Traverse the right subtree
+</span><span style="color:#75715e"></span>    }
+</code></pre></div>
+        </p>
+    </div>
+    
+
+    
+
+    <div class="page-footer">
+        
+        <hr class="footer-divider">
+        
+            <a class="tag" href="/tags/c">#C</a>
+        
+      
+    </div>
+
+
+        
+        </div>
+        <footer class="footer-mobile">
+	<div class="social-icons">
+        
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    
+    
+
+    
+    
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+</div>
+
+
+
+
+	<div class="footer-mobile-links">
+		<p><a href="https://github.com/kimcc/hugo-theme-noteworthy" target="_blank" rel="noopener">Noteworthy theme</a></p>
+		<span class="divider-bar">|</span>
+		<p><a href="https://gohugo.io" target="_blank" rel="noopener">Built with Hugo</a></p>
+	</div>
+
+	<script src="https://luyangx.github.io/js/main.min.fa5c2b23e07b5d9bfad267a52b4b24fdb053e6fb7524993383594926a3ac270c.js" integrity="sha256-+lwrI+B7XZv60melK0sk/bBT5vt1JJkzg1lJJqOsJww=" crossorigin="anonymous"></script>
+</footer>
+    </body>
+</html>

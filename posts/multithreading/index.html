@@ -1,0 +1,583 @@
+<!DOCTYPE html>
+
+<html lang="zh-cn">
+    <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="format-detection" content="telephone=no"/>
+
+    <title>Multithreading | 扬</title>
+    
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+    <link rel="manifest" href="/manifest.json">
+    <link rel="mask-icon" href="/safari-pinned-tab.svg" color="#FF3DB4">
+    <meta name="theme-color" content="#ffffff">
+
+    
+    
+    
+    <link rel="stylesheet" href="https://luyangx.github.io/css/main.min.15431d6c334f65809fe2bc329da3f2c81c6e3027ab1e25b56afb2bb85fa7fd64.css"/>
+
+    
+    
+    
+
+    
+    
+ 
+    </head>
+
+    <body>
+        
+<nav>
+  <header>
+    <div class="site-title">
+        <a href="/">扬</a>
+    </div>  
+</header>
+
+  <div class="nav-menu">
+  
+  <a class="color-link nav-link" href="https://luyangx.github.io/index.xml" target="_blank" rel="noopener" type="application/rss+xml">RSS</a>
+</div>
+<footer class="footer">
+	<div class="social-icons">
+        
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    
+    
+
+    
+    
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+</div>
+
+
+
+
+	<p><a href="https://github.com/kimcc/hugo-theme-noteworthy" target="_blank" rel="noopener">Noteworthy theme</a></p>
+	<p><a href="https://gohugo.io" target="_blank" rel="noopener">Built with Hugo</a></p>
+
+	<script src="https://luyangx.github.io/js/main.min.fa5c2b23e07b5d9bfad267a52b4b24fdb053e6fb7524993383594926a3ac270c.js" integrity="sha256-+lwrI+B7XZv60melK0sk/bBT5vt1JJkzg1lJJqOsJww=" crossorigin="anonymous"></script>
+</footer>
+</nav>
+
+        <div id="content" class="content-container">
+        
+
+<h1 class="post-title">Multithreading</h1>
+    
+    <time>April 15, 2016</time>
+    
+    <div>
+        <p>
+        <p>&laquo;C in a Nutshell&raquo;笔记 - 多线程</p>
+<h2 id="threads">Threads</h2>
+<p>当启动一个程序, 操作系统会为程序创建一个进程来运行它. 一个进程由一个或多个线程组成. 每个线程都是进程执行指令中的一部分</p>
+<p>系统调度器分配给每个运行的线程的 CUP 时间是均等的. 一般 CUP 是抢占式(preemptive)的, 它会中断正在被某个CUP执行的 thread, 同时分配给其不同的一个 thread 执行. 即使在一个 CPU 的系统中, 用户都会感到程序是在并行执行的, 事实上在多个 CPU 系统中, 多个 thread 才能同时执行</p>
+<p>每个进程在内存中都有自己的内存地址, 并且还有一些专有的资源, 例如打开的文件. 进程内部的 thread 贡献这些资源. 通常进程中的多个thread 贡献同样的地址空间. 这也使在进程中进行任务切换比不同的进程间简单</p>
+<p>每个 thread 在任务切换中也有自己的所需资源, 包括栈内存, CPU 寄存器. 方便内存处理自己的数据, thread 也会有 线程指定 的永久内存</p>
+<p>因为进程中的所有线程使用相同的地址空间, 贡献全局数据和静态数据. 意味这不同的 thread 可以并发访问相同的内存地址. 也就是容易发生 <em>data race</em> 或 <em>race condition</em>, 这就需要开发人员保证 thread 的数据同步</p>
+<h1 id="creating-threads">Creating Threads</h1>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-C" data-lang="C">    <span style="color:#66d9ef">int</span> <span style="color:#a6e22e">thrd_create</span>(thrd_t <span style="color:#f92672">*</span>thr, thrd_start_t func, <span style="color:#66d9ef">void</span> <span style="color:#f92672">*</span>arg);
+
+    <span style="color:#66d9ef">int</span> <span style="color:#a6e22e">thrd_join</span>(thrd_t thr, <span style="color:#66d9ef">int</span> <span style="color:#f92672">*</span>result);
+
+    <span style="color:#75715e">// detach
+</span><span style="color:#75715e"></span>    <span style="color:#66d9ef">int</span> <span style="color:#a6e22e">thrd_detach</span>(thrdt thr);
+</code></pre></div><div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-C" data-lang="C">    <span style="color:#75715e">#include</span> <span style="color:#75715e">&lt;stdbool.h&gt;</span><span style="color:#75715e">
+</span><span style="color:#75715e"></span>    <span style="color:#75715e">#include</span> <span style="color:#75715e">&lt;thread.h&gt;</span><span style="color:#75715e">
+</span><span style="color:#75715e"></span>
+    <span style="color:#75715e">#define MAX_THREADS 8
+</span><span style="color:#75715e"></span>    <span style="color:#75715e">#define MIN_BLOCK_SIZE 100
+</span><span style="color:#75715e"></span>
+    <span style="color:#66d9ef">typedef</span> <span style="color:#66d9ef">struct</span> {
+        <span style="color:#66d9ef">float</span> <span style="color:#f92672">*</span>start;   <span style="color:#75715e">// Start and length of the
+</span><span style="color:#75715e"></span>        <span style="color:#66d9ef">int</span> len;        <span style="color:#75715e">// array block passed to parallel_sum()
+</span><span style="color:#75715e"></span>        <span style="color:#66d9ef">int</span> block_size; <span style="color:#75715e">// Size of the smallest blocks
+</span><span style="color:#75715e"></span>        <span style="color:#66d9ef">double</span> sum;     <span style="color:#75715e">// The result
+</span><span style="color:#75715e"></span>    }
+
+    <span style="color:#66d9ef">int</span> parallel_sum(<span style="color:#66d9ef">void</span> <span style="color:#f92672">*</span>arg);    <span style="color:#75715e">// Prototype of the thread function
+</span><span style="color:#75715e"></span>
+    <span style="color:#75715e">// ---------------------------------------------------------------
+</span><span style="color:#75715e"></span>    <span style="color:#75715e">// Caculate the sum of array elements and write is to *sumPtr
+</span><span style="color:#75715e"></span>    <span style="color:#75715e">// sum() calls the function parallel_sum() for parallel processiong
+</span><span style="color:#75715e"></span>    <span style="color:#75715e">// Return value: true if no error occurs; otherwise, false
+</span><span style="color:#75715e"></span>    <span style="color:#66d9ef">bool</span> <span style="color:#a6e22e">sum</span>(<span style="color:#66d9ef">float</span> arr[], <span style="color:#66d9ef">int</span> len, <span style="color:#66d9ef">double</span><span style="color:#f92672">*</span> sumPtr) {
+        <span style="color:#66d9ef">int</span> block_size <span style="color:#f92672">=</span> len <span style="color:#f92672">/</span> MAX_THREADS;
+        <span style="color:#66d9ef">if</span> (block_size <span style="color:#f92672">&lt;</span> MIN_BLOCK_SIZE) {
+            block_size <span style="color:#f92672">=</span> len;
+        }
+
+        Sum_arg args <span style="color:#f92672">=</span> { arr, len, block_size, <span style="color:#ae81ff">0.0</span> };
+        <span style="color:#66d9ef">if</span> (parallel_sum(<span style="color:#f92672">&amp;</span>args)) {
+            <span style="color:#f92672">*</span>sumPtr <span style="color:#f92672">=</span> arg.sum;
+            <span style="color:#66d9ef">return</span> true;
+        }
+
+        <span style="color:#66d9ef">return</span> false;
+    }
+
+    <span style="color:#75715e">// ---------------------------------------------------------------
+</span><span style="color:#75715e"></span>    <span style="color:#75715e">// Recursive helper function to divide the work among several threads
+</span><span style="color:#75715e"></span>    <span style="color:#66d9ef">int</span> <span style="color:#a6e22e">parallel_sum</span>(<span style="color:#66d9ef">void</span> <span style="color:#f92672">*</span>arg) {
+        Sum_arg <span style="color:#f92672">*</span>argp <span style="color:#f92672">=</span> (Sum_arg<span style="color:#f92672">*</span>) arg; <span style="color:#75715e">// A pointer to the arguments
+</span><span style="color:#75715e"></span>
+        <span style="color:#66d9ef">if</span> (argp<span style="color:#f92672">-&gt;</span>len <span style="color:#f92672">&lt;=</span> argp<span style="color:#f92672">-&gt;</span>block_size) {    <span style="color:#75715e">// If lenght &lt;= block_size, add up the elements
+</span><span style="color:#75715e"></span>            <span style="color:#66d9ef">for</span> (<span style="color:#66d9ef">int</span> <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>; i <span style="color:#f92672">&lt;</span> argp<span style="color:#f92672">-&gt;</span>len; i<span style="color:#f92672">++</span>) {
+                argp<span style="color:#f92672">-&gt;</span>sum <span style="color:#f92672">+=</span> argp<span style="color:#f92672">-&gt;</span>start[i];
+            }
+
+            <span style="color:#66d9ef">return</span> <span style="color:#ae81ff">1</span>;
+        } <span style="color:#66d9ef">else</span> {
+            <span style="color:#66d9ef">int</span> mid <span style="color:#f92672">=</span> argp<span style="color:#f92672">-&gt;</span>len <span style="color:#f92672">/</span> <span style="color:#ae81ff">2</span>;
+            Sum_arg arg2 <span style="color:#f92672">=</span> {    <span style="color:#75715e">// Specifies second half
+</span><span style="color:#75715e"></span>                argp<span style="color:#f92672">-&gt;</span>start <span style="color:#f92672">+</span> mid,
+                argp<span style="color:#f92672">-&gt;</span>len <span style="color:#f92672">-</span> mid,
+                argp<span style="color:#f92672">-&gt;</span>block_size,
+                <span style="color:#ae81ff">0</span>
+            };
+            argp<span style="color:#f92672">-&gt;</span>len <span style="color:#f92672">=</span> mid;    <span style="color:#75715e">// Length of first half
+</span><span style="color:#75715e"></span>
+            thrd_t th;
+            <span style="color:#66d9ef">int</span> res <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>;
+            <span style="color:#66d9ef">if</span> (thrd_create(<span style="color:#f92672">&amp;</span>th, parallel_sum, arg) <span style="color:#f92672">!=</span> thrd_success) {
+                <span style="color:#66d9ef">return</span> <span style="color:#ae81ff">0</span>;
+            }
+
+            <span style="color:#66d9ef">if</span> (<span style="color:#f92672">!</span>parallel_sum(<span style="color:#f92672">&amp;</span>arg2)) { <span style="color:#75715e">// Process second half by recursion in the current thread
+</span><span style="color:#75715e"></span>                thrd_detch(th);
+                <span style="color:#66d9ef">return</span> <span style="color:#ae81ff">0</span>;
+            }
+
+            thrd_join(th, <span style="color:#f92672">&amp;</span>res);
+            <span style="color:#66d9ef">if</span> (<span style="color:#f92672">!</span>res) {
+                <span style="color:#66d9ef">return</span> <span style="color:#ae81ff">0</span>;   <span style="color:#75715e">// Sibling thread reported failure
+</span><span style="color:#75715e"></span>            }
+
+            argp<span style="color:#f92672">-&gt;</span>sum <span style="color:#f92672">+=</span> arg2.sum;
+            <span style="color:#66d9ef">return</span> <span style="color:#ae81ff">1</span>;
+        }
+    }
+</code></pre></div><h2 id="accessing-shared-data">Accessing Shared Data</h2>
+<p>如果多个 thread 访问相同的共享数据, 其中有一个 thread 修改了该数据, 为了防止 data race, 共享数据必须在其他 thread 中同步, 否则一个读的 thread 可以中断一个正在写的 thread, 因为程序执行时系统每次调度 thread 会不同</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-C" data-lang="C">    <span style="color:#75715e">#include</span> <span style="color:#75715e">&lt;stdio.h&gt;</span><span style="color:#75715e">
+</span><span style="color:#75715e"></span>    <span style="color:#75715e">#include</span> <span style="color:#75715e">&lt;threads.h&gt;</span><span style="color:#75715e">
+</span><span style="color:#75715e"></span>
+    <span style="color:#75715e">#define COUNT 1000000L
+</span><span style="color:#75715e"></span>
+    <span style="color:#66d9ef">long</span> counter <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>;
+    <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">incFunc</span>(<span style="color:#66d9ef">void</span>) {
+        <span style="color:#66d9ef">for</span> (<span style="color:#66d9ef">long</span> i <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>; i <span style="color:#f92672">&lt;</span> COUNT; <span style="color:#f92672">++</span>i) {
+            <span style="color:#f92672">++</span>counter;
+        }
+    }
+
+    <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">decFunc</span>(<span style="color:#66d9ef">void</span>) {
+        <span style="color:#66d9ef">for</span> (<span style="color:#66d9ef">long</span> i <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>; i <span style="color:#f92672">&lt;</span> COUNT; <span style="color:#f92672">++</span>i) {
+            <span style="color:#f92672">--</span>counter;
+        }
+    }
+
+    <span style="color:#66d9ef">int</span> <span style="color:#a6e22e">main</span>(<span style="color:#66d9ef">void</span>) {
+        clock_t cl <span style="color:#f92672">=</span> clock();
+        thrd_t th1, th2;
+        <span style="color:#66d9ef">if</span> (thrd_create(<span style="color:#f92672">&amp;</span>th1, (thrd_start_t)incFunc, NULL) <span style="color:#f92672">!=</span> thrd_success) {
+            fprintf(stderr, <span style="color:#e6db74">&#34;Error creating thread</span><span style="color:#ae81ff">\n</span><span style="color:#e6db74">&#34;</span>);
+            <span style="color:#66d9ef">return</span> <span style="color:#f92672">-</span><span style="color:#ae81ff">1</span>;
+        }
+        <span style="color:#66d9ef">if</span> (thrd_create(<span style="color:#f92672">&amp;</span>th2, (thrd_start_t)incFunc, NULL) <span style="color:#f92672">!=</span> thrd_success) {
+            fprintf(stderr, <span style="color:#e6db74">&#34;Error creating thread</span><span style="color:#ae81ff">\n</span><span style="color:#e6db74">&#34;</span>);
+            <span style="color:#66d9ef">return</span> <span style="color:#f92672">-</span><span style="color:#ae81ff">1</span>;
+        }
+
+        thrd_join(th1, NULL);
+        thrd_join(th2, NULL);
+
+        printf(<span style="color:#e6db74">&#34;Counter: %ld </span><span style="color:#ae81ff">\t</span><span style="color:#e6db74">&#34;</span>, counter);
+        printf(<span style="color:#e6db74">&#34;CPU time: %ld ms</span><span style="color:#ae81ff">\n</span><span style="color:#e6db74">&#34;</span>, (clock() <span style="color:#f92672">-</span> cl) <span style="color:#f92672">*</span> <span style="color:#ae81ff">1000</span> <span style="color:#f92672">/</span> CLOCKS_PER_SEC);
+
+        <span style="color:#66d9ef">return</span> <span style="color:#ae81ff">0</span>;
+    }
+</code></pre></div><p>上述执行结果 counter 应该为 0 , 但是实际输出为</p>
+<pre><code>    Counter: -714573        CPU time: 59 ms
+</code></pre><h3 id="mutual-exclusion-mutex">Mutual Exclusion Mutex</h3>
+<p>用来防止多个 thread 同时访问共享资源. mutex 是一个控制资源单独访问权限对象. 与 condition variables 一起可以扩展同步权限控制</p>
+<p>*<em>int mtx_int(mtx_t <em>mtx, int mutextype);</em></em>
+创建一个指定 mutextype 的 mutex, 成功后, *mtx 保存新 mutex 的 ID, 返回 thrd_success
+. mutextype包括 mtx_plain, mtx_timed, mtx_plain | mtx_recursive, mtx_timed | mtx_recursive</p>
+<p>*<em>void destroy(mtx_t <em>mtx);</em></em></p>
+<p>*<em>int mtx_lock(mtx_t <em>mtx);</em></em>
+block thread 直到获取指定 mutex 的锁</p>
+<p>*<em>int mtx_unlock(mtx_t <em>mtx);</em></em>
+release mutex 锁, 在 release 前必须拥有 mutex 的锁</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-C" data-lang="C">    <span style="color:#75715e">#include</span> <span style="color:#75715e">&lt;stdio.h&gt;</span><span style="color:#75715e">
+</span><span style="color:#75715e"></span>    <span style="color:#75715e">#include</span> <span style="color:#75715e">&lt;threads.h&gt;</span><span style="color:#75715e">
+</span><span style="color:#75715e"></span>
+    <span style="color:#75715e">#define COUNT 1000000L
+</span><span style="color:#75715e"></span>
+    <span style="color:#66d9ef">long</span> counter <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>;
+    mtx_t mtx;  <span style="color:#75715e">// A mutex for access to counter
+</span><span style="color:#75715e"></span>
+    <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">incFunc</span>(<span style="color:#66d9ef">void</span>) {
+        <span style="color:#66d9ef">for</span> (<span style="color:#66d9ef">long</span> i <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>; i <span style="color:#f92672">&lt;</span> COUNT; <span style="color:#f92672">++</span>i) {
+            mtx_lock(<span style="color:#f92672">&amp;</span>mtx);
+            <span style="color:#f92672">++</span>counter;
+            mtx_unlock(<span style="color:#f92672">&amp;</span>mtx);
+        }
+    }
+
+    <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">decFunc</span>(<span style="color:#66d9ef">void</span>) {
+        <span style="color:#66d9ef">for</span> (<span style="color:#66d9ef">long</span> i <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>; i <span style="color:#f92672">&lt;</span> COUNT; <span style="color:#f92672">++</span>i) {
+            mtx_lock(<span style="color:#f92672">&amp;</span>mtx);
+            <span style="color:#f92672">--</span>counter;
+            mtx_unlock(<span style="color:#f92672">&amp;</span>mtx);
+        }
+    }
+
+    <span style="color:#66d9ef">int</span> <span style="color:#a6e22e">main</span>(<span style="color:#66d9ef">void</span>) {
+        <span style="color:#66d9ef">if</span> (mtx_init(<span style="color:#f92672">&amp;</span>mtx, mtx_plain) <span style="color:#f92672">!=</span> thrd_success) {
+            fprintf(stderr, <span style="color:#e6db74">&#34;Error intializing the mutex.</span><span style="color:#ae81ff">\n</span><span style="color:#e6db74">&#34;</span>);
+            <span style="color:#66d9ef">return</span> <span style="color:#f92672">-</span><span style="color:#ae81ff">1</span>;
+        }
+
+        clock_t cl <span style="color:#f92672">=</span> clock();
+        thrd_t th1, th2;
+        <span style="color:#66d9ef">if</span> (thrd_create(<span style="color:#f92672">&amp;</span>th1, (thrd_start_t)incFunc, NULL) <span style="color:#f92672">!=</span> thrd_success) {
+            fprintf(stderr, <span style="color:#e6db74">&#34;Error creating thread</span><span style="color:#ae81ff">\n</span><span style="color:#e6db74">&#34;</span>);
+            <span style="color:#66d9ef">return</span> <span style="color:#f92672">-</span><span style="color:#ae81ff">1</span>;
+        }
+        <span style="color:#66d9ef">if</span> (thrd_create(<span style="color:#f92672">&amp;</span>th2, (thrd_start_t)incFunc, NULL) <span style="color:#f92672">!=</span> thrd_success) {
+            fprintf(stderr, <span style="color:#e6db74">&#34;Error creating thread</span><span style="color:#ae81ff">\n</span><span style="color:#e6db74">&#34;</span>);
+            <span style="color:#66d9ef">return</span> <span style="color:#f92672">-</span><span style="color:#ae81ff">1</span>;
+        }
+
+        thrd_join(th1, NULL);
+        thrd_join(th2, NULL);
+
+        printf(<span style="color:#e6db74">&#34;Counter: %ld </span><span style="color:#ae81ff">\t</span><span style="color:#e6db74">&#34;</span>, counter);
+        printf(<span style="color:#e6db74">&#34;CPU time: %ld ms</span><span style="color:#ae81ff">\n</span><span style="color:#e6db74">&#34;</span>, (clock() <span style="color:#f92672">-</span> cl) <span style="color:#f92672">*</span> <span style="color:#ae81ff">1000</span> <span style="color:#f92672">/</span> CLOCKS_PER_SEC);
+
+        mtx_destroy(<span style="color:#f92672">&amp;</span>mtx);
+        <span style="color:#66d9ef">return</span> <span style="color:#ae81ff">0</span>;
+    }
+</code></pre></div><h2 id="communication-between-threads-condition-variables">Communication Between Threads: Condition Variables</h2>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-C" data-lang="C">    <span style="color:#75715e">/* ------------------------------------------------
+</span><span style="color:#75715e">     * buffer.h
+</span><span style="color:#75715e">     * Declarations for a thread-safe buffer
+</span><span style="color:#75715e">     */</span>
+    <span style="color:#75715e">#include</span> <span style="color:#75715e">&lt;stdbool.h&gt;</span><span style="color:#75715e">
+</span><span style="color:#75715e"></span>    <span style="color:#75715e">#include</span> <span style="color:#75715e">&lt;threads.h&gt;</span><span style="color:#75715e">
+</span><span style="color:#75715e"></span>
+    <span style="color:#66d9ef">typedef</span> <span style="color:#66d9ef">struct</span> Buffer {
+        <span style="color:#66d9ef">int</span> <span style="color:#f92672">*</span>data;  <span style="color:#75715e">// Pointer to the array of data
+</span><span style="color:#75715e"></span>        size_t size, count; <span style="color:#75715e">// Maximum and current numbers of elements
+</span><span style="color:#75715e"></span>        size_t tip, tail;   <span style="color:#75715e">// tip = index of the next free spot
+</span><span style="color:#75715e"></span>        mtx_t mtx;  <span style="color:#75715e">// A mutex and
+</span><span style="color:#75715e"></span>        cnd_t cndPut, cndGet;   <span style="color:#75715e">// two condition variables
+</span><span style="color:#75715e"></span>    } Buffer
+
+    <span style="color:#66d9ef">bool</span> bufInit(Buffer <span style="color:#f92672">*</span>bufPtr, size_t size);
+    <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">bufDestroy</span>(Buffer <span style="color:#f92672">*</span>bufPtr);
+
+    <span style="color:#66d9ef">bool</span> <span style="color:#a6e22e">bufPut</span>(Buffer <span style="color:#f92672">*</span>bufPtr, <span style="color:#66d9ef">int</span> data);
+    <span style="color:#66d9ef">bool</span> <span style="color:#a6e22e">bufGet</span>(Buffer <span style="color:#f92672">*</span>bufPtr, <span style="color:#66d9ef">int</span> <span style="color:#f92672">*</span>dataPtr, <span style="color:#66d9ef">int</span> sec);
+
+    <span style="color:#75715e">/* ------------------------------------------------
+</span><span style="color:#75715e">     * buffer.c
+</span><span style="color:#75715e">     * Definitions of functions operating on Buffer
+</span><span style="color:#75715e">     */</span>
+     <span style="color:#75715e">#include</span> <span style="color:#75715e">&#34;buffer.h&#34;</span><span style="color:#75715e">
+</span><span style="color:#75715e"></span>     <span style="color:#75715e">#include</span> <span style="color:#75715e">&lt;stdlib.h&gt;    // For malloc() and free()</span><span style="color:#75715e">
+</span><span style="color:#75715e"></span>
+     <span style="color:#66d9ef">bool</span> <span style="color:#a6e22e">bufInit</span>(Buffer <span style="color:#f92672">*</span>bufPtr, size_t size) {
+        <span style="color:#66d9ef">if</span> ((bufPtr<span style="color:#f92672">-&gt;</span>data <span style="color:#f92672">=</span> malloc(size <span style="color:#f92672">*</span> <span style="color:#66d9ef">sizeof</span>(<span style="color:#66d9ef">int</span>))) <span style="color:#f92672">==</span> NULL) {
+            <span style="color:#66d9ef">return</span> false;
+        }
+
+        bufPtr<span style="color:#f92672">-&gt;</span>size <span style="color:#f92672">=</span> size;
+        bufPtr<span style="color:#f92672">-&gt;</span>count <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>;
+        bufPtr<span style="color:#f92672">-&gt;</span>tip <span style="color:#f92672">=</span> bufPtr<span style="color:#f92672">-&gt;</span>tail <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>;
+        <span style="color:#66d9ef">return</span> mtx_init(<span style="color:#f92672">&amp;</span>bufPtr<span style="color:#f92672">-&gt;</span>mtx, mtx_plain) <span style="color:#f92672">==</span> thrd_success
+            <span style="color:#f92672">&amp;&amp;</span> cnd_init(<span style="color:#f92672">&amp;</span>bufPtr<span style="color:#f92672">-&gt;</span>cndPut) <span style="color:#f92672">==</span> thrd_success
+            <span style="color:#f92672">&amp;&amp;</span> cnd_init(<span style="color:#f92672">&amp;</span>bufPtr<span style="color:#f92672">-&gt;</span>cndGet) <span style="color:#f92672">==</span> thrd_success;
+     }
+
+     <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">bufDestroy</span>(Buffer <span style="color:#f92672">*</span>bufPtr) {
+        cnd_destroy(<span style="color:#f92672">&amp;</span>bufPtr<span style="color:#f92672">-&gt;</span>cndPut);
+        cnd_destroy(<span style="color:#f92672">&amp;</span>bufPtr<span style="color:#f92672">-&gt;</span>cndGet);
+
+        mtx_destroy(<span style="color:#f92672">&amp;</span>bufPtr<span style="color:#f92672">-&gt;</span>mtx);
+        free(bufPtr<span style="color:#f92672">-&gt;</span>data);
+     }
+
+     <span style="color:#75715e">// Insert a new element in buffer
+</span><span style="color:#75715e"></span>     <span style="color:#66d9ef">bool</span> <span style="color:#a6e22e">bufPut</span>(Buffer <span style="color:#f92672">*</span>bufPtr, <span style="color:#66d9ef">int</span> data) {
+        mtx_lock(<span style="color:#f92672">&amp;</span>bufPtr<span style="color:#f92672">-&gt;</span>mtx);
+        <span style="color:#66d9ef">while</span> (bufPtr<span style="color:#f92672">-&gt;</span>count <span style="color:#f92672">==</span> bufPtr<span style="color:#f92672">-&gt;</span>size) {
+            <span style="color:#66d9ef">if</span> (cnd_wait(<span style="color:#f92672">&amp;</span>bufPtr<span style="color:#f92672">-&gt;</span>cndPut, <span style="color:#f92672">&amp;</span>bufPtr<span style="color:#f92672">-&gt;</span>mtx) <span style="color:#f92672">!=</span> thrd_success) {
+                <span style="color:#66d9ef">return</span> false;
+            }
+        }
+
+        bufPtr<span style="color:#f92672">-&gt;</span>data[bufPtr<span style="color:#f92672">-&gt;</span>tip] <span style="color:#f92672">=</span> data;
+        bufPtr<span style="color:#f92672">-&gt;</span>tip <span style="color:#f92672">=</span> (bufPtr<span style="color:#f92672">-&gt;</span>tip <span style="color:#f92672">+</span> <span style="color:#ae81ff">1</span>) <span style="color:#f92672">%</span> bufPtr<span style="color:#f92672">-&gt;</span>size;
+        <span style="color:#f92672">++</span>bufPtr<span style="color:#f92672">-&gt;</span>count;
+
+        mtx_unlock(<span style="color:#f92672">&amp;</span>bufPtr<span style="color:#f92672">-&gt;</span>mtx);
+        cnd_signal(<span style="color:#f92672">&amp;</span>bufPtr<span style="color:#f92672">-&gt;</span>cndGet);
+
+        <span style="color:#66d9ef">return</span> true;
+     }
+
+     <span style="color:#75715e">// Remove an element from the buffer. If the buffer is empty, wait no more than sec seconds
+</span><span style="color:#75715e"></span>     <span style="color:#66d9ef">bool</span> <span style="color:#a6e22e">bufGet</span>(Buffer <span style="color:#f92672">*</span>bufPtr, <span style="color:#66d9ef">int</span> <span style="color:#f92672">*</span>dataPtr, <span style="color:#66d9ef">int</span> sec) {
+        <span style="color:#66d9ef">struct</span> timespec ts;
+        timepec_get(<span style="color:#f92672">&amp;</span>ts, TIME_UTC); <span style="color:#75715e">// The current time + sec seconds delay
+</span><span style="color:#75715e"></span>        ts.tv_sec <span style="color:#f92672">+=</span> sec;
+
+        mtx_lock(<span style="color:#f92672">&amp;</span>bufPtr<span style="color:#f92672">-&gt;</span>mtx);
+
+        <span style="color:#66d9ef">while</span> (bufPtr<span style="color:#f92672">-&gt;</span>count <span style="color:#f92672">==</span> <span style="color:#ae81ff">0</span>) {
+            <span style="color:#66d9ef">if</span> (cnd_timedwait(<span style="color:#f92672">&amp;</span>bufPtr<span style="color:#f92672">-&gt;</span>cndGet, <span style="color:#f92672">&amp;</span>bufPtr<span style="color:#f92672">-&gt;</span>mtx, <span style="color:#f92672">&amp;</span>ts) <span style="color:#f92672">!=</span> thrd_success) {
+                <span style="color:#66d9ef">return</span> false;
+            }
+        }
+
+        <span style="color:#f92672">*</span>dataPtr <span style="color:#f92672">=</span> bufPtr<span style="color:#f92672">-&gt;</span>data[bufPtr<span style="color:#f92672">-&gt;</span>tail];
+        bufPtr<span style="color:#f92672">-&gt;</span>tail <span style="color:#f92672">=</span> (bufPtr<span style="color:#f92672">-&gt;</span>tail <span style="color:#f92672">+</span> <span style="color:#ae81ff">1</span>) <span style="color:#f92672">%</span> bufPtr<span style="color:#f92672">-&gt;</span>size;
+        <span style="color:#f92672">--</span>bufPtr<span style="color:#f92672">-&gt;</span>count;
+
+        mtx_unlock(<span style="color:#f92672">&amp;</span>bufPtr<span style="color:#f92672">-&gt;</span>mtx);
+        cnd_signal(<span style="color:#f92672">&amp;</span>bufPtr<span style="color:#f92672">-&gt;</span>cndPut);
+
+        <span style="color:#66d9ef">return</span> true;
+     }
+
+     <span style="color:#75715e">// producer_comsumer.c
+</span><span style="color:#75715e"></span>     <span style="color:#75715e">#include</span> <span style="color:#75715e">&#34;buffer.h&#34;</span><span style="color:#75715e">
+</span><span style="color:#75715e"></span>     <span style="color:#75715e">#include</span> <span style="color:#75715e">&lt;stdio.h&gt;</span><span style="color:#75715e">
+</span><span style="color:#75715e"></span>     <span style="color:#75715e">#include</span> <span style="color:#75715e">&lt;stdlib.h&gt;</span><span style="color:#75715e">
+</span><span style="color:#75715e"></span>
+     <span style="color:#75715e">#define NP 2   </span><span style="color:#75715e">// Number of producers
+</span><span style="color:#75715e"></span>     <span style="color:#75715e">#define NC 3   </span><span style="color:#75715e">// Number of comsumers
+</span><span style="color:#75715e"></span>
+     <span style="color:#66d9ef">struct</span> Arg {   <span style="color:#75715e">// Arguments for the thread functions
+</span><span style="color:#75715e"></span>        <span style="color:#66d9ef">int</span> id;
+        Buffer <span style="color:#f92672">*</span>buffer;
+    };
+
+    _Noreturn <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">errorExit</span>(<span style="color:#66d9ef">const</span> <span style="color:#66d9ef">char</span> <span style="color:#f92672">*</span>msg) {
+        fprintf(stderr, <span style="color:#e6db74">&#34;%s</span><span style="color:#ae81ff">\n</span><span style="color:#e6db74">&#34;</span>, msg);
+        exit(<span style="color:#ae81ff">0xff</span>);
+    }
+
+    <span style="color:#66d9ef">int</span> <span style="color:#a6e22e">main</span>(<span style="color:#66d9ef">void</span>) {
+        printf(<span style="color:#e6db74">&#34;producer-Consumer Demo</span><span style="color:#ae81ff">\n\n</span><span style="color:#e6db74">&#34;</span>);
+        Buffer buf; <span style="color:#75715e">// Create a buffer fo five products
+</span><span style="color:#75715e"></span>        bufInit(<span style="color:#f92672">&amp;</span>buf, <span style="color:#ae81ff">5</span>);
+
+        thrd_t prod[NP], cons[NC];  <span style="color:#75715e">// The threads and their arguments
+</span><span style="color:#75715e"></span>        <span style="color:#66d9ef">struct</span> Arg proArg[NP], consArg[NC];
+        <span style="color:#66d9ef">int</span> i <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>, res <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>;
+
+        <span style="color:#66d9ef">for</span> (i <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>; i <span style="color:#f92672">&lt;</span> NP; <span style="color:#f92672">++</span>i) { <span style="color:#75715e">// Start the producers
+</span><span style="color:#75715e"></span>            prodArg[i].id <span style="color:#f92672">=</span> i <span style="color:#f92672">+</span> <span style="color:#ae81ff">1</span>;
+            prodArg[i].bufPtr <span style="color:#f92672">=</span> <span style="color:#f92672">&amp;</span>buf;
+            <span style="color:#66d9ef">if</span> (thrd_create(<span style="color:#f92672">&amp;</span>prod[<span style="color:#ae81ff">1</span>], producer, <span style="color:#f92672">&amp;</span>prodArg[i]) <span style="color:#f92672">!=</span> thrd_success) {
+                errorExit(<span style="color:#e6db74">&#34;Thread error.&#34;</span>);
+            }
+        }
+
+        <span style="color:#66d9ef">for</span> (i <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>; i <span style="color:#f92672">&lt;</span> NC; <span style="color:#f92672">++</span>i ) { <span style="color:#75715e">// Start the consumers.
+</span><span style="color:#75715e"></span>            consArg[i].id <span style="color:#f92672">=</span> i<span style="color:#f92672">+</span><span style="color:#ae81ff">1</span>, consArg[i].bufPtr <span style="color:#f92672">=</span> <span style="color:#f92672">&amp;</span>buf;             <span style="color:#66d9ef">if</span> (thrd_create(<span style="color:#f92672">&amp;</span>cons[i], consumer, <span style="color:#f92672">&amp;</span>consArg[i] ) <span style="color:#f92672">!=</span> thrd_success) {
+                errorExit(<span style="color:#e6db74">&#34;Thread error.&#34;</span>);
+            }
+        }
+
+        <span style="color:#66d9ef">for</span> (i <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>; i <span style="color:#f92672">&lt;</span> NP; <span style="color:#f92672">++</span>i) {
+            thrd_join(prod[i], <span style="color:#f92672">&amp;</span>res);
+            printf(<span style="color:#e6db74">&#34;</span><span style="color:#ae81ff">\n</span><span style="color:#e6db74">Producer %d ended with result %d.</span><span style="color:#ae81ff">\n</span><span style="color:#e6db74">&#34;</span>, prodArg[i].id, res);
+        }
+
+        <span style="color:#66d9ef">for</span> (i <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>; i <span style="color:#f92672">&lt;</span> NC; <span style="color:#f92672">++</span>i) {
+            thrd_join(cons[i], <span style="color:#f92672">&amp;</span>res);
+            printf(<span style="color:#e6db74">&#34;Consumer %d ended with result %d.</span><span style="color:#ae81ff">\n</span><span style="color:#e6db74">&#34;</span>, consArg[i].id, res);
+        }
+
+        bufDestroy(<span style="color:#f92672">&amp;</span>buf);
+        <span style="color:#66d9ef">return</span> <span style="color:#ae81ff">0</span>;
+    }
+
+    <span style="color:#66d9ef">int</span> <span style="color:#a6e22e">producer</span>(<span style="color:#66d9ef">void</span> <span style="color:#f92672">*</span>arg) {   <span style="color:#75715e">// The producers&#39; thread function
+</span><span style="color:#75715e"></span>        <span style="color:#66d9ef">struct</span> Arg <span style="color:#f92672">*</span>argPtr <span style="color:#f92672">=</span> (<span style="color:#66d9ef">struct</span> Arg <span style="color:#f92672">*</span>) arg;
+        <span style="color:#66d9ef">int</span> id <span style="color:#f92672">=</span> argPtr<span style="color:#f92672">-&gt;</span>id;
+        Buffer <span style="color:#f92672">*</span>bufPtr <span style="color:#f92672">=</span> argPtr<span style="color:#f92672">-&gt;</span>bufPtr;
+
+        <span style="color:#66d9ef">int</span> count <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>;
+        <span style="color:#66d9ef">for</span> (<span style="color:#66d9ef">int</span> i <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>; i <span style="color:#f92672">&lt;</span> <span style="color:#ae81ff">10</span>; <span style="color:#f92672">++</span>i) {
+            <span style="color:#66d9ef">int</span> data <span style="color:#f92672">=</span> <span style="color:#ae81ff">10</span> <span style="color:#f92672">*</span> id <span style="color:#f92672">+</span> i;
+            <span style="color:#66d9ef">if</span> (bufPut(bufPtr, data)) {
+                printf(<span style="color:#e6db74">&#34;Producer %d produced %d</span><span style="color:#ae81ff">\n</span><span style="color:#e6db74">&#34;</span>, id, data);
+                <span style="color:#f92672">++</span>count;
+            } <span style="color:#66d9ef">else</span> {
+                fprintf(stderr, <span style="color:#e6db74">&#34;Producer %d: error storing %d</span><span style="color:#ae81ff">\n</span><span style="color:#e6db74">&#34;</span>, id, data);
+            }
+        }
+
+        <span style="color:#66d9ef">return</span> count;
+    }
+
+    <span style="color:#66d9ef">int</span> <span style="color:#a6e22e">consumer</span>(<span style="color:#66d9ef">void</span> <span style="color:#f92672">*</span>arg) {   <span style="color:#75715e">// The consumers&#39; thread function.
+</span><span style="color:#75715e"></span>        <span style="color:#66d9ef">struct</span> Arg <span style="color:#f92672">*</span>argPtr <span style="color:#f92672">=</span> (<span style="color:#66d9ef">struct</span> Arg <span style="color:#f92672">*</span>) arg;
+        <span style="color:#66d9ef">int</span> id <span style="color:#f92672">=</span> argPtr<span style="color:#f92672">-&gt;</span>id;
+        Buffer <span style="color:#f92672">*</span>bufPtr <span style="color:#f92672">=</span> argPtr<span style="color:#f92672">-&gt;</span>bufPtr;
+
+        <span style="color:#66d9ef">int</span> count <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>, data <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>;
+        <span style="color:#66d9ef">while</span> (bufGet(bufPtr, <span style="color:#f92672">&amp;</span>data, <span style="color:#ae81ff">2</span>)) {
+            <span style="color:#f92672">++</span>count;
+            printf(<span style="color:#e6db74">&#34;Consumer %d consumed %d</span><span style="color:#ae81ff">\n</span><span style="color:#e6db74">&#34;</span>, id, data);
+        }
+
+        <span style="color:#66d9ef">return</span> count;
+    }
+</code></pre></div>
+        </p>
+    </div>
+    
+
+    
+
+    <div class="page-footer">
+        
+        <hr class="footer-divider">
+        
+            <a class="tag" href="/tags/c">#C</a>
+        
+      
+    </div>
+
+
+        
+        </div>
+        <footer class="footer-mobile">
+	<div class="social-icons">
+        
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    
+    
+
+    
+    
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+</div>
+
+
+
+
+	<div class="footer-mobile-links">
+		<p><a href="https://github.com/kimcc/hugo-theme-noteworthy" target="_blank" rel="noopener">Noteworthy theme</a></p>
+		<span class="divider-bar">|</span>
+		<p><a href="https://gohugo.io" target="_blank" rel="noopener">Built with Hugo</a></p>
+	</div>
+
+	<script src="https://luyangx.github.io/js/main.min.fa5c2b23e07b5d9bfad267a52b4b24fdb053e6fb7524993383594926a3ac270c.js" integrity="sha256-+lwrI+B7XZv60melK0sk/bBT5vt1JJkzg1lJJqOsJww=" crossorigin="anonymous"></script>
+</footer>
+    </body>
+</html>

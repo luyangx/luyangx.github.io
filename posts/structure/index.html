@@ -1,0 +1,374 @@
+<!DOCTYPE html>
+
+<html lang="zh-cn">
+    <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="format-detection" content="telephone=no"/>
+
+    <title>Structure | 扬</title>
+    
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+    <link rel="manifest" href="/manifest.json">
+    <link rel="mask-icon" href="/safari-pinned-tab.svg" color="#FF3DB4">
+    <meta name="theme-color" content="#ffffff">
+
+    
+    
+    
+    <link rel="stylesheet" href="https://luyangx.github.io/css/main.min.15431d6c334f65809fe2bc329da3f2c81c6e3027ab1e25b56afb2bb85fa7fd64.css"/>
+
+    
+    
+    
+
+    
+    
+ 
+    </head>
+
+    <body>
+        
+<nav>
+  <header>
+    <div class="site-title">
+        <a href="/">扬</a>
+    </div>  
+</header>
+
+  <div class="nav-menu">
+  
+  <a class="color-link nav-link" href="https://luyangx.github.io/index.xml" target="_blank" rel="noopener" type="application/rss+xml">RSS</a>
+</div>
+<footer class="footer">
+	<div class="social-icons">
+        
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    
+    
+
+    
+    
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+</div>
+
+
+
+
+	<p><a href="https://github.com/kimcc/hugo-theme-noteworthy" target="_blank" rel="noopener">Noteworthy theme</a></p>
+	<p><a href="https://gohugo.io" target="_blank" rel="noopener">Built with Hugo</a></p>
+
+	<script src="https://luyangx.github.io/js/main.min.fa5c2b23e07b5d9bfad267a52b4b24fdb053e6fb7524993383594926a3ac270c.js" integrity="sha256-+lwrI+B7XZv60melK0sk/bBT5vt1JJkzg1lJJqOsJww=" crossorigin="anonymous"></script>
+</footer>
+</nav>
+
+        <div id="content" class="content-container">
+        
+
+<h1 class="post-title">Structure</h1>
+    
+    <time>April 5, 2016</time>
+    
+    <div>
+        <p>
+        <p>&laquo;C in a Nutshell&raquo;笔记 - 结构体</p>
+<h2 id="defining-structure-types">Defining Structure Types</h2>
+<blockquote>
+<p><strong>struct [tag_name] { member_declaration_list };</strong></p>
+</blockquote>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-C" data-lang="C">	<span style="color:#66d9ef">struct</span> Date { <span style="color:#66d9ef">short</span> month, day, year; }
+</code></pre></div><p>member 中不能包含自己, 因为在最后 <strong>}</strong> 前该结构定义不完整, 除非是 self-referential structures (自引用结构)</p>
+<h2 id="structure-objects-and-typedef-names">Structure Objects and typedef Names</h2>
+<blockquote>
+<p>structure object == structure vaiables</p>
+</blockquote>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-C" data-lang="C">	<span style="color:#66d9ef">struct</span> Song song1, song2, <span style="color:#f92672">*</span>pSong <span style="color:#f92672">=</span> <span style="color:#f92672">&amp;</span>song1;
+	<span style="color:#75715e">// song1, song2 是 struct Song 的对象, 而 *pSong 是指向对象 song1 的指针
+</span></code></pre></div><p>每次定义变量都需要包含 <strong>struct Song</strong> 关键字, 可以用 <strong>typedef</strong> 定义一个 one-word 结构名称</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-C" data-lang="C">	<span style="color:#66d9ef">typedef</span> <span style="color:#66d9ef">struct</span> Song Song_t; <span style="color:#75715e">// Song_t 等同于 struct Song
+</span><span style="color:#75715e"></span>	Song_t song1, song2 <span style="color:#f92672">*</span>pSong <span style="color:#f92672">=</span> <span style="color:#f92672">&amp;</span>song1; <span style="color:#75715e">// 2个 struct Song 对象和1个指针
+</span></code></pre></div><p>定义一个 struct 时可以不需要定义 tag_name, 这种方式只适用于定义 struct 时同时定义了structure objects, 或这是在 typedef 中声明了 structure type</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-C" data-lang="C">	<span style="color:#66d9ef">typedef</span> <span style="color:#66d9ef">struct</span> { <span style="color:#66d9ef">struct</span> Cell <span style="color:#f92672">*</span>pFirst, <span style="color:#f92672">*</span>pLast; } SongList_t;
+</code></pre></div><h2 id="incomplete-structure-types">Incomplete Structure Types</h2>
+<p>可以定义一个指向结构的指针即使这个结构还未定义, 上面 SongList_t 定义是正确的, 虽然 struct Cell 未定义. 这种情况下, SongList_t 会隐式声明 一个 structure tag Cell, 但是直到明确定义 Cell 前, Cell 都是不完整的, 并且 *pFirst, *pLast 指针也不能用来访问 objects</p>
+<p>这样可以用来声明互相应用彼此的 structure type</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-C" data-lang="C">	<span style="color:#66d9ef">struct</span> A { <span style="color:#66d9ef">struct</span> B <span style="color:#f92672">*</span>pB; <span style="color:#75715e">/* ... other members of struct A ... */</span>};
+	<span style="color:#66d9ef">struct</span> B { <span style="color:#66d9ef">struct</span> A <span style="color:#f92672">*</span>pA; <span style="color:#75715e">/* ... other members of struct B ... */</span>};
+</code></pre></div><p>以上情况有个例外, 如下:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-C" data-lang="C">	<span style="color:#66d9ef">struct</span> B {
+		<span style="color:#66d9ef">struct</span> A <span style="color:#f92672">*</span>pA;
+		<span style="color:#66d9ef">int</span> key[<span style="color:#ae81ff">10</span>];
+	};
+	
+	{
+		<span style="color:#66d9ef">struct</span> A {
+			<span style="color:#66d9ef">struct</span> B pB; <span style="color:#75715e">// 此时变量 pb 为 block 外层 struct B
+</span><span style="color:#75715e"></span>			<span style="color:#66d9ef">int</span> key;
+		};
+		printf(<span style="color:#e6db74">&#34;%d&#34;</span>, <span style="color:#66d9ef">sizeof</span>(<span style="color:#66d9ef">struct</span> A));
+		
+		<span style="color:#66d9ef">struct</span> B {
+			<span style="color:#66d9ef">struct</span> A <span style="color:#f92672">*</span>pA;
+			<span style="color:#66d9ef">int</span> key;
+		};
+	}
+</code></pre></div><p>为了避免上述情况可以采取一下方式</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-C" data-lang="C">	<span style="color:#66d9ef">struct</span> B; <span style="color:#75715e">// incomplete type
+</span><span style="color:#75715e"></span>	<span style="color:#66d9ef">struct</span> A { <span style="color:#66d9ef">struct</span> B <span style="color:#f92672">*</span>pB; <span style="color:#75715e">/* ... */</span> };
+	<span style="color:#66d9ef">struct</span> B { <span style="color:#66d9ef">struct</span> A <span style="color:#f92672">*</span>pA; <span style="color:#75715e">/* ... */</span> };
+</code></pre></div><h2 id="accessing-structure-members">Accessing Structure Members</h2>
+<p>2种方式, dot operator(.) 和 arrow operator(-&gt;)</p>
+<ul>
+<li><strong>.</strong> : 左值是 structure object(variable) 变量</li>
+<li><strong>-&gt;</strong> : 左值是 structure point 指针</li>
+</ul>
+<blockquote>
+<p>p-&gt;m == (*p).m</p>
+</blockquote>
+<h2 id="initializing-structures">Initializing Structures</h2>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-C" data-lang="C">	Song_t mySong <span style="color:#f92672">=</span> {
+		<span style="color:#e6db74">&#34;what it is&#34;</span>,
+		<span style="color:#e6db74">&#34;Aubrey Haynie: Mark Knopfler&#34;</span>,
+		<span style="color:#e6db74">&#34;Mark Knopfler&#34;</span>,
+		<span style="color:#ae81ff">297</span>,
+		{ <span style="color:#ae81ff">9</span>, <span style="color:#ae81ff">26</span>, <span style="color:#ae81ff">200</span> }
+	}
+	
+	Song_t yourSong <span style="color:#f92672">=</span> { <span style="color:#e6db74">&#34;El Macho&#34;</span> };
+	Song_t yourSong <span style="color:#f92672">=</span> {
+		<span style="color:#e6db74">&#34;El Macho&#34;</span>,
+		<span style="color:#e6db74">&#34;&#34;</span>,
+		<span style="color:#e6db74">&#34;&#34;</span>,
+		<span style="color:#ae81ff">0</span>,
+		{ <span style="color:#ae81ff">0</span>, <span style="color:#ae81ff">0</span>, <span style="color:#ae81ff">0</span>}
+	};
+	
+	Song_t yourSong <span style="color:#f92672">=</span> mySong; <span style="color:#75715e">// 可以是其他已存在的structure变量
+</span></code></pre></div><h2 id="initializing-specific-members">Initializing Specific Members</h2>
+<blockquote>
+<p>.member  // member designator</p>
+</blockquote>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-C" data-lang="C">	Song_t aSong <span style="color:#f92672">=</span> {
+		.title <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;I&#39;ve Just Seen a Face&#34;</span>,
+		.composer <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;John Lennon; Paul McCartney&#34;</span>,
+		<span style="color:#ae81ff">127</span>
+	}
+</code></pre></div><h2 id="structure-members-in-memory">Structure Members in Memory</h2>
+<p>等同与 member 声明顺序, 第一个 member 地址 == structure object 地址
+为了快速访问 member, compiler 会按照某种对齐方式进行对齐操作, 会在最后一个 member 后增加额外的 bytes 统称 padding, 这就导致 structure 实际的大小大与 members 的大小</p>
+<p>你可以控制 compiler 的对齐操作, 防止 member 之间的缝隙(gap), 通过 complier 的选项, 例如 GCC 的 -fpack-struct</p>
+<h2 id="flexible-structure-members">Flexible Structure members</h2>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-C" data-lang="C">	<span style="color:#66d9ef">typedef</span> <span style="color:#66d9ef">struct</span> { <span style="color:#66d9ef">int</span> len; <span style="color:#66d9ef">float</span> array[]; } DynArray_t;
+</code></pre></div><ul>
+<li>以 flexible member 结尾的 structure 的大小等于 flexible member 的偏移量</li>
+</ul>
+<blockquote>
+<p>sizeof(DynArray_t) == offsetof(DynArray_t, array)</p>
+</blockquote>
+<ul>
+<li>通过 . 和 -&gt; 访问 flexiable member 时, 要确保 flexiable member 有足够大的空间, 可以通过 malloc 申请所需要的内存大小</li>
+</ul>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-C" data-lang="C">	DynArray_t <span style="color:#f92672">*</span>daPtr <span style="color:#f92672">=</span> malloc(<span style="color:#66d9ef">sizeof</span>(DynArrray_t) <span style="color:#f92672">+</span> <span style="color:#ae81ff">10</span><span style="color:#f92672">*</span><span style="color:#66d9ef">sizeof</span>(<span style="color:#66d9ef">float</span>));
+	
+	DynArray_t da1 <span style="color:#f92672">=</span> { <span style="color:#ae81ff">100</span> }, <span style="color:#75715e">// OK
+</span><span style="color:#75715e"></span>				 da2 <span style="color:#f92672">=</span> { <span style="color:#ae81ff">3</span>, { <span style="color:#ae81ff">1.0F</span>, <span style="color:#ae81ff">0.5F</span>, <span style="color:#ae81ff">0.25F</span> } }; <span style="color:#75715e">// Error 看compiler是否支持
+</span></code></pre></div><h2 id="pointer-as-structure-members">Pointer as Structure Members</h2>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-C" data-lang="C">	<span style="color:#66d9ef">typedef</span> <span style="color:#66d9ef">struct</span> { <span style="color:#66d9ef">struct</span> Cell <span style="color:#f92672">*</span>pFirst, <span style="color:#f92672">*</span>pLast; } SongList_t;
+	<span style="color:#66d9ef">typedef</span> <span style="color:#66d9ef">struct</span> { <span style="color:#66d9ef">struct</span> Song song; <span style="color:#66d9ef">struct</span> Cell <span style="color:#f92672">*</span>pNext; } Cell_t;
+</code></pre></div><h1 id="unions">Unions</h1>
+<p>所有 members 共用同一内存地址</p>
+<h2 id="defining-union-types">Defining Union Types</h2>
+<blockquote>
+<p>** union [tag_name] { membber_declaration_list };</p>
+</blockquote>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-C" data-lang="C">	<span style="color:#66d9ef">union</span> Data { <span style="color:#66d9ef">int</span> i; <span style="color:#66d9ef">double</span> x; <span style="color:#66d9ef">char</span> str[<span style="color:#ae81ff">16</span>]; }
+</code></pre></div><p><strong>union VS structure members 占用内存比较</strong></p>
+<p><img src="/images/14598539077422.jpg" alt="">
+<img src="/images/14598539482939.jpg" alt=""></p>
+<h2 id="initializing-unions">Initializing Unions</h2>
+<p>同 Initializing Structure</p>
+<h2 id="anonymous-structure-and-unions">Anonymous Structure and Unions</h2>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-C" data-lang="C">	<span style="color:#66d9ef">union</span> WordByte {
+		<span style="color:#66d9ef">short</span> w;
+		<span style="color:#66d9ef">struct</span> { <span style="color:#66d9ef">char</span> b0, b1 }; <span style="color:#75715e">// anonymous structure
+</span><span style="color:#75715e"></span>	}
+	
+	<span style="color:#66d9ef">union</span> WordByte wb <span style="color:#f92672">=</span> { <span style="color:#ae81ff">256</span> };
+	<span style="color:#66d9ef">char</span> lowByte <span style="color:#f92672">=</span> wb.b0;
+	
+	<span style="color:#66d9ef">struct</span> Demo {
+		<span style="color:#66d9ef">union</span> {	<span style="color:#75715e">// anonymous union
+</span><span style="color:#75715e"></span>			<span style="color:#66d9ef">struct</span> { <span style="color:#66d9ef">long</span> a, b; };	<span style="color:#75715e">// anonymous structure
+</span><span style="color:#75715e"></span>			<span style="color:#66d9ef">struct</span> { <span style="color:#66d9ef">float</span> x, y; } fl; <span style="color:#75715e">// named structure
+</span><span style="color:#75715e"></span>		}
+	} dObj;
+	
+	dObj.a <span style="color:#f92672">=</span> <span style="color:#ae81ff">100</span>; <span style="color:#75715e">// ok
+</span><span style="color:#75715e"></span>	dObj.y <span style="color:#f92672">=</span> <span style="color:#ae81ff">1.0</span>; <span style="color:#75715e">// wrong 不能直接访问 y, 因为他是 struct fl 的 member
+</span><span style="color:#75715e"></span>	dObj.fl.y <span style="color:#f92672">=</span> <span style="color:#ae81ff">1.0</span>; <span style="color:#75715e">// ok
+</span></code></pre></div><h2 id="bit-fields">Bit-Fields</h2>
+<p>可以像 structure 和 union 一样通过 member name 来操作 bit</p>
+<blockquote>
+<p><strong>type [member_name] : width;</strong></p>
+</blockquote>
+<ul>
+<li>
+<p><strong>type</strong>
+bit-field 值的 integer type, 例如: _Bool, signed int, unsigned int, const int&hellip;</p>
+</li>
+<li>
+<p><strong>member_name</strong>
+bit-field 的 name, 可选, 没有指定 name 时无法访问该 bit-field, 可以当做 padding 来确定后续 bit-field 在机器 word 中的位置</p>
+</li>
+<li>
+<p><strong>width</strong>
+bit-field 的 bit 数量, 非负且不能小余 type 的 width</p>
+</li>
+</ul>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-C" data-lang="C">	<span style="color:#66d9ef">struct</span> Date {
+		<span style="color:#66d9ef">unsigned</span> <span style="color:#66d9ef">int</span> month : <span style="color:#ae81ff">4</span>;  <span style="color:#75715e">// 1 is January; 12 is December
+</span><span style="color:#75715e"></span>		<span style="color:#66d9ef">unsigned</span> <span style="color:#66d9ef">int</span> day   : <span style="color:#ae81ff">5</span>;  <span style="color:#75715e">// The day of the month (1 to 31)
+</span><span style="color:#75715e"></span>		<span style="color:#66d9ef">signed</span> <span style="color:#66d9ef">int</span>   year  : <span style="color:#ae81ff">22</span>; <span style="color:#75715e">// (-2097152 to +2097151)
+</span><span style="color:#75715e"></span>		_Bool        isDST : <span style="color:#ae81ff">1</span>;  <span style="color:#75715e">// True if daylight saving time is in effect
+</span><span style="color:#75715e"></span>	}
+	
+	<span style="color:#66d9ef">struct</span> Date birthday <span style="color:#f92672">=</span> { <span style="color:#ae81ff">5</span>, <span style="color:#ae81ff">17</span>, <span style="color:#ae81ff">1982</span> };
+</code></pre></div><p>n bits 可以代表 2 n次方个不同的值</p>
+        </p>
+    </div>
+    
+
+    
+
+    <div class="page-footer">
+        
+        <hr class="footer-divider">
+        
+            <a class="tag" href="/tags/c">#C</a>
+        
+      
+    </div>
+
+
+        
+        </div>
+        <footer class="footer-mobile">
+	<div class="social-icons">
+        
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    
+    
+
+    
+    
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+</div>
+
+
+
+
+	<div class="footer-mobile-links">
+		<p><a href="https://github.com/kimcc/hugo-theme-noteworthy" target="_blank" rel="noopener">Noteworthy theme</a></p>
+		<span class="divider-bar">|</span>
+		<p><a href="https://gohugo.io" target="_blank" rel="noopener">Built with Hugo</a></p>
+	</div>
+
+	<script src="https://luyangx.github.io/js/main.min.fa5c2b23e07b5d9bfad267a52b4b24fdb053e6fb7524993383594926a3ac270c.js" integrity="sha256-+lwrI+B7XZv60melK0sk/bBT5vt1JJkzg1lJJqOsJww=" crossorigin="anonymous"></script>
+</footer>
+    </body>
+</html>

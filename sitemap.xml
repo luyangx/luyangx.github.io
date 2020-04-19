@@ -3,26 +3,93 @@
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   
   <url>
-    <loc>https://luyangx.github.io/posts/</loc>
-    <lastmod>2014-11-03T22:20:49+20:02</lastmod>
+    <loc>https://luyangx.github.io/tags/c/</loc>
+    <lastmod>2016-04-18T20:24:24+08:00</lastmod>
   </url>
   
   <url>
-    <loc>https://luyangx.github.io/posts/my-first-post/</loc>
-    <lastmod>2014-11-03T22:20:49+20:02</lastmod>
-  </url>
-  
-  <url>
-    <loc>https://luyangx.github.io/</loc>
-    <lastmod>2014-11-03T22:20:49+20:02</lastmod>
+    <loc>https://luyangx.github.io/categories/c/</loc>
+    <lastmod>2016-04-18T20:24:24+08:00</lastmod>
   </url>
   
   <url>
     <loc>https://luyangx.github.io/categories/</loc>
+    <lastmod>2016-04-18T20:24:24+08:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://luyangx.github.io/posts/dynamic-memory-management/</loc>
+    <lastmod>2016-04-18T20:24:24+08:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://luyangx.github.io/posts/</loc>
+    <lastmod>2016-04-18T20:24:24+08:00</lastmod>
   </url>
   
   <url>
     <loc>https://luyangx.github.io/tags/</loc>
+    <lastmod>2016-04-18T20:24:24+08:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://luyangx.github.io/</loc>
+    <lastmod>2016-04-18T20:24:24+08:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://luyangx.github.io/posts/input-and-output/</loc>
+    <lastmod>2016-04-16T21:01:12+08:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://luyangx.github.io/posts/multithreading/</loc>
+    <lastmod>2016-04-15T20:33:58+08:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://luyangx.github.io/posts/declarations/</loc>
+    <lastmod>2016-04-05T21:33:01+08:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://luyangx.github.io/posts/structure/</loc>
+    <lastmod>2016-04-05T19:06:42+08:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://luyangx.github.io/tags/php/</loc>
+    <lastmod>2014-11-03T22:20:49+20:02</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://luyangx.github.io/categories/php/</loc>
+    <lastmod>2014-11-03T22:20:49+20:02</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://luyangx.github.io/posts/references-in-php/</loc>
+    <lastmod>2014-11-03T22:20:49+20:02</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://luyangx.github.io/index.html</loc>
+  </url>
+  
+  <url>
+    <loc>https://luyangx.github.io/#/</loc>
+  </url>
+  
+  <url>
+    <loc>https://luyangx.github.io/0xd1efgmail.com/</loc>
+  </url>
+  
+  <url>
+    <loc>https://luyangx.github.io/luyangx/</loc>
+  </url>
+  
+  <url>
+    <loc>https://luyangx.github.io/%E6%89%ACxss/</loc>
   </url>
   
 </urlset>
