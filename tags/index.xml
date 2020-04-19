@@ -2,30 +2,30 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Tags on 扬</title>
-    <link>https://luyangx.github.io/tags/</link>
+    <link>http://luyangx.ink/tags/</link>
     <description>Recent content in Tags on 扬</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>zh-cn</language>
     <lastBuildDate>Mon, 18 Apr 2016 20:24:24 +0800</lastBuildDate>
     
-	<atom:link href="https://luyangx.github.io/tags/index.xml" rel="self" type="application/rss+xml" />
+	<atom:link href="http://luyangx.ink/tags/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
       <title>C</title>
-      <link>https://luyangx.github.io/tags/c/</link>
+      <link>http://luyangx.ink/tags/c/</link>
       <pubDate>Mon, 18 Apr 2016 20:24:24 +0800</pubDate>
       
-      <guid>https://luyangx.github.io/tags/c/</guid>
+      <guid>http://luyangx.ink/tags/c/</guid>
       <description></description>
     </item>
     
     <item>
       <title>PHP</title>
-      <link>https://luyangx.github.io/tags/php/</link>
+      <link>http://luyangx.ink/tags/php/</link>
       <pubDate>Mon, 03 Nov 2014 22:20:49 +2002</pubDate>
       
-      <guid>https://luyangx.github.io/tags/php/</guid>
+      <guid>http://luyangx.ink/tags/php/</guid>
       <description></description>
     </item>
     
