@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+
+<html lang="zh-cn">
+    <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="format-detection" content="telephone=no"/>
+
+    <title>MySQL 之 InnoDB . 1 | 扬</title>
+    
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+    <link rel="manifest" href="/manifest.json">
+    <link rel="mask-icon" href="/safari-pinned-tab.svg" color="#FF3DB4">
+    <meta name="theme-color" content="#ffffff">
+
+    
+    
+    
+    <link rel="stylesheet" href="https://luyangx.github.io/css/main.min.15431d6c334f65809fe2bc329da3f2c81c6e3027ab1e25b56afb2bb85fa7fd64.css"/>
+
+    
+    
+    
+
+    
+    
+ 
+    </head>
+
+    <body>
+        
+<nav>
+  <header>
+    <div class="site-title">
+        <a href="/">扬</a>
+    </div>  
+</header>
+
+  <div class="nav-menu">
+  
+  <a class="color-link nav-link" href="https://luyangx.github.io/index.xml" target="_blank" rel="noopener" type="application/rss+xml">RSS</a>
+</div>
+<footer class="footer">
+	<div class="social-icons">
+        
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    
+    
+
+    
+    
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+</div>
+
+
+
+
+	<p><a href="https://github.com/kimcc/hugo-theme-noteworthy" target="_blank" rel="noopener">Noteworthy theme</a></p>
+	<p><a href="https://gohugo.io" target="_blank" rel="noopener">Built with Hugo</a></p>
+
+	<script src="https://luyangx.github.io/js/main.min.fa5c2b23e07b5d9bfad267a52b4b24fdb053e6fb7524993383594926a3ac270c.js" integrity="sha256-+lwrI+B7XZv60melK0sk/bBT5vt1JJkzg1lJJqOsJww=" crossorigin="anonymous"></script>
+</footer>
+</nav>
+
+        <div id="content" class="content-container">
+        
+
+<h1 class="post-title">MySQL 之 InnoDB . 1</h1>
+    
+    <time>August 24, 2016</time>
+    
+    <div>
+        <p>
+        <p>InnoDB 存储引擎支持事务, 其设计目的主要面向在线事务处理(OLTP)的应用. 其特点是行锁, 外键, 非锁定读等, MySQL在5.5.8版本后将其设为默认存储引擎.</p>
+<h2 id="体系结构">体系结构</h2>
+<p>InnoDB 存储引擎架构由 内存中(in-memory) 和 磁盘上(on-disk) 2部分结构组成</p>
+<p><img src="/images/innodb-architecture.png" alt="">
+图片中是 MySQL 5.7 中 InnoDB 的体系结构</p>
+<h3 id="in-memory-结构">in-memory 结构</h3>
+<h4 id="缓冲池-buffer-pool">缓冲池 Buffer Pool</h4>
+<p>缓冲池是主内存中的一个区域, InnoDB在访问表和索引数据时会在其中进行缓存, 用来减轻CPU速度与磁盘速度的差异, 提高数据库的整体性能. 在专用服务器上, 通常将多达80％的物理内存分配给缓冲池.</p>
+<p>缓冲池被分成一个一个的page, 每个page可以存储多条rows. 缓冲池用List来管理这些page, 使用LRU算法变体淘汰最近很少使用的数据, 如下图:</p>
+<p><img src="/images/innodb-buffer-pool-list.png" alt=""></p>
+<ul>
+<li>New Sublist: 最近访问的pages, 在 List 的 Head</li>
+<li>Old Sublist: 最近很少访问的pages, 在 List 的 Tail</li>
+</ul>
+<p>Old Sublist 占用 3/8 的空间, 以 New Sublist 的 Tail 与其 Head 做 midpoint</p>
+<p>InnoDB 将读取的数据放入缓冲池时, 先将其放在 midpoint(old sublist 的 head), 这样操作可以防止一些数据库的操作, 例如:mysqldump命令, 将 New Sublist 中的热点数据刷掉</p>
+<p>可以通过 <code>SHOW ENGINE INNODB STATUS</code> 查看 InnoDB 相关信息</p>
+<pre><code>----------------------
+BUFFER POOL AND MEMORY
+----------------------
+Total large memory allocated 2198863872
+Dictionary memory allocated 776332
+Buffer pool size   131072
+Free buffers       124908
+Database pages     5720
+Old database pages 2071
+Modified db pages  910
+Pending reads 0
+Pending writes: LRU 0, flush list 0, single page 0
+Pages made young 4, not young 0
+0.10 youngs/s, 0.00 non-youngs/s
+Pages read 197, created 5523, written 5060
+0.00 reads/s, 190.89 creates/s, 244.94 writes/s
+Buffer pool hit rate 1000 / 1000, young-making rate 0 / 1000 not
+0 / 1000
+Pages read ahead 0.00/s, evicted without access 0.00/s, Random read
+ahead 0.00/s
+LRU len: 5720, unzip_LRU len: 0
+I/O sum[0]:cur[0], unzip sum[0]:cur[0]
+</code></pre><h4 id="变更缓冲区-change-buffer">变更缓冲区 Change Buffer</h4>
+<p>变更缓冲区中有 Insert Buffer, Update Buffer, Delete Buffer</p>
+<p>由于二级索引(secondary index)的插入/更新/删除操作不是每一次都直接插入到索引页中, 而是先判断该页是否在缓冲池中, 若在, 则直接操作; 若不在, 则跟根据操作放到对应的  Buffer 中, 之后再周期性的将其merge后加载到 buffer pool 中</p>
+<p><img src="/images/innodb-change-buffer.png" alt=""></p>
+<h4 id="自适应hash索引-adaptive-hash-index">自适应Hash索引 Adaptive Hash Index</h4>
+<p>InnoDB 会根据数据访问的频率和模式来自动的为某些热点数据建立Hash索引, 这是数据库自优化的(self-tuning), 无需人为干涉</p>
+<h4 id="日志缓冲区-log-buffer">日志缓冲区 Log Buffer</h4>
+<p>日志缓冲区保存要写入磁盘上的日志文件的数据. 增大 Log Buffer, 可以让Update, Delete操作大量数据的事物正常进行</p>
+        </p>
+    </div>
+    
+
+    
+
+    <div class="page-footer">
+        
+        <hr class="footer-divider">
+        
+            <a class="tag" href="/tags/mysql">#MySQL</a>
+        
+      
+    </div>
+
+
+        
+        </div>
+        <footer class="footer-mobile">
+	<div class="social-icons">
+        
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    
+    
+
+    
+    
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+</div>
+
+
+
+
+	<div class="footer-mobile-links">
+		<p><a href="https://github.com/kimcc/hugo-theme-noteworthy" target="_blank" rel="noopener">Noteworthy theme</a></p>
+		<span class="divider-bar">|</span>
+		<p><a href="https://gohugo.io" target="_blank" rel="noopener">Built with Hugo</a></p>
+	</div>
+
+	<script src="https://luyangx.github.io/js/main.min.fa5c2b23e07b5d9bfad267a52b4b24fdb053e6fb7524993383594926a3ac270c.js" integrity="sha256-+lwrI+B7XZv60melK0sk/bBT5vt1JJkzg1lJJqOsJww=" crossorigin="anonymous"></script>
+</footer>
+    </body>
+</html>

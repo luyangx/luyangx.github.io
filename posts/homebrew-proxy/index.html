@@ -7,7 +7,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="format-detection" content="telephone=no"/>
 
-    <title> | 扬</title>
+    <title>Homebrew设置代理 | 扬</title>
     
     <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
     <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
@@ -28,8 +28,6 @@
     
     
  
-    
-    <link rel="alternate" type="application/rss+xml" href="https://luyangx.github.io/index.xml" title="扬" />
     </head>
 
     <body>
@@ -116,12 +114,42 @@
         <div id="content" class="content-container">
         
 
-<h1>Tags</h1>
-<ul>
+<h1 class="post-title">Homebrew设置代理</h1>
     
-</ul>
+    <time>July 19, 2016</time>
+    
+    <div>
+        <p>
+        <p>由于国情, homebrew update/install非常缓慢, 还是不是遇到链接超时问题. 虽然可以缓存国内的源, 更新是快了,
+不过下载还是鸟样, 治标不治本</p>
+<p>如果有自己的机场, 可以让终端命令走代理</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell"><span style="color:#75715e"># 当前终端会话</span>
+export ALL_PROXY<span style="color:#f92672">=</span>socks5://127.0.0.1:1080
+</code></pre></div><p>如果想长久生效</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell"><span style="color:#75715e">#bash</span>
+echo export ALL_PROXY<span style="color:#f92672">=</span>socks5://127.0.0.1:1080 &gt;&gt; ~/.bash_profile
 
-<div class="page-footer"></div>
+<span style="color:#75715e">#zsh</span>
+echo export ALL_PROXY<span style="color:#f92672">=</span>socks5://127.0.0.1:1080 &gt;&gt; ~/.zsh_profile
+</code></pre></div><p>这样homebrew每次update/install都可以通过代理来进行了</p>
+<blockquote>
+<p>注意: 部分终端命令也会通过该代理, 如果遇到网络的问题, 优先要想到原因可能是代理</p>
+</blockquote>
+        </p>
+    </div>
+    
+
+    
+
+    <div class="page-footer">
+        
+        <hr class="footer-divider">
+        
+            <a class="tag" href="/tags/homebrew">#Homebrew</a>
+        
+      
+    </div>
+
 
         
         </div>

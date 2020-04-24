@@ -6,10 +6,28 @@
     <description>Recent content in Tags on 扬</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>zh-cn</language>
-    <lastBuildDate>Mon, 18 Apr 2016 20:24:24 +0800</lastBuildDate>
+    <lastBuildDate>Wed, 24 Aug 2016 22:43:39 +0800</lastBuildDate>
     
 	<atom:link href="https://luyangx.github.io/tags/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>MySQL</title>
+      <link>https://luyangx.github.io/tags/mysql/</link>
+      <pubDate>Wed, 24 Aug 2016 22:43:39 +0800</pubDate>
+      
+      <guid>https://luyangx.github.io/tags/mysql/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Homebrew</title>
+      <link>https://luyangx.github.io/tags/homebrew/</link>
+      <pubDate>Tue, 19 Jul 2016 22:51:41 +0800</pubDate>
+      
+      <guid>https://luyangx.github.io/tags/homebrew/</guid>
+      <description></description>
+    </item>
     
     <item>
       <title>C</title>
