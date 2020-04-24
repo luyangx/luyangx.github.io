@@ -6,10 +6,28 @@
     <description>Recent content in MySQL on 扬</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>zh-cn</language>
-    <lastBuildDate>Wed, 24 Aug 2016 22:43:39 +0800</lastBuildDate>
+    <lastBuildDate>Fri, 30 Sep 2016 20:43:21 +0800</lastBuildDate>
     
 	<atom:link href="https://www.luyang.ink/categories/mysql/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>MySQL 之 InnoDB . 索引</title>
+      <link>https://www.luyang.ink/posts/mysql-innodb-index/</link>
+      <pubDate>Fri, 30 Sep 2016 20:43:21 +0800</pubDate>
+      
+      <guid>https://www.luyang.ink/posts/mysql-innodb-index/</guid>
+      <description>&lt;p&gt;学习记录 InnoDB 索引相关内容&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>MySQL 之 InnoDB . 表</title>
+      <link>https://www.luyang.ink/posts/mysql-innodb-table/</link>
+      <pubDate>Wed, 07 Sep 2016 21:12:53 +0800</pubDate>
+      
+      <guid>https://www.luyang.ink/posts/mysql-innodb-table/</guid>
+      <description>&lt;p&gt;学习记录 InnoDB 表相关内容&lt;/p&gt;</description>
+    </item>
     
     <item>
       <title>MySQL 之 InnoDB . 1</title>
