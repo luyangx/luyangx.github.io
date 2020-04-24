@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+
+<html lang="zh-cn">
+    <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="format-detection" content="telephone=no"/>
+
+    <title>MySQL 之 InnoDB . 锁 | 扬</title>
+    
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+    <link rel="manifest" href="/manifest.json">
+    <link rel="mask-icon" href="/safari-pinned-tab.svg" color="#FF3DB4">
+    <meta name="theme-color" content="#ffffff">
+
+    
+    
+    
+    <link rel="stylesheet" href="https://www.luyang.ink/css/main.min.15431d6c334f65809fe2bc329da3f2c81c6e3027ab1e25b56afb2bb85fa7fd64.css"/>
+
+    
+    
+    
+
+    
+    
+ 
+    </head>
+
+    <body>
+        
+<nav>
+  <header>
+    <div class="site-title">
+        <a href="/">扬</a>
+    </div>  
+</header>
+
+  <div class="nav-menu">
+  
+  <a class="color-link nav-link" href="https://www.luyang.ink/index.xml" target="_blank" rel="noopener" type="application/rss+xml">RSS</a>
+</div>
+<footer class="footer">
+	<div class="social-icons">
+        
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    
+    
+
+    
+    
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+</div>
+
+
+
+
+	<p><a href="https://github.com/kimcc/hugo-theme-noteworthy" target="_blank" rel="noopener">Noteworthy theme</a></p>
+	<p><a href="https://gohugo.io" target="_blank" rel="noopener">Built with Hugo</a></p>
+
+	<script src="https://www.luyang.ink/js/main.min.fa5c2b23e07b5d9bfad267a52b4b24fdb053e6fb7524993383594926a3ac270c.js" integrity="sha256-+lwrI+B7XZv60melK0sk/bBT5vt1JJkzg1lJJqOsJww=" crossorigin="anonymous"></script>
+</footer>
+</nav>
+
+        <div id="content" class="content-container">
+        
+
+<h1 class="post-title">MySQL 之 InnoDB . 锁</h1>
+    
+    <time>October 5, 2016</time>
+    
+    <div>
+        <p>
+        <p>学习记录 InnoDB 锁相关内容</p>
+<h2 id="innodb存储引擎中的锁">InnoDB存储引擎中的锁</h2>
+<h3 id="锁类型">锁类型</h3>
+<p>行级锁:</p>
+<ul>
+<li>共享锁(S Lock), 允许事务读一行数据</li>
+<li>排它锁(X Lock), 允许事务删除或更新一行数据</li>
+</ul>
+<p>行级锁兼容性:</p>
+<table>
+<thead>
+<tr>
+<th>X</th>
+<th>S</th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>X</td>
+<td>不兼容</td>
+<td>不兼容</td>
+</tr>
+<tr>
+<td>S</td>
+<td>不兼容</td>
+<td>兼容</td>
+</tr>
+</tbody>
+</table>
+<p>意向锁 Intention Lock:</p>
+<ul>
+<li>意向共享锁(IS Lock), 事务想要获得一张表中某几行的共享锁</li>
+<li>意向排他锁(IX Lock), 事务想要获得一张表中某几行的排他锁</li>
+</ul>
+<p>意向锁兼容性:</p>
+<table>
+<thead>
+<tr>
+<th>IS</th>
+<th>IX</th>
+<th>X</th>
+<th>S</th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>IS</td>
+<td>兼容</td>
+<td>兼容</td>
+<td>兼容</td>
+<td>不兼容</td>
+</tr>
+<tr>
+<td>IX</td>
+<td>兼容</td>
+<td>兼容</td>
+<td>不兼容</td>
+<td>不兼容</td>
+</tr>
+<tr>
+<td>S</td>
+<td>兼容</td>
+<td>不兼容</td>
+<td>兼容</td>
+<td>不兼容</td>
+</tr>
+<tr>
+<td>X</td>
+<td>不兼容</td>
+<td>不兼容</td>
+<td>不兼容</td>
+<td>不兼容</td>
+</tr>
+</tbody>
+</table>
+<h3 id="一致性非锁定读">一致性非锁定读</h3>
+<p>一致性非锁定读(consistent nonlocking read)是指 InnoDB 存储引擎通过多版本控制(multi versioning)的方式来读取当前执行时间数据库中行的数据. 如果读取的数据正在执行 DELETE 或 UPDATE 操作, 这时读取不会因此而等待行上的锁释放. 相反地, 获取读取行地一个快照数据. 提高了数据库的并发性.</p>
+<p><img src="/images/innodb-lock-cnr.png" alt=""></p>
+<ul>
+<li>READ COMMITTED: 读取最新快照数据</li>
+<li>REPEATABLE READ: 读取事务开始时的快照数据</li>
+</ul>
+<h3 id="锁地算法">锁地算法</h3>
+<p>行锁3种算法</p>
+<ul>
+<li>Record Lock: 单个行记录上的锁</li>
+<li>Gap Lock: 间隙锁, 锁定一个范围, 但不包含记录本身</li>
+<li>Next-Key Lock: 锁定一个范围, 并且锁定记录本身, 解决幻读</li>
+</ul>
+<p>幻想问题(Phantom Problem): 同一事务下, 多次执行同样的SQL语句可能导致不同的结果, 第二次的SQL可能返回之前不存在的行.</p>
+<h3 id="锁的问题">锁的问题</h3>
+<ul>
+<li>脏读: 不同事务下, 当前事务可以读到其他事务未提交的数据.</li>
+<li>不可重复读: 一个事务中多次读取同一数据集合, 数据不一样.</li>
+<li>死锁: 2个或2个以上的事务在执行过程中, 因争夺资源而造成的一种互相等待的现象. 可以用设置超时时间来避免死锁 <code>innodb_lock_wait_timeout</code></li>
+</ul>
+        </p>
+    </div>
+    
+
+    
+
+    <div class="page-footer">
+        
+        <hr class="footer-divider">
+        
+            <a class="tag" href="/tags/mysql">#MySQL</a>
+        
+      
+    </div>
+
+
+        
+        </div>
+        <footer class="footer-mobile">
+	<div class="social-icons">
+        
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    
+    
+
+    
+    
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+</div>
+
+
+
+
+	<div class="footer-mobile-links">
+		<p><a href="https://github.com/kimcc/hugo-theme-noteworthy" target="_blank" rel="noopener">Noteworthy theme</a></p>
+		<span class="divider-bar">|</span>
+		<p><a href="https://gohugo.io" target="_blank" rel="noopener">Built with Hugo</a></p>
+	</div>
+
+	<script src="https://www.luyang.ink/js/main.min.fa5c2b23e07b5d9bfad267a52b4b24fdb053e6fb7524993383594926a3ac270c.js" integrity="sha256-+lwrI+B7XZv60melK0sk/bBT5vt1JJkzg1lJJqOsJww=" crossorigin="anonymous"></script>
+</footer>
+    </body>
+</html>

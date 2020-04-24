@@ -6,10 +6,19 @@
     <description>Recent content in Posts on 扬</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>zh-cn</language>
-    <lastBuildDate>Fri, 30 Sep 2016 20:43:21 +0800</lastBuildDate>
+    <lastBuildDate>Wed, 05 Oct 2016 16:12:43 +0800</lastBuildDate>
     
 	<atom:link href="https://www.luyang.ink/posts/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>MySQL 之 InnoDB . 锁</title>
+      <link>https://www.luyang.ink/posts/mysql-innodb-lock/</link>
+      <pubDate>Wed, 05 Oct 2016 16:12:43 +0800</pubDate>
+      
+      <guid>https://www.luyang.ink/posts/mysql-innodb-lock/</guid>
+      <description>&lt;p&gt;学习记录 InnoDB 锁相关内容&lt;/p&gt;</description>
+    </item>
     
     <item>
       <title>MySQL 之 InnoDB . 索引</title>
@@ -30,7 +39,7 @@
     </item>
     
     <item>
-      <title>MySQL 之 InnoDB . 1</title>
+      <title>MySQL 之 InnoDB . 初见</title>
       <link>https://www.luyang.ink/posts/mysql-innodb/</link>
       <pubDate>Wed, 24 Aug 2016 22:43:39 +0800</pubDate>
       

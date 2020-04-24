@@ -4,36 +4,41 @@
   
   <url>
     <loc>https://www.luyang.ink/categories/</loc>
-    <lastmod>2016-09-30T20:43:21+08:00</lastmod>
+    <lastmod>2016-10-05T16:12:43+08:00</lastmod>
   </url>
   
   <url>
     <loc>https://www.luyang.ink/tags/mysql/</loc>
-    <lastmod>2016-09-30T20:43:21+08:00</lastmod>
+    <lastmod>2016-10-05T16:12:43+08:00</lastmod>
   </url>
   
   <url>
     <loc>https://www.luyang.ink/categories/mysql/</loc>
-    <lastmod>2016-09-30T20:43:21+08:00</lastmod>
+    <lastmod>2016-10-05T16:12:43+08:00</lastmod>
   </url>
   
   <url>
-    <loc>https://www.luyang.ink/posts/mysql-innodb-index/</loc>
-    <lastmod>2016-09-30T20:43:21+08:00</lastmod>
+    <loc>https://www.luyang.ink/posts/mysql-innodb-lock/</loc>
+    <lastmod>2016-10-05T16:12:43+08:00</lastmod>
   </url>
   
   <url>
     <loc>https://www.luyang.ink/posts/</loc>
-    <lastmod>2016-09-30T20:43:21+08:00</lastmod>
+    <lastmod>2016-10-05T16:12:43+08:00</lastmod>
   </url>
   
   <url>
     <loc>https://www.luyang.ink/tags/</loc>
-    <lastmod>2016-09-30T20:43:21+08:00</lastmod>
+    <lastmod>2016-10-05T16:12:43+08:00</lastmod>
   </url>
   
   <url>
     <loc>https://www.luyang.ink/</loc>
+    <lastmod>2016-10-05T16:12:43+08:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://www.luyang.ink/posts/mysql-innodb-index/</loc>
     <lastmod>2016-09-30T20:43:21+08:00</lastmod>
   </url>
   
