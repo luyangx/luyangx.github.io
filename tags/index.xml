@@ -2,48 +2,48 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Tags on 扬</title>
-    <link>https://luyangx.github.io/tags/</link>
+    <link>https://www.luyang.ink/tags/</link>
     <description>Recent content in Tags on 扬</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>zh-cn</language>
     <lastBuildDate>Wed, 24 Aug 2016 22:43:39 +0800</lastBuildDate>
     
-	<atom:link href="https://luyangx.github.io/tags/index.xml" rel="self" type="application/rss+xml" />
+	<atom:link href="https://www.luyang.ink/tags/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
       <title>MySQL</title>
-      <link>https://luyangx.github.io/tags/mysql/</link>
+      <link>https://www.luyang.ink/tags/mysql/</link>
       <pubDate>Wed, 24 Aug 2016 22:43:39 +0800</pubDate>
       
-      <guid>https://luyangx.github.io/tags/mysql/</guid>
+      <guid>https://www.luyang.ink/tags/mysql/</guid>
       <description></description>
     </item>
     
     <item>
       <title>Homebrew</title>
-      <link>https://luyangx.github.io/tags/homebrew/</link>
+      <link>https://www.luyang.ink/tags/homebrew/</link>
       <pubDate>Tue, 19 Jul 2016 22:51:41 +0800</pubDate>
       
-      <guid>https://luyangx.github.io/tags/homebrew/</guid>
+      <guid>https://www.luyang.ink/tags/homebrew/</guid>
       <description></description>
     </item>
     
     <item>
       <title>C</title>
-      <link>https://luyangx.github.io/tags/c/</link>
+      <link>https://www.luyang.ink/tags/c/</link>
       <pubDate>Mon, 18 Apr 2016 20:24:24 +0800</pubDate>
       
-      <guid>https://luyangx.github.io/tags/c/</guid>
+      <guid>https://www.luyang.ink/tags/c/</guid>
       <description></description>
     </item>
     
     <item>
       <title>PHP</title>
-      <link>https://luyangx.github.io/tags/php/</link>
+      <link>https://www.luyang.ink/tags/php/</link>
       <pubDate>Mon, 03 Nov 2014 22:20:49 +2002</pubDate>
       
-      <guid>https://luyangx.github.io/tags/php/</guid>
+      <guid>https://www.luyang.ink/tags/php/</guid>
       <description></description>
     </item>
     

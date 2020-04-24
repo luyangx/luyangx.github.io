@@ -2,21 +2,21 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>MySQL on 扬</title>
-    <link>https://luyangx.github.io/categories/mysql/</link>
+    <link>https://www.luyang.ink/categories/mysql/</link>
     <description>Recent content in MySQL on 扬</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>zh-cn</language>
     <lastBuildDate>Wed, 24 Aug 2016 22:43:39 +0800</lastBuildDate>
     
-	<atom:link href="https://luyangx.github.io/categories/mysql/index.xml" rel="self" type="application/rss+xml" />
+	<atom:link href="https://www.luyang.ink/categories/mysql/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
       <title>MySQL 之 InnoDB . 1</title>
-      <link>https://luyangx.github.io/posts/mysql-innodb/</link>
+      <link>https://www.luyang.ink/posts/mysql-innodb/</link>
       <pubDate>Wed, 24 Aug 2016 22:43:39 +0800</pubDate>
       
-      <guid>https://luyangx.github.io/posts/mysql-innodb/</guid>
+      <guid>https://www.luyang.ink/posts/mysql-innodb/</guid>
       <description>&lt;p&gt;InnoDB 存储引擎支持事务, 其设计目的主要面向在线事务处理(OLTP)的应用. 其特点是行锁, 外键, 非锁定读等, MySQL在5.5.8版本后将其设为默认存储引擎.&lt;/p&gt;</description>
     </item>
     

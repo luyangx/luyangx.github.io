@@ -2,21 +2,21 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Homebrew on 扬</title>
-    <link>https://luyangx.github.io/tags/homebrew/</link>
+    <link>https://www.luyang.ink/tags/homebrew/</link>
     <description>Recent content in Homebrew on 扬</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>zh-cn</language>
     <lastBuildDate>Tue, 19 Jul 2016 22:51:41 +0800</lastBuildDate>
     
-	<atom:link href="https://luyangx.github.io/tags/homebrew/index.xml" rel="self" type="application/rss+xml" />
+	<atom:link href="https://www.luyang.ink/tags/homebrew/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
       <title>Homebrew设置代理</title>
-      <link>https://luyangx.github.io/posts/homebrew-proxy/</link>
+      <link>https://www.luyang.ink/posts/homebrew-proxy/</link>
       <pubDate>Tue, 19 Jul 2016 22:51:41 +0800</pubDate>
       
-      <guid>https://luyangx.github.io/posts/homebrew-proxy/</guid>
+      <guid>https://www.luyang.ink/posts/homebrew-proxy/</guid>
       <description>&lt;p&gt;由于国情, homebrew update/install非常缓慢, 还是不是遇到链接超时问题. 虽然可以缓存国内的源, 更新是快了,
 不过下载还是鸟样, 治标不治本&lt;/p&gt;</description>
     </item>

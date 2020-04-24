@@ -2,48 +2,48 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Categories on 扬</title>
-    <link>https://luyangx.github.io/categories/</link>
+    <link>https://www.luyang.ink/categories/</link>
     <description>Recent content in Categories on 扬</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>zh-cn</language>
     <lastBuildDate>Wed, 24 Aug 2016 22:43:39 +0800</lastBuildDate>
     
-	<atom:link href="https://luyangx.github.io/categories/index.xml" rel="self" type="application/rss+xml" />
+	<atom:link href="https://www.luyang.ink/categories/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
       <title>MySQL</title>
-      <link>https://luyangx.github.io/categories/mysql/</link>
+      <link>https://www.luyang.ink/categories/mysql/</link>
       <pubDate>Wed, 24 Aug 2016 22:43:39 +0800</pubDate>
       
-      <guid>https://luyangx.github.io/categories/mysql/</guid>
+      <guid>https://www.luyang.ink/categories/mysql/</guid>
       <description></description>
     </item>
     
     <item>
       <title>Homebrew</title>
-      <link>https://luyangx.github.io/categories/homebrew/</link>
+      <link>https://www.luyang.ink/categories/homebrew/</link>
       <pubDate>Tue, 19 Jul 2016 22:51:41 +0800</pubDate>
       
-      <guid>https://luyangx.github.io/categories/homebrew/</guid>
+      <guid>https://www.luyang.ink/categories/homebrew/</guid>
       <description></description>
     </item>
     
     <item>
       <title>C</title>
-      <link>https://luyangx.github.io/categories/c/</link>
+      <link>https://www.luyang.ink/categories/c/</link>
       <pubDate>Mon, 18 Apr 2016 20:24:24 +0800</pubDate>
       
-      <guid>https://luyangx.github.io/categories/c/</guid>
+      <guid>https://www.luyang.ink/categories/c/</guid>
       <description></description>
     </item>
     
     <item>
       <title>PHP</title>
-      <link>https://luyangx.github.io/categories/php/</link>
+      <link>https://www.luyang.ink/categories/php/</link>
       <pubDate>Mon, 03 Nov 2014 22:20:49 +2002</pubDate>
       
-      <guid>https://luyangx.github.io/categories/php/</guid>
+      <guid>https://www.luyang.ink/categories/php/</guid>
       <description></description>
     </item>
     
