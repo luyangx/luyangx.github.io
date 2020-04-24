@@ -3,17 +3,7 @@
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   
   <url>
-    <loc>https://www.luyang.ink/categories/</loc>
-    <lastmod>2016-10-05T16:12:43+08:00</lastmod>
-  </url>
-  
-  <url>
     <loc>https://www.luyang.ink/tags/mysql/</loc>
-    <lastmod>2016-10-05T16:12:43+08:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>https://www.luyang.ink/categories/mysql/</loc>
     <lastmod>2016-10-05T16:12:43+08:00</lastmod>
   </url>
   
@@ -58,22 +48,12 @@
   </url>
   
   <url>
-    <loc>https://www.luyang.ink/categories/homebrew/</loc>
-    <lastmod>2016-07-19T22:51:41+08:00</lastmod>
-  </url>
-  
-  <url>
     <loc>https://www.luyang.ink/posts/homebrew-proxy/</loc>
     <lastmod>2016-07-19T22:51:41+08:00</lastmod>
   </url>
   
   <url>
     <loc>https://www.luyang.ink/tags/c/</loc>
-    <lastmod>2016-04-18T20:24:24+08:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>https://www.luyang.ink/categories/c/</loc>
     <lastmod>2016-04-18T20:24:24+08:00</lastmod>
   </url>
   
@@ -108,33 +88,8 @@
   </url>
   
   <url>
-    <loc>https://www.luyang.ink/categories/php/</loc>
-    <lastmod>2014-11-03T22:20:49+20:02</lastmod>
-  </url>
-  
-  <url>
     <loc>https://www.luyang.ink/posts/references-in-php/</loc>
     <lastmod>2014-11-03T22:20:49+20:02</lastmod>
-  </url>
-  
-  <url>
-    <loc>https://www.luyang.ink/index.html</loc>
-  </url>
-  
-  <url>
-    <loc>https://www.luyang.ink/#/</loc>
-  </url>
-  
-  <url>
-    <loc>https://www.luyang.ink/0xd1efgmail.com/</loc>
-  </url>
-  
-  <url>
-    <loc>https://www.luyang.ink/luyangx/</loc>
-  </url>
-  
-  <url>
-    <loc>https://www.luyang.ink/%E6%89%ACxss/</loc>
   </url>
   
 </urlset>

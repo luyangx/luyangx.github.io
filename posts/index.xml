@@ -108,7 +108,7 @@
       <pubDate>Mon, 03 Nov 2014 22:20:49 +2002</pubDate>
       
       <guid>https://www.luyang.ink/posts/references-in-php/</guid>
-      <description>&lt;!-- raw HTML omitted --&gt;
+      <description>&lt;meta name=&#34;referrer&#34; content=&#34;no-referrer&#34;&gt;
 &lt;p&gt;PHP中的变量都是存储在一个叫zval的容器中(数据结构), 这个zval中存储着变量的相关信息，其中就包括变量的引用状态(is_ref)和引用次数(refcount)。&lt;/p&gt;</description>
     </item>
     
