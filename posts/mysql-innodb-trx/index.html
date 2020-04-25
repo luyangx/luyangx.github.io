@@ -7,7 +7,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="format-detection" content="telephone=no"/>
 
-    <title>MySQL | 扬</title>
+    <title>MySQL 之 InnoDB . 事务 | 扬</title>
     
     <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
     <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
@@ -28,8 +28,6 @@
     
     
  
-    
-    <link rel="alternate" type="application/rss+xml" href="https://www.luyang.ink/tags/mysql/index.xml" title="扬" />
     </head>
 
     <body>
@@ -144,110 +142,57 @@
         <div id="content" class="content-container">
         
 
-  <h1>Tagged "MySQL"</h1>
-  
-  
+<h1 class="post-title">MySQL 之 InnoDB . 事务</h1>
     
-    <article>
-            <h2>
-                <a href="https://www.luyang.ink/posts/mysql-innode-rep/">
-                    MySQL 之 InnoDB . 复制
-                </a>
-            </h2>
-            <div>
-                <p><p>学习记录 InnoDB 复制相关内容</p></p>
-                
-            </div>
-            <div class="post-footer">
-            <time>October 11, 2016</time>
-            </div> 
-        </article>
+    <time>October 6, 2016</time>
     
-  
+    <div>
+        <p>
+        <p>学习记录 InnoDB 事务相关内容</p>
+<p>事务会把数据库从一种一致状态转换为另一种一致状态.</p>
+<p>InnoDB存储引擎中的事物完全符合ACID特性</p>
+<ul>
+<li>原子性(atomicity): 所有操作要么都执行成功, 要么都不执行, 不会出现未知情况</li>
+<li>一致性(consistency): 事务将数据库从一种状态转变为下一种一致的状态</li>
+<li>隔离性(isolation): 事务之间相互分离, 事务提交前对其他事务都不可见</li>
+<li>持久性(durability): 事务一旦提交, 其结果是永久性的</li>
+</ul>
+<h2 id="事务的实现">事务的实现</h2>
+<h3 id="redo-重做日志">redo 重做日志</h3>
+<p>重做日志用来实现事务的持久性, 由内存中的重做日志缓冲(redo log buffer)和重做日志文件(redo log file)组成</p>
+<p>InnoDB 通过 Force Log at Commit 机制实现事务持久性, 既当事务提交(COMMIT)时, 必须先将该事务的所有日志写入到重做日志文件进行持久化(fsync), 待事务的COMMIT操作完成才算完成.</p>
+<p>InnoDB存储引擎中, 重做日志由2部分组成:</p>
+<ul>
+<li>redo log 用来保证事务的持久性, 顺序写</li>
+<li>undo log 用来帮助事务回滚及MVCC功能, 随机读写</li>
+</ul>
+<p>innodb_flush_log_at_trx_commit 参数用来空值重做日志刷新到磁盘的策略:</p>
+<ul>
+<li>0: 事务提交时不进行 fsync, 由 master thread 每1秒进行一次重做日志 fsync</li>
+<li>1: 默认值, 事务提交时必须调用异常 fsync 操作</li>
+<li>2: 事务提交时将重做日志写入重做日志文件缓存中, 依赖操作系统 fsync</li>
+</ul>
+<h3 id="undo">undo</h3>
+<p>将数据库逻辑的回复到执行预计或事务之前的样子</p>
+<p>InnoDB 存储引擎中 MVCC 的实现是通过 undo 日志来完成的. 当用户读取一行记录时, 若该记录已被其他事务占用, 当前事务可以通过 undo 日志读取之前的行版本信息, 也就是非锁定读.</p>
+<h3 id="purge">purge</h3>
+<p>delete 和 update 操作可能并不直接删除原有的数据. delete操作将记录 delete flag 设置为1, 并不立即删除, 因为 MVCC, 删除时, 可能存在其他事务引用了该条记录, 需要保存记录之前的版本. 真正删除时又 purge 来操作, 若该行记录已不被任何其他事务引用, 则进行真正的 delete 操作.</p>
+<h3 id="group-commit">group commit</h3>
+<p>一次 fsync 可以刷新确保多个事务日志写入文件</p>
+        </p>
+    </div>
     
-    <article>
-            <h2>
-                <a href="https://www.luyang.ink/posts/mysql-innodb-trx/">
-                    MySQL 之 InnoDB . 事务
-                </a>
-            </h2>
-            <div>
-                <p><p>学习记录 InnoDB 事务相关内容</p></p>
-                
-            </div>
-            <div class="post-footer">
-            <time>October 6, 2016</time>
-            </div> 
-        </article>
+
     
-  
-    
-    <article>
-            <h2>
-                <a href="https://www.luyang.ink/posts/mysql-innodb-lock/">
-                    MySQL 之 InnoDB . 锁
-                </a>
-            </h2>
-            <div>
-                <p><p>学习记录 InnoDB 锁相关内容</p></p>
-                
-            </div>
-            <div class="post-footer">
-            <time>October 5, 2016</time>
-            </div> 
-        </article>
-    
-  
-    
-    <article>
-            <h2>
-                <a href="https://www.luyang.ink/posts/mysql-innodb-index/">
-                    MySQL 之 InnoDB . 索引
-                </a>
-            </h2>
-            <div>
-                <p><p>学习记录 InnoDB 索引相关内容</p></p>
-                
-            </div>
-            <div class="post-footer">
-            <time>September 30, 2016</time>
-            </div> 
-        </article>
-    
-  
-    
-    <article>
-            <h2>
-                <a href="https://www.luyang.ink/posts/mysql-innodb-table/">
-                    MySQL 之 InnoDB . 表
-                </a>
-            </h2>
-            <div>
-                <p><p>学习记录 InnoDB 表相关内容</p></p>
-                
-            </div>
-            <div class="post-footer">
-            <time>September 7, 2016</time>
-            </div> 
-        </article>
-    
-  
-    
-    <article>
-            <h2>
-                <a href="https://www.luyang.ink/posts/mysql-innodb/">
-                    MySQL 之 InnoDB . 初见
-                </a>
-            </h2>
-            <div>
-                <p><p>InnoDB 存储引擎支持事务, 其设计目的主要面向在线事务处理(OLTP)的应用. 其特点是行锁, 外键, 非锁定读等, MySQL在5.5.8版本后将其设为默认存储引擎.</p></p>
-                
-            </div>
-            <div class="post-footer">
-            <time>August 24, 2016</time>
-            </div> 
-        </article>
-    
+
+    <div class="page-footer">
+        
+        <hr class="footer-divider">
+        
+            <a class="tag" href="/tags/mysql">#MySQL</a>
+        
+      
+    </div>
 
 
         
