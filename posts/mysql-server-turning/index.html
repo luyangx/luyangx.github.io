@@ -7,7 +7,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="format-detection" content="telephone=no"/>
 
-    <title>Tags | 扬</title>
+    <title>MySQL Server调优 | 扬</title>
     
     <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
     <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
@@ -28,8 +28,6 @@
     
     
  
-    
-    <link rel="alternate" type="application/rss+xml" href="https://www.luyang.ink/tags/index.xml" title="扬" />
     </head>
 
     <body>
@@ -144,20 +142,82 @@
         <div id="content" class="content-container">
         
 
-<h1>Tags</h1>
+<h1 class="post-title">MySQL Server调优</h1>
+    
+    <time>October 25, 2016</time>
+    
+    <div>
+        <p>
+        <p>衡量数据库性能的指标, 一般有2个指标: 响应时间和吞吐率. 响应时间又包括等待时间和执行时间. 调优的目的是降低响应时间, 提高吞吐率.</p>
+<h2 id="主要设置参数">主要设置参数</h2>
+<h3 id="innodb_buffer_pool_size">innodb_buffer_pool_size</h3>
+<p>缓冲池大小, 专用服务器, 保证操作系统有足够的可用内存后, 剩余分配给 buffer pool</p>
+<h3 id="innodb_flush_method">innodb_flush_method</h3>
+<p>数据刷新到磁盘方式</p>
 <ul>
-    
-        <li><a href="https://www.luyang.ink/tags/c/">C</a> 5</li>
-    
-        <li><a href="https://www.luyang.ink/tags/homebrew/">Homebrew</a> 1</li>
-    
-        <li><a href="https://www.luyang.ink/tags/mysql/">MySQL</a> 8</li>
-    
-        <li><a href="https://www.luyang.ink/tags/php/">PHP</a> 1</li>
-    
+<li>fdatasync: 默认值, InnoDB 使用 fsync() 系统调用来刷新数据和日志文件</li>
+<li>O_DSYNC: InnoDB 使用 O_DSYNC 打开并刷新日志文件, 数据文件刷新还是用 fsync()</li>
+<li>O_DIRECT: InnoDB 使用 O_DIRECT 打开并刷新数据和日志文件</li>
 </ul>
+<p>建议设为 O_DIRECT, 可以避免 InnoDB 的 double write, 让数据库跳过文件系统缓冲直接和设备交互. 设备需要高可用</p>
+<h3 id="innodb_log_file_size">innodb_log_file_size</h3>
+<p>日志文件大小, 可以通过 <code>show global status like 'Innodb_os_log_written'</code> 来查看一段时间内的日志量, 经验值: 256~512MB</p>
+<h3 id="innodb_flush_log_at_trx_commit">innodb_flush_log_at_trx_commit</h3>
+<p>事务提交时刷新日志方式</p>
+<ul>
+<li>0: 日志缓冲每秒被写到日志文件中并刷新到磁盘, 事务提交时不进行任何操作</li>
+<li>1: 默认值, 事务提交时, 日志缓冲被写到日志文件中并刷新到磁盘</li>
+<li>2: 事务提交时, 日志缓冲被写到日志文件中, 但不会刷新到磁盘</li>
+</ul>
+<p>对数据安全性有要求的建议设置1, 否则可以设置2, 对多丢失1s事务. 1可能会导致I/O成为瓶颈</p>
+<h3 id="sync_binlog">sync_binlog</h3>
+<p>MySQL多长时间将 binary log 刷新到磁盘</p>
+<p>建议 8~20, 可兼顾效率和安全, 如果设置1, I/O可能会成为瓶颈</p>
+<h3 id="innodb_thread_concurrency">innodb_thread_concurrency</h3>
+<p>并发线程数, 官方建议设置为: 处理器数 + 磁盘数, 对于高并发事务, 应该设置的更大一些.</p>
+<h3 id="innodb_max_dirty_pages_pct">innodb_max_dirty_pages_pct</h3>
+<p>dirty page 在缓冲池中的最大百分比, 默认: 75, 建议: 50~75</p>
+<h3 id="read_buffer_size">read_buffer_size</h3>
+<p>每个线程连续扫描时为扫描的每个表分配的缓冲区大小(字节).</p>
+<h3 id="read_rnd_buffer_size">read_rnd_buffer_size</h3>
+<p>排序后, 按照排序后的顺序读取行时, 则通过该缓冲区读取, 避免搜索磁盘. 设置较大值可以改进 ORDER BY 性能, 切记, 勿将全局变量设置为较大值, 相反, 只为需要大查询的客户端更改会话变量即可</p>
+<h3 id="query_cache_size">query_cache_size</h3>
+<p>为缓存查询结果分配的内存大小, 默认:0(禁用). 对应写操作频繁的应用可以禁用. 生成环境建议设置64MB~256MB, 可以满足绝大部分业务. 还需要同时设置 query_cache_type=1</p>
+<h3 id="join_buffer_size">join_buffer_size</h3>
+<p>用于完全链接(当不适用索引时)的缓冲区大小, 默认: 256KB</p>
+<h3 id="max_connections">max_connections</h3>
+<p>允许并行最多客户端连接数, 最大值: 100000</p>
+<h3 id="max_connect_errors">max_connect_errors</h3>
+<p>如果中断与主机的联机超过了该数目, 则该主机会阻塞后面的链接. 建议设置 5000 以上</p>
+<h3 id="skip-name-resolve">skip-name-resolve</h3>
+<p>不需要解析客户端链接的主机名, 用IP, 或在 hosts 文件中指定 host/ip</p>
+<h2 id="内存优化">内存优化</h2>
+<h3 id="避免使用-swap">避免使用 swap</h3>
+<p>swap 会将最近不常用的内存数据转存到下一级存储里(磁盘), 需要的时候再重新载入到内存. 频繁进行 swap 操作, 会大大增加磁盘的延时时间, 导致性能问题.</p>
+<p>避免 swap 方法:</p>
+<ul>
+<li>设置 memlock, 将 MySQL InnoDB buffer 锁定在内存, 用不使用 swap</li>
+<li>使用大内存页, Linux系统的大内存页不会被 swap 出去</li>
+<li>设置 vm.swappiness=0, 减少 swap 的可能</li>
+<li>禁用 NUMA 或调整 NUMA, <a href="https://www.ibm.com/developerworks/cn/linux/l-numa/">Linux 的 NUMA 技术</a></li>
+</ul>
+<h2 id="cup-优化">CUP 优化</h2>
+<p>理论上, 如果操作比较集中与某一些资源, 瓶颈多是锁和队列等待, 那么应该选取更强劲的 CPU; 如果操作分散与输多不想干资源商, 并发度高, 可用增加 CPU 数量</p>
+        </p>
+    </div>
+    
 
-<div class="page-footer"></div>
+    
+
+    <div class="page-footer">
+        
+        <hr class="footer-divider">
+        
+            <a class="tag" href="/tags/mysql">#MySQL</a>
+        
+      
+    </div>
+
 
         
 

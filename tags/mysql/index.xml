@@ -6,10 +6,28 @@
     <description>Recent content in MySQL on 扬</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>zh-cn</language>
-    <lastBuildDate>Tue, 11 Oct 2016 21:07:41 +0800</lastBuildDate>
+    <lastBuildDate>Tue, 25 Oct 2016 21:07:41 +0800</lastBuildDate>
     
 	<atom:link href="https://www.luyang.ink/tags/mysql/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>MySQL EXPLAIN</title>
+      <link>https://www.luyang.ink/posts/mysql-explain/</link>
+      <pubDate>Tue, 25 Oct 2016 21:07:41 +0800</pubDate>
+      
+      <guid>https://www.luyang.ink/posts/mysql-explain/</guid>
+      <description>&lt;p&gt;EXPLAIN 命令输出的信息可以告诉我们 MySQL 是怎么执行 SQL 语句的, 访问了哪些表, 以及如何访问数据的. 其中有很重要的索引使用信息, 可以根据此信息来判断 SQL 是否需要优化&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>MySQL Server调优</title>
+      <link>https://www.luyang.ink/posts/mysql-server-turning/</link>
+      <pubDate>Tue, 25 Oct 2016 21:07:41 +0800</pubDate>
+      
+      <guid>https://www.luyang.ink/posts/mysql-server-turning/</guid>
+      <description>&lt;p&gt;衡量数据库性能的指标, 一般有2个指标: 响应时间和吞吐率. 响应时间又包括等待时间和执行时间. 调优的目的是降低响应时间, 提高吞吐率.&lt;/p&gt;</description>
+    </item>
     
     <item>
       <title>MySQL 之 InnoDB . 复制</title>
