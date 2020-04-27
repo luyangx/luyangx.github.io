@@ -6,7 +6,7 @@
     <description>Recent content in Posts on 扬</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>zh-cn</language>
-    <lastBuildDate>Tue, 25 Oct 2016 21:07:41 +0800</lastBuildDate>
+    <lastBuildDate>Fri, 04 Nov 2016 23:04:23 +0800</lastBuildDate>
     
 	<atom:link href="https://www.luyang.ink/posts/index.xml" rel="self" type="application/rss+xml" />
     
@@ -14,7 +14,7 @@
     <item>
       <title>MySQL EXPLAIN</title>
       <link>https://www.luyang.ink/posts/mysql-explain/</link>
-      <pubDate>Tue, 25 Oct 2016 21:07:41 +0800</pubDate>
+      <pubDate>Fri, 04 Nov 2016 23:04:23 +0800</pubDate>
       
       <guid>https://www.luyang.ink/posts/mysql-explain/</guid>
       <description>&lt;p&gt;EXPLAIN 命令输出的信息可以告诉我们 MySQL 是怎么执行 SQL 语句的, 访问了哪些表, 以及如何访问数据的. 其中有很重要的索引使用信息, 可以根据此信息来判断 SQL 是否需要优化&lt;/p&gt;</description>
