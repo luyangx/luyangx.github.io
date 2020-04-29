@@ -6,18 +6,45 @@
     <description>Recent content in MySQL on 扬</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>zh-cn</language>
-    <lastBuildDate>Wed, 05 Oct 2016 16:12:43 +0800</lastBuildDate>
+    <lastBuildDate>Fri, 04 Nov 2016 23:04:23 +0800</lastBuildDate>
     
 	<atom:link href="https://www.luyang.ink/categories/mysql/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
-      <title>MySQL 之 InnoDB . 锁</title>
-      <link>https://www.luyang.ink/posts/mysql-innodb-lock/</link>
-      <pubDate>Wed, 05 Oct 2016 16:12:43 +0800</pubDate>
+      <title>MySQL Server调优</title>
+      <link>https://www.luyang.ink/posts/mysql-server-turning/</link>
+      <pubDate>Fri, 04 Nov 2016 23:04:23 +0800</pubDate>
       
-      <guid>https://www.luyang.ink/posts/mysql-innodb-lock/</guid>
-      <description>&lt;p&gt;学习记录 InnoDB 锁相关内容&lt;/p&gt;</description>
+      <guid>https://www.luyang.ink/posts/mysql-server-turning/</guid>
+      <description>&lt;p&gt;衡量数据库性能的指标, 一般有2个指标: 响应时间和吞吐率. 响应时间又包括等待时间和执行时间. 调优的目的是降低响应时间, 提高吞吐率.&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>MySQL EXPLAIN</title>
+      <link>https://www.luyang.ink/posts/mysql-explain/</link>
+      <pubDate>Tue, 25 Oct 2016 21:07:41 +0800</pubDate>
+      
+      <guid>https://www.luyang.ink/posts/mysql-explain/</guid>
+      <description>&lt;p&gt;EXPLAIN 命令输出的信息可以告诉我们 MySQL 是怎么执行 SQL 语句的, 访问了哪些表, 以及如何访问数据的. 其中有很重要的索引使用信息, 可以根据此信息来判断 SQL 是否需要优化&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>MySQL 之 InnoDB . 复制</title>
+      <link>https://www.luyang.ink/posts/mysql-innode-rep/</link>
+      <pubDate>Tue, 11 Oct 2016 21:07:41 +0800</pubDate>
+      
+      <guid>https://www.luyang.ink/posts/mysql-innode-rep/</guid>
+      <description>&lt;p&gt;学习记录 InnoDB 复制相关内容&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>MySQL 之 InnoDB . 事务</title>
+      <link>https://www.luyang.ink/posts/mysql-innodb-trx/</link>
+      <pubDate>Thu, 06 Oct 2016 10:22:35 +0800</pubDate>
+      
+      <guid>https://www.luyang.ink/posts/mysql-innodb-trx/</guid>
+      <description>&lt;p&gt;学习记录 InnoDB 事务相关内容&lt;/p&gt;</description>
     </item>
     
     <item>

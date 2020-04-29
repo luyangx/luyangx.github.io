@@ -1,0 +1,564 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+    <title>
+        Go 语言基础 . 函数、方法和接口 - Yang
+      </title>
+    <head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <meta name="viewport"
+    content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no, minimal-ui">
+  <meta name="renderer" content="webkit">
+  <meta http-equiv="Cache-Control" content="no-transform" />
+  <meta http-equiv="Cache-Control" content="no-siteapp" />
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+  <meta name="format-detection" content="telephone=no,email=no,adress=no">
+  
+  <meta name="theme-color" content="#000000" />
+  
+  <meta http-equiv="window-target" content="_top" />
+  
+  
+  <meta name="description" content="记录一下 Go 语言中的函数、方法和接口
+" />
+  <meta name="generator" content="Hugo 0.69.0 with theme pure" />
+  <title>Go 语言基础 . 函数、方法和接口 - Yang</title>
+  
+  
+  <link rel="stylesheet" href="https://www.luyang.ink/css/style.min.7dc20efbc53647d41aa9ddea0c48e59300223d084e66ea0cbe7c30bd88903acc.css">
+  
+  <link rel="stylesheet" href="https://cdn.staticfile.org/highlight.js/9.15.10/styles/github.min.css" async>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tocbot/4.4.2/tocbot.css" async>
+  <meta property="og:title" content="Go 语言基础 . 函数、方法和接口" />
+<meta property="og:description" content="记录一下 Go 语言中的函数、方法和接口" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://www.luyang.ink/2016/04/go-basic-func-method-interface/" />
+<meta property="article:published_time" content="2016-04-30T21:03:56+08:00" />
+<meta property="article:modified_time" content="2016-04-30T21:03:56+08:00" />
+<meta itemprop="name" content="Go 语言基础 . 函数、方法和接口">
+<meta itemprop="description" content="记录一下 Go 语言中的函数、方法和接口">
+<meta itemprop="datePublished" content="2016-04-30T21:03:56&#43;08:00" />
+<meta itemprop="dateModified" content="2016-04-30T21:03:56&#43;08:00" />
+<meta itemprop="wordCount" content="1289">
+
+
+
+<meta itemprop="keywords" content="Go," /><meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="Go 语言基础 . 函数、方法和接口"/>
+<meta name="twitter:description" content="记录一下 Go 语言中的函数、方法和接口"/>
+
+  <!--[if lte IE 9]>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
+    <![endif]-->
+
+  <!--[if lt IE 9]>
+      <script src="https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js"></script>
+      <script src="https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js"></script>
+    <![endif]-->
+
+</head>
+  </head>
+
+  
+  
+
+  <body class="main-center theme-black" itemscope itemtype="http://schema.org/WebPage"><header class="header" itemscope itemtype="http://schema.org/WPHeader">
+    <div class="slimContent">
+      <div class="navbar-header">
+        <div class="profile-block text-center">
+          <a id="avatar" href="https://github.com/xiaoheiAh" target="_blank">
+            <img class="img-circle img-rotate" src="https://www.luyang.ink/avatar.png" width="200" height="200">
+          </a>
+          <h2 id="name" class="hidden-xs hidden-sm">xiaoheiAh</h2>
+          <h3 id="title" class="hidden-xs hidden-sm hidden-md">author title</h3>
+          <small id="location" class="text-muted hidden-xs hidden-sm"><i class="icon icon-map-marker"></i>Shanghai, China</small>
+        </div><div class="search" id="search-form-wrap">
+    <form class="search-form sidebar-form">
+        <div class="input-group">
+            <input type="text" class="search-form-input form-control" placeholder="Search" />
+            <span class="input-group-btn">
+                <button type="submit" class="search-form-submit btn btn-flat" onclick="return false;"><i
+                        class="icon icon-search"></i></button>
+            </span>
+        </div>
+        <div class="ins-search">
+            <div class="ins-search-mask"></div>
+            <div class="ins-search-container">
+                <div class="ins-input-wrapper">
+                    <input type="text" class="ins-search-input" placeholder="Type something..."
+                        x-webkit-speech />
+                    <button type="button" class="close ins-close ins-selectable" data-dismiss="modal"
+                        aria-label="Close"><span aria-hidden="true">×</span></button>
+                </div>
+                <div class="ins-section-wrapper">
+                    <div class="ins-section-container"></div>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+        <button class="navbar-toggle collapsed" type="button" data-toggle="collapse" data-target="#main-navbar" aria-controls="main-navbar" aria-expanded="false">
+          <span class="sr-only">Toggle navigation</span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+      </div>
+      <nav id="main-navbar" class="collapse navbar-collapse" itemscope itemtype="http://schema.org/SiteNavigationElement" role="navigation">
+        <ul class="nav navbar-nav main-nav">
+            <li class="menu-item menu-item-home">
+                <a href="/">
+                    <i class="icon icon-home-fill"></i>
+                  <span class="menu-title">Home</span>
+                </a>
+            </li>
+            <li class="menu-item menu-item-archives">
+                <a href="/posts/">
+                    <i class="icon icon-archives-fill"></i>
+                  <span class="menu-title">Archives</span>
+                </a>
+            </li>
+            <li class="menu-item menu-item-categories">
+                <a href="/categories/">
+                    <i class="icon icon-folder"></i>
+                  <span class="menu-title">Categories</span>
+                </a>
+            </li>
+            <li class="menu-item menu-item-tags">
+                <a href="/tags/">
+                    <i class="icon icon-tags"></i>
+                  <span class="menu-title">Tags</span>
+                </a>
+            </li>
+            <li class="menu-item menu-item-about">
+                <a href="/about/">
+                    <i class="icon icon-cup-fill"></i>
+                  <span class="menu-title">About</span>
+                </a>
+            </li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+<aside class="sidebar" itemscope itemtype="http://schema.org/WPSideBar">
+  <div class="slimContent">
+    
+      <div class="widget">
+    <h3 class="widget-title">Board</h3>
+    <div class="widget-body">
+        <div id="board">
+            <div class="content"><p>enjoy~</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+      <div class="widget">
+    <h3 class="widget-title"> Categories</h3>
+    <div class="widget-body">
+        <ul class="category-list">
+            <li class="category-list-item"><a href="https://www.luyang.ink/categories/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" class="category-list-link">学习笔记</a><span class="category-list-count">16</span></li>
+            <li class="category-list-item"><a href="https://www.luyang.ink/categories/%E5%B7%A5%E5%85%B7/" class="category-list-link">工具</a><span class="category-list-count">1</span></li>
+        </ul>
+    </div>
+</div>
+      <div class="widget">
+    <h3 class="widget-title"> Tags</h3>
+    <div class="widget-body">
+        <ul class="tag-list">
+            
+            
+            <li class="tag-list-item"><a href="https://www.luyang.ink/tags/c/" class="tag-list-link">c</a><span
+                    class="tag-list-count">5</span></li>
+            
+            
+            <li class="tag-list-item"><a href="https://www.luyang.ink/tags/go/" class="tag-list-link">go</a><span
+                    class="tag-list-count">2</span></li>
+            
+            
+            <li class="tag-list-item"><a href="https://www.luyang.ink/tags/homebrew/" class="tag-list-link">homebrew</a><span
+                    class="tag-list-count">1</span></li>
+            
+            
+            <li class="tag-list-item"><a href="https://www.luyang.ink/tags/mysql/" class="tag-list-link">mysql</a><span
+                    class="tag-list-count">8</span></li>
+            
+            
+            <li class="tag-list-item"><a href="https://www.luyang.ink/tags/php/" class="tag-list-link">php</a><span
+                    class="tag-list-count">1</span></li>
+            
+        </ul>
+
+    </div>
+</div>
+      
+<div class="widget">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget-body">
+        <ul class="recent-post-list list-unstyled no-thumbnail">
+            <li>
+                <div class="item-inner">
+                    <p class="item-title">
+                        <a href="https://www.luyang.ink/2016/11/mysql-server-turning/" class="title">MySQL Server调优</a>
+                    </p>
+                    <p class="item-date">
+                        <time datetime="2016-11-04 23:04:23 &#43;0800 CST" itemprop="datePublished">2016-11-04</time>
+                    </p>
+                </div>
+            </li>
+            <li>
+                <div class="item-inner">
+                    <p class="item-title">
+                        <a href="https://www.luyang.ink/2016/10/mysql-explain/" class="title">MySQL EXPLAIN</a>
+                    </p>
+                    <p class="item-date">
+                        <time datetime="2016-10-25 21:07:41 &#43;0800 CST" itemprop="datePublished">2016-10-25</time>
+                    </p>
+                </div>
+            </li>
+            <li>
+                <div class="item-inner">
+                    <p class="item-title">
+                        <a href="https://www.luyang.ink/2016/10/mysql-innode-rep/" class="title">MySQL 之 InnoDB . 复制</a>
+                    </p>
+                    <p class="item-date">
+                        <time datetime="2016-10-11 21:07:41 &#43;0800 CST" itemprop="datePublished">2016-10-11</time>
+                    </p>
+                </div>
+            </li>
+            <li>
+                <div class="item-inner">
+                    <p class="item-title">
+                        <a href="https://www.luyang.ink/2016/10/mysql-innodb-trx/" class="title">MySQL 之 InnoDB . 事务</a>
+                    </p>
+                    <p class="item-date">
+                        <time datetime="2016-10-06 10:22:35 &#43;0800 CST" itemprop="datePublished">2016-10-06</time>
+                    </p>
+                </div>
+            </li>
+            <li>
+                <div class="item-inner">
+                    <p class="item-title">
+                        <a href="https://www.luyang.ink/2016/10/mysql-innodb-lock/" class="title">MySQL 之 InnoDB . 锁</a>
+                    </p>
+                    <p class="item-date">
+                        <time datetime="2016-10-05 16:12:43 &#43;0800 CST" itemprop="datePublished">2016-10-05</time>
+                    </p>
+                </div>
+            </li>
+        </ul>
+    </div>
+</div>
+  </div>
+</aside>
+
+    
+    
+<aside class="sidebar sidebar-toc collapse" id="collapseToc" itemscope itemtype="http://schema.org/WPSideBar">
+  <div class="slimContent">
+    <h4 class="toc-title">Catalogue</h4>
+    <nav id="toc" class="js-toc toc">
+
+    </nav>
+  </div>
+</aside>
+<main class="main" role="main"><div class="content">
+  <article id="-" class="article article-type-" itemscope
+    itemtype="http://schema.org/BlogPosting">
+    
+    <div class="article-header">
+      <h1 itemprop="name">
+  <a
+    class="article-title"
+    href="/2016/04/go-basic-func-method-interface/"
+    >Go 语言基础 . 函数、方法和接口</a
+  >
+</h1>
+
+      <div class="article-meta">
+        
+<span class="article-date">
+  <i class="icon icon-calendar-check"></i>&nbsp;
+<a href="https://www.luyang.ink/2016/04/go-basic-func-method-interface/" class="article-date">
+  <time datetime="2016-04-30 21:03:56 &#43;0800 CST" itemprop="datePublished">2016-04-30</time>
+</a>
+</span>
+<span class="article-category">
+  <i class="icon icon-folder"></i>&nbsp;
+  <a class="article-category-link" href="/categories/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/"> 学习笔记 </a>
+</span>  
+  <span class="article-tag">
+    <i class="icon icon-tags"></i>&nbsp;
+    <a class="article-tag-link" href="/tags/go/"> Go </a>
+  </span>
+
+        <span class="post-comment"><i class="icon icon-comment"></i>&nbsp;<a href="/2016/04/go-basic-func-method-interface/#comments"
+            class="article-comment-link">Comments</a></span>
+		<span class="post-wordcount hidden-xs" itemprop="wordCount">Word Count: 1289words</span>
+		<span class="post-readcount hidden-xs" itemprop="timeRequired">Read Count: 3minutes </span>
+      </div>
+    </div>
+    <div class="article-entry marked-body js-toc-content" itemprop="articleBody">
+      <p>记录一下 Go 语言中的函数、方法和接口</p>
+<h2 id="数组">数组</h2>
+<p>固定长度的特定类型元素组成, 可以有0个或多个元素组成. 长度必须是常量表达式, 因为其长度需要在编译阶段确定.</p>
+<pre><code class="language-go">var a [3]int // 长度=3的int数组, 元素值=0
+var b = []int{1, 2, 3} // 长度=3, 元素值=1,2,3
+var c = []int{2: 3, 1: 2} // 长度=3, 元素值=0,2,3
+var d = []int{1, 2, 4: 5, 6} // 长度=3, 元素值=1,2,0,0,5,6
+
+// [3]int和[4]int是2种不同的数组类型
+var q = [3]int{1, 2, 3}
+q = [4]int{1, 2, 3, 4} // compile error: cannot assign [4]int to [3]int
+</code></pre>
+<p>一个数组变量即表示整个数组, 并不是隐式的指向第一个元素的指针(比如C语音数组), 而是一个完整的值. 数值变量被赋值或传递时, 会 copy 整个数组, 较大数组可以传递一个指向数值的指针, <strong>数组指针!=数组</strong></p>
+<pre><code class="language-go">var a = []int{1, 2, 3} // a是1个数组
+var b = &amp;a // b是指向a数组的指针
+
+fmt.Println(a, a[1]) // 打印数组第2个元素
+fmt.Println(*b, (*b)[1]) // 通过数组指针访问数组第2个元素
+
+for _, v := range *b { // 通过数组指针迭代数组元素
+    fmt.Println(v)
+}
+</code></pre>
+<h2 id="字符串">字符串</h2>
+<p>字符串是一个不可改变的字节序列, 字符串的元素不可修改, 是一个之都的字节数组, 长度也是固定的.</p>
+<p>Go语言字符串底层结构定义:</p>
+<pre><code class="language-go">type StringHeader struct {
+    Data uintptr
+    Len  int
+}
+</code></pre>
+<p>&ldquo;Hello, world&rdquo; 字符串底层数据布局, 和数组一致：</p>
+<p><img src="/images/go-string-struct.png" alt=""></p>
+<p>采用 UTF-8 编码.</p>
+<pre><code class="language-go">fmt.Printf(&quot;%#v\n&quot;, []byte(&quot;Hello, 世界&quot;))
+
+// output:
+// []byte{0x48, 0x65, 0x6c, 0x6c, 0x6f, 0x2c, 0x20, 0xe4, 0xb8, 0x96, 0xe7, 0x95, 0x8c}
+</code></pre>
+<p>&ldquo;Hello, 世界&rdquo; 字符串内存结构布局</p>
+<p><img src="/images/go-string-struct2.png" alt=""></p>
+<pre><code class="language-go">fmt.Printf(&quot;%#v\n&quot;, []rune(&quot;世界&quot;)) // output: []int32{19990, 30028}
+fmt.Printf(&quot;%#v\n&quot;, string([]rune{'世', '界'})) // output: 世界
+</code></pre>
+<p><code>[]rune</code> 用于表示每个 Unicode 码点, <code>[]int32</code> 别名</p>
+<p>字符串的强制类型转换主要涉及到 <code>[]byte</code> 和 <code>[]rune</code> 两种类型. 每个转换都可能隐含重新分配内存的代价, 最坏的情况下运算时间复杂度都是O(n).</p>
+<h2 id="slice-切片">slice 切片</h2>
+<p>简化版动态数组, 结构定义如下:</p>
+<pre><code class="language-go">type SliceHeader struct {
+    Data uintptr
+    Len  int
+    Cat  int // 容量
+}
+
+var x = []int{2, 3, 5, 7, 11}
+var y = x[1:3]
+</code></pre>
+<p>切片内存布局</p>
+<p><img src="/images/go-slice-struct.png" alt=""></p>
+<p>切片定义方式</p>
+<pre><code class="language-go">var a = []int // nil切片, =nil, 表示不存在的切片
+var b = []int{} // 空切片, !=nil, 表示空集合
+var c = []int{1, 2, 3} // 3个元素的切片, len=cap=3
+var d = c[:2] // 2个元素的切片, len=2, cap=3
+var e = c[0:2:cap(c)] // 2个元素切片, len=2, cap=3
+var f = c[:0] // 0个元素切片, len=0, cap=3
+var g = make([]int, 3) // 3个元素切片, len=cap=3
+var h = make([]int, 2, 3) // 2个元素切片, len=2, cap=3
+var i = make([]int, 0, 3) // 0个元素切片, len=0, cap=3
+</code></pre>
+<p>len返回有效元素的长度, cap返回切片容量</p>
+<h3 id="添加切片元素">添加切片元素</h3>
+<p>append 可以再切片末尾追加 N 个元素, 在容量不足时, 会导致重新分配内存</p>
+<pre><code class="language-go">// 尾部追加
+var a[]int
+a = append(a, 1) // 添加1个元素
+a = append(a, 1, 2, 3) // 添加多个元素
+a = append(a, []int{1, 2, 3}) // 添加一个切片, 切片需要解包
+
+// 开头添加, 会导致内存重新分配
+var a[]int{1, 2, 3}
+a = append([]int{0}, a...) // 开通添加1个元素
+a = append([]int{-3, -2, -1}, a...) // 开通添加1个切片
+
+// 中间添加
+var a[]int
+a = append(a[:i], append([]int{x}, a[i:]...)...) // 在位置i插入x
+a = append(a[:i], append([]int{1,2,3}, a[i:]...)...) // 在第i个位置插入切片
+
+// 中间添加
+a = append(a, 0) // 切片扩展1个空间
+copy(a[i+1:], a[i:]) // a[i:]向后移动1个位置
+</code></pre>
+<h3 id="删除切片元素">删除切片元素</h3>
+<p>删除元素分为: 从开头删除, 从中间位置删除, 从尾部删除</p>
+<pre><code class="language-go">a = []int{1, 2, 3}
+// 尾部删除
+a = a[:len(a)-1] // 删除尾部1个元素
+a = a[:len(a)-N] // 删除尾部N个元素
+
+// 开头删除
+a = [1:] // 删除开头1个元素
+a = [N:] // 删除开头N个元素
+a = append(a[:0], a[1:]...) // 删除开头1个元素
+a = append(a[:0], a[N:]...) // 删除开头N个元素
+a = a[:copy(a, a[1:])] //删除开头1个元素
+a = a[:copy(a, a[N:])] //删除开头N个元素
+
+// 中间删除
+a = append(a[:i], a[i+1:]...) // 删除中间1个元素
+a = append(a[:i], a[i+N:]...) // 删除中间N个元素
+a = a[:i+copy(a[i:], a[i+1:])]  // 删除中间1个元素
+a = a[:i+copy(a[i:], a[i+N:])]  // 删除中间N个元素
+</code></pre>
+<h2 id="函数">函数</h2>
+    </div>
+    <div class="article-footer">
+<blockquote class="mt-2x">
+  <ul class="post-copyright list-unstyled">
+    <li class="post-copyright-link hidden-xs">
+      <strong>Permalink: </strong>
+      <a href="https://www.luyang.ink/2016/04/go-basic-func-method-interface/" title="Go 语言基础 . 函数、方法和接口" target="_blank" rel="external">https://www.luyang.ink/2016/04/go-basic-func-method-interface/</a>
+    </li>
+    <li class="post-copyright-license">
+      <strong>License：</strong><a href="http://creativecommons.org/licenses/by/4.0/deed.zh" target="_blank" rel="external">CC BY 4.0 CN</a>
+    </li>
+  </ul>
+</blockquote>
+
+<div class="panel panel-default panel-badger">
+  <div class="panel-body">
+    <figure class="media">
+      <div class="media-left">
+        <a href="https://github.com/xiaoheiAh" target="_blank" class="img-burn thumb-sm visible-lg">
+          <img src="https://www.luyang.ink/avatar.png" class="img-rounded w-full" alt="">
+        </a>
+      </div>
+      <div class="media-body">
+        <h3 class="media-heading"><a href="https://github.com/xiaoheiAh" target="_blank"><span class="text-dark">xiaoheiAh</span><small class="ml-1x">author title</small></a></h3>
+        <div>Good Good Study, Day Day Up~</div>
+      </div>
+    </figure>
+  </div>
+</div>
+    </div>
+  </article>
+<section id="comments">
+</section>
+
+</div><nav class="bar bar-footer clearfix" data-stick-bottom>
+    <div class="bar-inner">
+        <ul class="pager pull-left">
+            <li class="prev">
+                <a href="https://www.luyang.ink/2016/04/go-basic-array-string-slice/" title="Go 语言基础 . 数组、字符串和切片"><i
+                        class="icon icon-angle-left"
+                        aria-hidden="true"></i><span>&nbsp;&nbsp;Older</span></a>
+            </li>
+            <li class="next">
+                <a href="https://www.luyang.ink/2016/07/homebrew-proxy/"
+                    title="Homebrew设置代理"><span>Newer&nbsp;&nbsp;</span><i
+                        class="icon icon-angle-right" aria-hidden="true"></i></a>
+            </li>
+            
+            <li class="toggle-toc">
+                <a class="toggle-btn collapsed" data-toggle="collapse" href="#collapseToc" aria-expanded="false"
+                    title="Catalogue" role="button">
+                    <span>[&nbsp;</span><span>Catalogue</span>
+                    <i class="text-collapsed icon icon-anchor"></i>
+                    <i class="text-in icon icon-close"></i>
+                    <span>]</span>
+                </a>
+            </li>
+        </ul>
+        <div class="bar-right">
+            <div class="share-component" data-sites="weibo,qq,wechat,facebook,twitter"
+                data-mobile-sites="weibo,qq,qzone"></div>
+        </div>
+    </div>
+</nav>
+
+</main><footer class="footer" itemscope itemtype="http://schema.org/WPFooter">
+<ul class="social-links">
+    <li><a href="https://github.com/xiaoheiAh" target="_blank" title="github" data-toggle=tooltip data-placement=top >
+            <i class="icon icon-github"></i></a></li>
+    <li><a href="https://www.luyang.ink/index.xml" target="_blank" title="rss" data-toggle=tooltip data-placement=top >
+            <i class="icon icon-rss"></i></a></li>
+</ul>
+  <div class="copyright">
+    &copy;2017  -
+    2020
+    <div class="publishby">
+        Theme by <a href="https://github.com/xiaoheiAh" target="_blank"> xiaoheiAh </a>base on<a href="https://github.com/xiaoheiAh/hugo-theme-pure" target="_blank"> pure</a>.
+    </div>
+  </div>
+</footer>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.2/MathJax.js?config=TeX-MML-AM_SVG"></script>
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+            showMathMenu: false, //disables context menu
+            tex2jax: {
+            inlineMath: [ ['$','$'], ['\\(','\\)'] ]
+           }
+    });
+</script>
+
+
+<script src="https://cdn.jsdelivr.net/npm/jquery@3.4.1/dist/jquery.min.js"></script>
+<script>
+    window.jQuery || document.write('<script src="js/jquery.min.js"><\/script>')
+</script>
+<script type="text/javascript" src="https://cdn.staticfile.org/highlight.js/9.15.10/highlight.min.js"></script>
+<script type="text/javascript" src="https://cdn.staticfile.org/highlight.js/9.15.10/languages/python.min.js" defer></script>
+<script type="text/javascript" src="https://cdn.staticfile.org/highlight.js/9.15.10/languages/javascript.min.js" defer></script><script>
+    hljs.configure({
+        tabReplace: '    ', 
+        classPrefix: ''     
+        
+    })
+    hljs.initHighlightingOnLoad();
+</script>
+<script src="https://www.luyang.ink/js/application.min.bdeb64b910570b6c41badc6a05b7afb0c8ad9efd8525de3c7257d59e786326a3.js"></script>
+<script src="https://www.luyang.ink/js/plugin.min.51ff8c7317566f82259170fa36e09c4493adc9b9378b427a01ad3f017ebac7dd.js"></script>
+
+<script>
+    (function (window) {
+        var INSIGHT_CONFIG = {
+            TRANSLATION: {
+                POSTS: 'Posts',
+                PAGES: 'Pages',
+                CATEGORIES: 'Categories',
+                TAGS: 'Tags',
+                UNTITLED: '(Untitled)',
+            },
+            ROOT_URL: 'https:\/\/www.luyang.ink\/',
+            CONTENT_URL: 'https:\/\/www.luyang.ink\/\/searchindex.json ',
+        };
+        window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+    })(window);
+</script>
+<script type="text/javascript" src="https://www.luyang.ink/js/insight.min.a343cd9a5a7698336b28ef3a7c16a3a1b1d2d5fb17dc8ed04022bbe08cc5459073a15bdafa3a8a58cdd56080784bdd69fa70b1ae8597565c799c57ed00f0e120.js" defer></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/tocbot/4.4.2/tocbot.min.js"></script>
+<script>
+    tocbot.init({
+        
+        tocSelector: '.js-toc',
+        
+        contentSelector: '.js-toc-content',
+        
+        headingSelector: 'h1, h2, h3',
+        
+        hasInnerContainers: true,
+    });
+</script>
+
+
+  </body>
+</html>

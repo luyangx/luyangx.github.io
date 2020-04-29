@@ -1,0 +1,639 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+    <title>
+        Declarations - Yang
+      </title>
+    <head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <meta name="viewport"
+    content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no, minimal-ui">
+  <meta name="renderer" content="webkit">
+  <meta http-equiv="Cache-Control" content="no-transform" />
+  <meta http-equiv="Cache-Control" content="no-siteapp" />
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+  <meta name="format-detection" content="telephone=no,email=no,adress=no">
+  
+  <meta name="theme-color" content="#000000" />
+  
+  <meta http-equiv="window-target" content="_top" />
+  
+  
+  <meta name="description" content="&amp;laquo;C in a Nutshell&amp;raquo;笔记 - 声明
+" />
+  <meta name="generator" content="Hugo 0.69.0 with theme pure" />
+  <title>Declarations - Yang</title>
+  
+  
+  <link rel="stylesheet" href="https://www.luyang.ink/css/style.min.7dc20efbc53647d41aa9ddea0c48e59300223d084e66ea0cbe7c30bd88903acc.css">
+  
+  <link rel="stylesheet" href="https://cdn.staticfile.org/highlight.js/9.15.10/styles/github.min.css" async>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tocbot/4.4.2/tocbot.css" async>
+  <meta property="og:title" content="Declarations" />
+<meta property="og:description" content="&laquo;C in a Nutshell&raquo;笔记 - 声明" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://www.luyang.ink/2016/04/declarations/" />
+<meta property="article:published_time" content="2016-04-05T21:33:01+08:00" />
+<meta property="article:modified_time" content="2016-04-05T21:33:01+08:00" />
+<meta itemprop="name" content="Declarations">
+<meta itemprop="description" content="&laquo;C in a Nutshell&raquo;笔记 - 声明">
+<meta itemprop="datePublished" content="2016-04-05T21:33:01&#43;08:00" />
+<meta itemprop="dateModified" content="2016-04-05T21:33:01&#43;08:00" />
+<meta itemprop="wordCount" content="2123">
+
+
+
+<meta itemprop="keywords" content="C," /><meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="Declarations"/>
+<meta name="twitter:description" content="&laquo;C in a Nutshell&raquo;笔记 - 声明"/>
+
+  <!--[if lte IE 9]>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
+    <![endif]-->
+
+  <!--[if lt IE 9]>
+      <script src="https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js"></script>
+      <script src="https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js"></script>
+    <![endif]-->
+
+</head>
+  </head>
+
+  
+  
+
+  <body class="main-center theme-black" itemscope itemtype="http://schema.org/WebPage"><header class="header" itemscope itemtype="http://schema.org/WPHeader">
+    <div class="slimContent">
+      <div class="navbar-header">
+        <div class="profile-block text-center">
+          <a id="avatar" href="https://github.com/xiaoheiAh" target="_blank">
+            <img class="img-circle img-rotate" src="https://www.luyang.ink/avatar.png" width="200" height="200">
+          </a>
+          <h2 id="name" class="hidden-xs hidden-sm">xiaoheiAh</h2>
+          <h3 id="title" class="hidden-xs hidden-sm hidden-md">author title</h3>
+          <small id="location" class="text-muted hidden-xs hidden-sm"><i class="icon icon-map-marker"></i>Shanghai, China</small>
+        </div><div class="search" id="search-form-wrap">
+    <form class="search-form sidebar-form">
+        <div class="input-group">
+            <input type="text" class="search-form-input form-control" placeholder="Search" />
+            <span class="input-group-btn">
+                <button type="submit" class="search-form-submit btn btn-flat" onclick="return false;"><i
+                        class="icon icon-search"></i></button>
+            </span>
+        </div>
+        <div class="ins-search">
+            <div class="ins-search-mask"></div>
+            <div class="ins-search-container">
+                <div class="ins-input-wrapper">
+                    <input type="text" class="ins-search-input" placeholder="Type something..."
+                        x-webkit-speech />
+                    <button type="button" class="close ins-close ins-selectable" data-dismiss="modal"
+                        aria-label="Close"><span aria-hidden="true">×</span></button>
+                </div>
+                <div class="ins-section-wrapper">
+                    <div class="ins-section-container"></div>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+        <button class="navbar-toggle collapsed" type="button" data-toggle="collapse" data-target="#main-navbar" aria-controls="main-navbar" aria-expanded="false">
+          <span class="sr-only">Toggle navigation</span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+      </div>
+      <nav id="main-navbar" class="collapse navbar-collapse" itemscope itemtype="http://schema.org/SiteNavigationElement" role="navigation">
+        <ul class="nav navbar-nav main-nav">
+            <li class="menu-item menu-item-home">
+                <a href="/">
+                    <i class="icon icon-home-fill"></i>
+                  <span class="menu-title">Home</span>
+                </a>
+            </li>
+            <li class="menu-item menu-item-archives">
+                <a href="/posts/">
+                    <i class="icon icon-archives-fill"></i>
+                  <span class="menu-title">Archives</span>
+                </a>
+            </li>
+            <li class="menu-item menu-item-categories">
+                <a href="/categories/">
+                    <i class="icon icon-folder"></i>
+                  <span class="menu-title">Categories</span>
+                </a>
+            </li>
+            <li class="menu-item menu-item-tags">
+                <a href="/tags/">
+                    <i class="icon icon-tags"></i>
+                  <span class="menu-title">Tags</span>
+                </a>
+            </li>
+            <li class="menu-item menu-item-about">
+                <a href="/about/">
+                    <i class="icon icon-cup-fill"></i>
+                  <span class="menu-title">About</span>
+                </a>
+            </li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+<aside class="sidebar" itemscope itemtype="http://schema.org/WPSideBar">
+  <div class="slimContent">
+    
+      <div class="widget">
+    <h3 class="widget-title">Board</h3>
+    <div class="widget-body">
+        <div id="board">
+            <div class="content"><p>enjoy~</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+      <div class="widget">
+    <h3 class="widget-title"> Categories</h3>
+    <div class="widget-body">
+        <ul class="category-list">
+            <li class="category-list-item"><a href="https://www.luyang.ink/categories/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" class="category-list-link">学习笔记</a><span class="category-list-count">16</span></li>
+            <li class="category-list-item"><a href="https://www.luyang.ink/categories/%E5%B7%A5%E5%85%B7/" class="category-list-link">工具</a><span class="category-list-count">1</span></li>
+        </ul>
+    </div>
+</div>
+      <div class="widget">
+    <h3 class="widget-title"> Tags</h3>
+    <div class="widget-body">
+        <ul class="tag-list">
+            
+            
+            <li class="tag-list-item"><a href="https://www.luyang.ink/tags/c/" class="tag-list-link">c</a><span
+                    class="tag-list-count">5</span></li>
+            
+            
+            <li class="tag-list-item"><a href="https://www.luyang.ink/tags/go/" class="tag-list-link">go</a><span
+                    class="tag-list-count">2</span></li>
+            
+            
+            <li class="tag-list-item"><a href="https://www.luyang.ink/tags/homebrew/" class="tag-list-link">homebrew</a><span
+                    class="tag-list-count">1</span></li>
+            
+            
+            <li class="tag-list-item"><a href="https://www.luyang.ink/tags/mysql/" class="tag-list-link">mysql</a><span
+                    class="tag-list-count">8</span></li>
+            
+            
+            <li class="tag-list-item"><a href="https://www.luyang.ink/tags/php/" class="tag-list-link">php</a><span
+                    class="tag-list-count">1</span></li>
+            
+        </ul>
+
+    </div>
+</div>
+      
+<div class="widget">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget-body">
+        <ul class="recent-post-list list-unstyled no-thumbnail">
+            <li>
+                <div class="item-inner">
+                    <p class="item-title">
+                        <a href="https://www.luyang.ink/2016/11/mysql-server-turning/" class="title">MySQL Server调优</a>
+                    </p>
+                    <p class="item-date">
+                        <time datetime="2016-11-04 23:04:23 &#43;0800 CST" itemprop="datePublished">2016-11-04</time>
+                    </p>
+                </div>
+            </li>
+            <li>
+                <div class="item-inner">
+                    <p class="item-title">
+                        <a href="https://www.luyang.ink/2016/10/mysql-explain/" class="title">MySQL EXPLAIN</a>
+                    </p>
+                    <p class="item-date">
+                        <time datetime="2016-10-25 21:07:41 &#43;0800 CST" itemprop="datePublished">2016-10-25</time>
+                    </p>
+                </div>
+            </li>
+            <li>
+                <div class="item-inner">
+                    <p class="item-title">
+                        <a href="https://www.luyang.ink/2016/10/mysql-innode-rep/" class="title">MySQL 之 InnoDB . 复制</a>
+                    </p>
+                    <p class="item-date">
+                        <time datetime="2016-10-11 21:07:41 &#43;0800 CST" itemprop="datePublished">2016-10-11</time>
+                    </p>
+                </div>
+            </li>
+            <li>
+                <div class="item-inner">
+                    <p class="item-title">
+                        <a href="https://www.luyang.ink/2016/10/mysql-innodb-trx/" class="title">MySQL 之 InnoDB . 事务</a>
+                    </p>
+                    <p class="item-date">
+                        <time datetime="2016-10-06 10:22:35 &#43;0800 CST" itemprop="datePublished">2016-10-06</time>
+                    </p>
+                </div>
+            </li>
+            <li>
+                <div class="item-inner">
+                    <p class="item-title">
+                        <a href="https://www.luyang.ink/2016/10/mysql-innodb-lock/" class="title">MySQL 之 InnoDB . 锁</a>
+                    </p>
+                    <p class="item-date">
+                        <time datetime="2016-10-05 16:12:43 &#43;0800 CST" itemprop="datePublished">2016-10-05</time>
+                    </p>
+                </div>
+            </li>
+        </ul>
+    </div>
+</div>
+  </div>
+</aside>
+
+    
+    
+<aside class="sidebar sidebar-toc collapse" id="collapseToc" itemscope itemtype="http://schema.org/WPSideBar">
+  <div class="slimContent">
+    <h4 class="toc-title">Catalogue</h4>
+    <nav id="toc" class="js-toc toc">
+
+    </nav>
+  </div>
+</aside>
+<main class="main" role="main"><div class="content">
+  <article id="-" class="article article-type-" itemscope
+    itemtype="http://schema.org/BlogPosting">
+    
+    <div class="article-header">
+      <h1 itemprop="name">
+  <a
+    class="article-title"
+    href="/2016/04/declarations/"
+    >Declarations</a
+  >
+</h1>
+
+      <div class="article-meta">
+        
+<span class="article-date">
+  <i class="icon icon-calendar-check"></i>&nbsp;
+<a href="https://www.luyang.ink/2016/04/declarations/" class="article-date">
+  <time datetime="2016-04-05 21:33:01 &#43;0800 CST" itemprop="datePublished">2016-04-05</time>
+</a>
+</span>
+<span class="article-category">
+  <i class="icon icon-folder"></i>&nbsp;
+  <a class="article-category-link" href="/categories/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/"> 学习笔记 </a>
+</span>  
+  <span class="article-tag">
+    <i class="icon icon-tags"></i>&nbsp;
+    <a class="article-tag-link" href="/tags/c/"> C </a>
+  </span>
+
+        <span class="post-comment"><i class="icon icon-comment"></i>&nbsp;<a href="/2016/04/declarations/#comments"
+            class="article-comment-link">Comments</a></span>
+		<span class="post-wordcount hidden-xs" itemprop="wordCount">Word Count: 2123words</span>
+		<span class="post-readcount hidden-xs" itemprop="timeRequired">Read Count: 5minutes </span>
+      </div>
+    </div>
+    <div class="article-entry marked-body js-toc-content" itemprop="articleBody">
+      <p>&laquo;C in a Nutshell&raquo;笔记 - 声明</p>
+<h1 id="declarations">Declarations</h1>
+<h2 id="storage-class-specifiers-存储类">Storage Class Specifiers 存储类</h2>
+<p>变量与函数的可访问性(作用域范围)与生存期</p>
+<ul>
+<li>
+<p><strong>auto</strong>
+具有 automatic storage duration 性质. function 内部变量默认</p>
+</li>
+<li>
+<p><strong>register</strong>
+提示 compiler 访问这个变量越快越好, 理想状态. 把变量存放在某个 CPU 寄存器中, 但是有时把 register 声明的变量当成普通的 auto 变量</p>
+</li>
+<li>
+<p><strong>static</strong>
+具有内部链接. 变量是否有链接或内部链接依赖于该变量是定义在函数内部还是外部. 变量都具有 static storage duration 性质. 因此可以用来声明具有块作用域的局部变量</p>
+</li>
+<li>
+<p><strong>extern</strong>
+具有外部链接. 可以在任何地方访问 extern 声明的函数和变量, 具有 static storage duration 性质</p>
+</li>
+<li>
+<p><strong>_Thread_local</strong>
+没有 thread 都拥有自己单独的变量实例</p>
+</li>
+</ul>
+<h2 id="type-qualifiers-类型限定符">Type Qualifiers 类型限定符</h2>
+<ul>
+<li>
+<p><strong>const</strong>
+静态的, 程序此后不能修它</p>
+</li>
+<li>
+<p><strong>volatile</strong>
+变量的值可能被其他程序或事件修改, volatile 告诉 compiler , 每次用到该变量时都有重新读取它的值, 即使没有被程序修改过. 常用在硬件接口, 一个值可以被外部事件修改, 避免 compiler 对此变量进行 cache, 造成数据不一致</p>
+</li>
+<li>
+<p><strong>restrict</strong>
+只限定指针变量, 除了通过该指针不会被其他方式修改, compiler 可以用某种优化技术进行优化, 也可以再不影响结果的情况下忽略 restrict</p>
+</li>
+<li>
+<p><strong>_Atomit</strong>
+array 不能为 atomic</p>
+</li>
+</ul>
+<pre><code class="language-C">    extern const volatile int ticks;
+</code></pre>
+<p>ticks 不能被程序本身修改, 但是可以通过别的方式修改, 例如: 时间中断处理程序</p>
+<pre><code class="language-C">    const int limit = 10000; // A constant int object
+    typedef struct { double x, y, r; } Circle; // A structure type
+    const Circle unit_circle = { 0, 0, 1 }; // A constant Circle object
+    const floatv[] = { 1.0F, 0.5F, 0.25F }; // An array of constant float elements
+    volatile short * restrict vsPtr; // A restricted pointer to volatile short
+</code></pre>
+<p>对应指针类型, 星号(*) 右侧的限定符只限定指针, 而星号(*)左侧的限定符用来限定指针指向的变量</p>
+<h2 id="declarations-and-definitions-申明和定义">Declarations and Definitions 申明和定义</h2>
+<p>凡是被多次声明的变量或函数，必须有且只有一个声明是定义，如果有多个定义，或者一个定义都没有，链接器就无法完成链接。</p>
+<p>标示符(identifier)的声明是定义的情况:</p>
+<ul>
+<li>声明一个函数, 如果他包含函数体时</li>
+</ul>
+<pre><code class="language-C">     int iMax( int a, int b ); // This is a declaration, not a definition
+     int iMax( int a, int b) { // This is the function's definition
+        return ( a &gt;=b ? a : b );
+     }
+</code></pre>
+<ul>
+<li>如果为变量分配了存储空间就是定义(difinition). 包含初始化的声明都是定义, 而且函数块内部的声明都是定义, 除非包含一个 extern 的 storage class specifier</li>
+</ul>
+<pre><code class="language-C">    int a = 10; // Definition of a
+    extern double b[]; // Declaration of the array b, which is defined elsewhere in the program
+
+    void func() {
+        extern char c; // Declaration of c, not a definition
+        static short d; // Definition of d
+        float e; // Definition of e
+    }
+</code></pre>
+<p>如果再所有函数外部申明一个没有初始化并且没有指定 extern storage class specifier, 那么这个声明是个 tentative definition(试探性定义)</p>
+<pre><code class="language-C">    int i, v[]; // Tentatiive definitions of i, v and j
+    static int j;
+</code></pre>
+<p>如果一个翻译单元(translation unit)已经包含了一个同名的标示符, 该标示符的的 tentative definition 是一个简单的声明. 否则 compiler 会使 tentative definition 成为一个定义. 因此 int i 和 j 会隐式初始化为0, int array v 初始化包含1个值为0的元素</p>
+<h2 id="complex-declarators-复杂声明">Complex Declarators 复杂声明</h2>
+<p>(), [ ], * 表示 function, array, pointer type</p>
+<ul>
+<li>
+<p><strong>()</strong>
+A function whose return value has the type&hellip;</p>
+</li>
+<li>
+<p><strong><input disabled="" type="checkbox"> </strong>
+An array whose elements have the type&hellip;</p>
+</li>
+<li>
+<p><strong>*</strong>
+A pointer to the type&hellip;</p>
+</li>
+</ul>
+<pre><code class="language-C">    int *abc[10]; // An array of q0 elements whose thpe is pointer to int
+    int (*abc)[10]; // A pointer to a array of 10 elements whose type is int
+
+    int (*fPtr)(double x); // fPtr is a pointer to a function that has one double parameter and return int
+</code></pre>
+<p>解读复杂的声明符</p>
+<ol>
+<li>If a left parenthesis (() or bracket ([) appears immediately to the right, then interpret the pair of parentheses or brackets.</li>
+<li>Otherwise, if an asterisk (*) appears to the le , interpret the asterisk.</li>
+</ol>
+<pre><code class="language-C">    extern char *(* fTab[])(void);
+</code></pre>
+<table>
+<thead>
+<tr>
+<th>Step</th>
+<th>Symbols interpreted</th>
+<th>Meaning(read this column from the top douwn, as a sentence)</th>
+</tr>
+</thead>
+</table>
+<ol>
+<li>Start with the identifier | fTab | fTab is&hellip;</li>
+<li>Brackets to the right | fTab[] | an array whose elements have the type&hellip;</li>
+<li>Asterisk to the left. | (* fTab[]) | pointer to&hellip;</li>
+<li>Function parentheses (and parameter list) to the right. | (* fTab[])(void) | a function, with no parameters, whose return value has the type..</li>
+<li>Asterisk to the left. | *(* fTab[])(void) | pointer to&hellip;</li>
+<li>No more asterishs, parentheses, or brackets: read the type name. | char *(* fTab[])(void) | char.</li>
+</ol>
+<pre><code class="language-C">    float (* func())[3][10];
+    // The identifier func is...
+    // a function whose return value has the type...
+    // pointer to...
+    // an array of three elements of type array of ten elements of type...
+    // float.
+</code></pre>
+<h2 id="type-names">Type Names</h2>
+<p>(char *)ptr: char pointer or pointer ot char</p>
+<p>unsigned char: The type unsigned char</p>
+<p>unsigned char *: The type &ldquo;pointer to unsigned char&rdquo;</p>
+<p>float *[]: The type &ldquo;array of pointer to float&rdquo;</p>
+<p>float (*)[10]: The type &ldquo;pointer to an array of ten elements whose type is float&rdquo;</p>
+<p>double *(double *): The type &ldquo;function whose only parameter has the type pointer to double, and which also returns a pointer to double&rdquo;</p>
+<p>double (*)(): The type &ldquo;pointer to a function whose return value has the type double&rdquo;</p>
+<p>int *(*(*)[10])(void): The type &ldquo;pointer to an array of ten elements whose type is pointer to a function with no paramemters which return s a pointer to int&rdquo;</p>
+<h2 id="linkage-of-identifiers">Linkage of Identifiers</h2>
+<h3 id="external-linkage">External Linkage</h3>
+<p>external linkage 在整个程序种代表同一个 function 或 object. compiler 会将它们呈现给 linker, 对 linker 可见, 在其他翻译单元或库中连接它们 
+extern 声明的 function 和 object(variable) 都具有 external linkage, 除了在同一作用域内, 一个标示符已被定义为 internal linkage, 第二次声明不能将其修改为 external</p>
+<p>没有指定 storage class specifier 的 function 声明 或是 声明在所有 functions 外部没有指定 storage class specifier 的 object 都具有 external linkage</p>
+<h3 id="internal-linkage">Internal Linkage</h3>
+<p>internal linkage 在指定翻译单元内代表同一个 function 或 object. compiler 不会将它们呈现给 linker, 对 linker 不可见, 在其他单元不可用</p>
+<p>在所有 functions 外部, 带有 static 的标示符都具有 internal linkage</p>
+<p>不同翻译单元中具有相同名称的标示符没有冲突, 不能在同一翻译单元将已被声明为 internal linkage 的 object 重新声明为 external linkage</p>
+<h3 id="no-linkage">No Linkage</h3>
+<p>既没有 external 和 internal 的标示符具有 no linkage</p>
+<pre><code class="language-C">    int func1( void ); // func1 has external linkage
+    int a; // a has external linkage
+    extern int b = 1; // b has external linkage
+    static int c; // c has internal linkage
+
+    static void func2( int d ) { // func2 has internal linkage; d has no linkage
+        extern int a; // This a is the same as that above, with external linkage
+        int b = 2; // This b has no linkage, and hides th external b declared above
+        extern int c; // This c is the same as that above, and retains internal linkage
+        static int e:; // e has no linkage
+    }
+</code></pre>
+<h2 id="storage-duration-of-objects">Storage Duration of Objects</h2>
+<p>lifetime: 在程序运行期间, 每个 object 在某个时间段存在与内存某个地方. 这个时间段以外都无法访问这个 object</p>
+<p>4种 storage duration: static, thread, automatic, allocated.</p>
+<h3 id="static-storage-duration">Static Storage Duration</h3>
+<p>定义在所有函数外部, 或通过 storage class specifier static 函数内部定义. 包括所有的 internal linkage 和 external linkage</p>
+<p>在程序运行之前生成并初始化 static storage duration object. 程序的执行时间就是其 lifetime</p>
+<h3 id="thread-storage-duration">Thread Storage Duration</h3>
+<p>thread_local: _Thread_local 定义的标示符. 整个 thread 的运行时间是其 lifetime. 每个 thread 在 start 时, 分别初始化 object 的实例</p>
+<h3 id="automatic-storage-duration">Automatic Storage Duration</h3>
+<p>没有任何 storage class specifier 或是 指定 auto 都具有 automatic storage duration. function 的参数具有 automatic storage duration. 简称 automatic variables</p>
+<p>任何 {} 块中划定了 automatic variables 的 lifetime. variable-length array 例外, 其 lifetime 开始于 point 的声明, 终于该标示符的作用域, 或在 jump 指令之前声明</p>
+<h2 id="initialization">Initialization</h2>
+<h3 id="implicit-initialization">Implicit Initialization</h3>
+<p>任何 automatic variable 如果为进行初始化, 都有未定义的初始化值. 其他 static storage duration 都会隐式的初始化0, 除非确切的进行了初始化</p>
+<ul>
+<li>具有算数类型的 object, 默认初始化为 0</li>
+<li>pointer object 默认为 NULL</li>
+</ul>
+<p>structure, array 按照上述规则进行初始化</p>
+<h3 id="explicit-initialization">Explicit Initialization</h3>
+<p>通过等号(=)显式的初始化 object 的值</p>
+<p>static storage duration 一定是 constant expressions, automatic 不受此限制</p>
+<p>length-variable array 不能初始化, const 必须要进行初始化并且后续不能修改它</p>
+    </div>
+    <div class="article-footer">
+<blockquote class="mt-2x">
+  <ul class="post-copyright list-unstyled">
+    <li class="post-copyright-link hidden-xs">
+      <strong>Permalink: </strong>
+      <a href="https://www.luyang.ink/2016/04/declarations/" title="Declarations" target="_blank" rel="external">https://www.luyang.ink/2016/04/declarations/</a>
+    </li>
+    <li class="post-copyright-license">
+      <strong>License：</strong><a href="http://creativecommons.org/licenses/by/4.0/deed.zh" target="_blank" rel="external">CC BY 4.0 CN</a>
+    </li>
+  </ul>
+</blockquote>
+
+<div class="panel panel-default panel-badger">
+  <div class="panel-body">
+    <figure class="media">
+      <div class="media-left">
+        <a href="https://github.com/xiaoheiAh" target="_blank" class="img-burn thumb-sm visible-lg">
+          <img src="https://www.luyang.ink/avatar.png" class="img-rounded w-full" alt="">
+        </a>
+      </div>
+      <div class="media-body">
+        <h3 class="media-heading"><a href="https://github.com/xiaoheiAh" target="_blank"><span class="text-dark">xiaoheiAh</span><small class="ml-1x">author title</small></a></h3>
+        <div>Good Good Study, Day Day Up~</div>
+      </div>
+    </figure>
+  </div>
+</div>
+    </div>
+  </article>
+<section id="comments">
+</section>
+
+</div><nav class="bar bar-footer clearfix" data-stick-bottom>
+    <div class="bar-inner">
+        <ul class="pager pull-left">
+            <li class="prev">
+                <a href="https://www.luyang.ink/2016/04/structure/" title="Structure"><i
+                        class="icon icon-angle-left"
+                        aria-hidden="true"></i><span>&nbsp;&nbsp;Older</span></a>
+            </li>
+            <li class="next">
+                <a href="https://www.luyang.ink/2016/04/multithreading/"
+                    title="Multithreading"><span>Newer&nbsp;&nbsp;</span><i
+                        class="icon icon-angle-right" aria-hidden="true"></i></a>
+            </li>
+            
+            <li class="toggle-toc">
+                <a class="toggle-btn collapsed" data-toggle="collapse" href="#collapseToc" aria-expanded="false"
+                    title="Catalogue" role="button">
+                    <span>[&nbsp;</span><span>Catalogue</span>
+                    <i class="text-collapsed icon icon-anchor"></i>
+                    <i class="text-in icon icon-close"></i>
+                    <span>]</span>
+                </a>
+            </li>
+        </ul>
+        <div class="bar-right">
+            <div class="share-component" data-sites="weibo,qq,wechat,facebook,twitter"
+                data-mobile-sites="weibo,qq,qzone"></div>
+        </div>
+    </div>
+</nav>
+
+</main><footer class="footer" itemscope itemtype="http://schema.org/WPFooter">
+<ul class="social-links">
+    <li><a href="https://github.com/xiaoheiAh" target="_blank" title="github" data-toggle=tooltip data-placement=top >
+            <i class="icon icon-github"></i></a></li>
+    <li><a href="https://www.luyang.ink/index.xml" target="_blank" title="rss" data-toggle=tooltip data-placement=top >
+            <i class="icon icon-rss"></i></a></li>
+</ul>
+  <div class="copyright">
+    &copy;2017  -
+    2020
+    <div class="publishby">
+        Theme by <a href="https://github.com/xiaoheiAh" target="_blank"> xiaoheiAh </a>base on<a href="https://github.com/xiaoheiAh/hugo-theme-pure" target="_blank"> pure</a>.
+    </div>
+  </div>
+</footer>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.2/MathJax.js?config=TeX-MML-AM_SVG"></script>
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+            showMathMenu: false, //disables context menu
+            tex2jax: {
+            inlineMath: [ ['$','$'], ['\\(','\\)'] ]
+           }
+    });
+</script>
+
+
+<script src="https://cdn.jsdelivr.net/npm/jquery@3.4.1/dist/jquery.min.js"></script>
+<script>
+    window.jQuery || document.write('<script src="js/jquery.min.js"><\/script>')
+</script>
+<script type="text/javascript" src="https://cdn.staticfile.org/highlight.js/9.15.10/highlight.min.js"></script>
+<script type="text/javascript" src="https://cdn.staticfile.org/highlight.js/9.15.10/languages/python.min.js" defer></script>
+<script type="text/javascript" src="https://cdn.staticfile.org/highlight.js/9.15.10/languages/javascript.min.js" defer></script><script>
+    hljs.configure({
+        tabReplace: '    ', 
+        classPrefix: ''     
+        
+    })
+    hljs.initHighlightingOnLoad();
+</script>
+<script src="https://www.luyang.ink/js/application.min.bdeb64b910570b6c41badc6a05b7afb0c8ad9efd8525de3c7257d59e786326a3.js"></script>
+<script src="https://www.luyang.ink/js/plugin.min.51ff8c7317566f82259170fa36e09c4493adc9b9378b427a01ad3f017ebac7dd.js"></script>
+
+<script>
+    (function (window) {
+        var INSIGHT_CONFIG = {
+            TRANSLATION: {
+                POSTS: 'Posts',
+                PAGES: 'Pages',
+                CATEGORIES: 'Categories',
+                TAGS: 'Tags',
+                UNTITLED: '(Untitled)',
+            },
+            ROOT_URL: 'https:\/\/www.luyang.ink\/',
+            CONTENT_URL: 'https:\/\/www.luyang.ink\/\/searchindex.json ',
+        };
+        window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+    })(window);
+</script>
+<script type="text/javascript" src="https://www.luyang.ink/js/insight.min.a343cd9a5a7698336b28ef3a7c16a3a1b1d2d5fb17dc8ed04022bbe08cc5459073a15bdafa3a8a58cdd56080784bdd69fa70b1ae8597565c799c57ed00f0e120.js" defer></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/tocbot/4.4.2/tocbot.min.js"></script>
+<script>
+    tocbot.init({
+        
+        tocSelector: '.js-toc',
+        
+        contentSelector: '.js-toc-content',
+        
+        headingSelector: 'h1, h2, h3',
+        
+        hasInnerContainers: true,
+    });
+</script>
+
+
+  </body>
+</html>

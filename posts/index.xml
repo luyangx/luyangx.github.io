@@ -94,6 +94,24 @@
     </item>
     
     <item>
+      <title>Go 语言基础 . 函数、方法和接口</title>
+      <link>https://www.luyang.ink/posts/go-basic-func-method-interface/</link>
+      <pubDate>Tue, 26 Apr 2016 21:03:56 +0800</pubDate>
+      
+      <guid>https://www.luyang.ink/posts/go-basic-func-method-interface/</guid>
+      <description>&lt;p&gt;记录一下 Go 语言中的函数、方法和接口&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>Go 语言基础 . 数组、字符串和切片</title>
+      <link>https://www.luyang.ink/posts/go-basic-array-string-slice/</link>
+      <pubDate>Sat, 23 Apr 2016 19:21:34 +0800</pubDate>
+      
+      <guid>https://www.luyang.ink/posts/go-basic-array-string-slice/</guid>
+      <description>&lt;p&gt;记录一下 Go 语言中的数据结构 . 数组、字符串和切片&lt;/p&gt;</description>
+    </item>
+    
+    <item>
       <title>Dynamic Memory Management</title>
       <link>https://www.luyang.ink/posts/dynamic-memory-management/</link>
       <pubDate>Mon, 18 Apr 2016 20:24:24 +0800</pubDate>

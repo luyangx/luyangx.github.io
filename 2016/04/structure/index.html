@@ -1,0 +1,627 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+    <title>
+        Structure - Yang
+      </title>
+    <head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <meta name="viewport"
+    content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no, minimal-ui">
+  <meta name="renderer" content="webkit">
+  <meta http-equiv="Cache-Control" content="no-transform" />
+  <meta http-equiv="Cache-Control" content="no-siteapp" />
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+  <meta name="format-detection" content="telephone=no,email=no,adress=no">
+  
+  <meta name="theme-color" content="#000000" />
+  
+  <meta http-equiv="window-target" content="_top" />
+  
+  
+  <meta name="description" content="&amp;laquo;C in a Nutshell&amp;raquo;笔记 - 结构体
+" />
+  <meta name="generator" content="Hugo 0.69.0 with theme pure" />
+  <title>Structure - Yang</title>
+  
+  
+  <link rel="stylesheet" href="https://www.luyang.ink/css/style.min.7dc20efbc53647d41aa9ddea0c48e59300223d084e66ea0cbe7c30bd88903acc.css">
+  
+  <link rel="stylesheet" href="https://cdn.staticfile.org/highlight.js/9.15.10/styles/github.min.css" async>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tocbot/4.4.2/tocbot.css" async>
+  <meta property="og:title" content="Structure" />
+<meta property="og:description" content="&laquo;C in a Nutshell&raquo;笔记 - 结构体" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://www.luyang.ink/2016/04/structure/" />
+<meta property="article:published_time" content="2016-04-05T19:06:42+08:00" />
+<meta property="article:modified_time" content="2016-04-05T19:06:42+08:00" />
+<meta itemprop="name" content="Structure">
+<meta itemprop="description" content="&laquo;C in a Nutshell&raquo;笔记 - 结构体">
+<meta itemprop="datePublished" content="2016-04-05T19:06:42&#43;08:00" />
+<meta itemprop="dateModified" content="2016-04-05T19:06:42&#43;08:00" />
+<meta itemprop="wordCount" content="1161">
+
+
+
+<meta itemprop="keywords" content="C," /><meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="Structure"/>
+<meta name="twitter:description" content="&laquo;C in a Nutshell&raquo;笔记 - 结构体"/>
+
+  <!--[if lte IE 9]>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
+    <![endif]-->
+
+  <!--[if lt IE 9]>
+      <script src="https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js"></script>
+      <script src="https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js"></script>
+    <![endif]-->
+
+</head>
+  </head>
+
+  
+  
+
+  <body class="main-center theme-black" itemscope itemtype="http://schema.org/WebPage"><header class="header" itemscope itemtype="http://schema.org/WPHeader">
+    <div class="slimContent">
+      <div class="navbar-header">
+        <div class="profile-block text-center">
+          <a id="avatar" href="https://github.com/xiaoheiAh" target="_blank">
+            <img class="img-circle img-rotate" src="https://www.luyang.ink/avatar.png" width="200" height="200">
+          </a>
+          <h2 id="name" class="hidden-xs hidden-sm">xiaoheiAh</h2>
+          <h3 id="title" class="hidden-xs hidden-sm hidden-md">author title</h3>
+          <small id="location" class="text-muted hidden-xs hidden-sm"><i class="icon icon-map-marker"></i>Shanghai, China</small>
+        </div><div class="search" id="search-form-wrap">
+    <form class="search-form sidebar-form">
+        <div class="input-group">
+            <input type="text" class="search-form-input form-control" placeholder="Search" />
+            <span class="input-group-btn">
+                <button type="submit" class="search-form-submit btn btn-flat" onclick="return false;"><i
+                        class="icon icon-search"></i></button>
+            </span>
+        </div>
+        <div class="ins-search">
+            <div class="ins-search-mask"></div>
+            <div class="ins-search-container">
+                <div class="ins-input-wrapper">
+                    <input type="text" class="ins-search-input" placeholder="Type something..."
+                        x-webkit-speech />
+                    <button type="button" class="close ins-close ins-selectable" data-dismiss="modal"
+                        aria-label="Close"><span aria-hidden="true">×</span></button>
+                </div>
+                <div class="ins-section-wrapper">
+                    <div class="ins-section-container"></div>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+        <button class="navbar-toggle collapsed" type="button" data-toggle="collapse" data-target="#main-navbar" aria-controls="main-navbar" aria-expanded="false">
+          <span class="sr-only">Toggle navigation</span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+      </div>
+      <nav id="main-navbar" class="collapse navbar-collapse" itemscope itemtype="http://schema.org/SiteNavigationElement" role="navigation">
+        <ul class="nav navbar-nav main-nav">
+            <li class="menu-item menu-item-home">
+                <a href="/">
+                    <i class="icon icon-home-fill"></i>
+                  <span class="menu-title">Home</span>
+                </a>
+            </li>
+            <li class="menu-item menu-item-archives">
+                <a href="/posts/">
+                    <i class="icon icon-archives-fill"></i>
+                  <span class="menu-title">Archives</span>
+                </a>
+            </li>
+            <li class="menu-item menu-item-categories">
+                <a href="/categories/">
+                    <i class="icon icon-folder"></i>
+                  <span class="menu-title">Categories</span>
+                </a>
+            </li>
+            <li class="menu-item menu-item-tags">
+                <a href="/tags/">
+                    <i class="icon icon-tags"></i>
+                  <span class="menu-title">Tags</span>
+                </a>
+            </li>
+            <li class="menu-item menu-item-about">
+                <a href="/about/">
+                    <i class="icon icon-cup-fill"></i>
+                  <span class="menu-title">About</span>
+                </a>
+            </li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+<aside class="sidebar" itemscope itemtype="http://schema.org/WPSideBar">
+  <div class="slimContent">
+    
+      <div class="widget">
+    <h3 class="widget-title">Board</h3>
+    <div class="widget-body">
+        <div id="board">
+            <div class="content"><p>enjoy~</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+      <div class="widget">
+    <h3 class="widget-title"> Categories</h3>
+    <div class="widget-body">
+        <ul class="category-list">
+            <li class="category-list-item"><a href="https://www.luyang.ink/categories/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" class="category-list-link">学习笔记</a><span class="category-list-count">16</span></li>
+            <li class="category-list-item"><a href="https://www.luyang.ink/categories/%E5%B7%A5%E5%85%B7/" class="category-list-link">工具</a><span class="category-list-count">1</span></li>
+        </ul>
+    </div>
+</div>
+      <div class="widget">
+    <h3 class="widget-title"> Tags</h3>
+    <div class="widget-body">
+        <ul class="tag-list">
+            
+            
+            <li class="tag-list-item"><a href="https://www.luyang.ink/tags/c/" class="tag-list-link">c</a><span
+                    class="tag-list-count">5</span></li>
+            
+            
+            <li class="tag-list-item"><a href="https://www.luyang.ink/tags/go/" class="tag-list-link">go</a><span
+                    class="tag-list-count">2</span></li>
+            
+            
+            <li class="tag-list-item"><a href="https://www.luyang.ink/tags/homebrew/" class="tag-list-link">homebrew</a><span
+                    class="tag-list-count">1</span></li>
+            
+            
+            <li class="tag-list-item"><a href="https://www.luyang.ink/tags/mysql/" class="tag-list-link">mysql</a><span
+                    class="tag-list-count">8</span></li>
+            
+            
+            <li class="tag-list-item"><a href="https://www.luyang.ink/tags/php/" class="tag-list-link">php</a><span
+                    class="tag-list-count">1</span></li>
+            
+        </ul>
+
+    </div>
+</div>
+      
+<div class="widget">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget-body">
+        <ul class="recent-post-list list-unstyled no-thumbnail">
+            <li>
+                <div class="item-inner">
+                    <p class="item-title">
+                        <a href="https://www.luyang.ink/2016/11/mysql-server-turning/" class="title">MySQL Server调优</a>
+                    </p>
+                    <p class="item-date">
+                        <time datetime="2016-11-04 23:04:23 &#43;0800 CST" itemprop="datePublished">2016-11-04</time>
+                    </p>
+                </div>
+            </li>
+            <li>
+                <div class="item-inner">
+                    <p class="item-title">
+                        <a href="https://www.luyang.ink/2016/10/mysql-explain/" class="title">MySQL EXPLAIN</a>
+                    </p>
+                    <p class="item-date">
+                        <time datetime="2016-10-25 21:07:41 &#43;0800 CST" itemprop="datePublished">2016-10-25</time>
+                    </p>
+                </div>
+            </li>
+            <li>
+                <div class="item-inner">
+                    <p class="item-title">
+                        <a href="https://www.luyang.ink/2016/10/mysql-innode-rep/" class="title">MySQL 之 InnoDB . 复制</a>
+                    </p>
+                    <p class="item-date">
+                        <time datetime="2016-10-11 21:07:41 &#43;0800 CST" itemprop="datePublished">2016-10-11</time>
+                    </p>
+                </div>
+            </li>
+            <li>
+                <div class="item-inner">
+                    <p class="item-title">
+                        <a href="https://www.luyang.ink/2016/10/mysql-innodb-trx/" class="title">MySQL 之 InnoDB . 事务</a>
+                    </p>
+                    <p class="item-date">
+                        <time datetime="2016-10-06 10:22:35 &#43;0800 CST" itemprop="datePublished">2016-10-06</time>
+                    </p>
+                </div>
+            </li>
+            <li>
+                <div class="item-inner">
+                    <p class="item-title">
+                        <a href="https://www.luyang.ink/2016/10/mysql-innodb-lock/" class="title">MySQL 之 InnoDB . 锁</a>
+                    </p>
+                    <p class="item-date">
+                        <time datetime="2016-10-05 16:12:43 &#43;0800 CST" itemprop="datePublished">2016-10-05</time>
+                    </p>
+                </div>
+            </li>
+        </ul>
+    </div>
+</div>
+  </div>
+</aside>
+
+    
+    
+<aside class="sidebar sidebar-toc collapse" id="collapseToc" itemscope itemtype="http://schema.org/WPSideBar">
+  <div class="slimContent">
+    <h4 class="toc-title">Catalogue</h4>
+    <nav id="toc" class="js-toc toc">
+
+    </nav>
+  </div>
+</aside>
+<main class="main" role="main"><div class="content">
+  <article id="-" class="article article-type-" itemscope
+    itemtype="http://schema.org/BlogPosting">
+    
+    <div class="article-header">
+      <h1 itemprop="name">
+  <a
+    class="article-title"
+    href="/2016/04/structure/"
+    >Structure</a
+  >
+</h1>
+
+      <div class="article-meta">
+        
+<span class="article-date">
+  <i class="icon icon-calendar-check"></i>&nbsp;
+<a href="https://www.luyang.ink/2016/04/structure/" class="article-date">
+  <time datetime="2016-04-05 19:06:42 &#43;0800 CST" itemprop="datePublished">2016-04-05</time>
+</a>
+</span>
+<span class="article-category">
+  <i class="icon icon-folder"></i>&nbsp;
+  <a class="article-category-link" href="/categories/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/"> 学习笔记 </a>
+</span>  
+  <span class="article-tag">
+    <i class="icon icon-tags"></i>&nbsp;
+    <a class="article-tag-link" href="/tags/c/"> C </a>
+  </span>
+
+        <span class="post-comment"><i class="icon icon-comment"></i>&nbsp;<a href="/2016/04/structure/#comments"
+            class="article-comment-link">Comments</a></span>
+		<span class="post-wordcount hidden-xs" itemprop="wordCount">Word Count: 1161words</span>
+		<span class="post-readcount hidden-xs" itemprop="timeRequired">Read Count: 3minutes </span>
+      </div>
+    </div>
+    <div class="article-entry marked-body js-toc-content" itemprop="articleBody">
+      <p>&laquo;C in a Nutshell&raquo;笔记 - 结构体</p>
+<h2 id="defining-structure-types">Defining Structure Types</h2>
+<blockquote>
+<p><strong>struct [tag_name] { member_declaration_list };</strong></p>
+</blockquote>
+<pre><code class="language-C">	struct Date { short month, day, year; }
+</code></pre>
+<p>member 中不能包含自己, 因为在最后 <strong>}</strong> 前该结构定义不完整, 除非是 self-referential structures (自引用结构)</p>
+<h2 id="structure-objects-and-typedef-names">Structure Objects and typedef Names</h2>
+<blockquote>
+<p>structure object == structure vaiables</p>
+</blockquote>
+<pre><code class="language-C">	struct Song song1, song2, *pSong = &amp;song1;
+	// song1, song2 是 struct Song 的对象, 而 *pSong 是指向对象 song1 的指针
+</code></pre>
+<p>每次定义变量都需要包含 <strong>struct Song</strong> 关键字, 可以用 <strong>typedef</strong> 定义一个 one-word 结构名称</p>
+<pre><code class="language-C">	typedef struct Song Song_t; // Song_t 等同于 struct Song
+	Song_t song1, song2 *pSong = &amp;song1; // 2个 struct Song 对象和1个指针
+</code></pre>
+<p>定义一个 struct 时可以不需要定义 tag_name, 这种方式只适用于定义 struct 时同时定义了structure objects, 或这是在 typedef 中声明了 structure type</p>
+<pre><code class="language-C">	typedef struct { struct Cell *pFirst, *pLast; } SongList_t;
+</code></pre>
+<h2 id="incomplete-structure-types">Incomplete Structure Types</h2>
+<p>可以定义一个指向结构的指针即使这个结构还未定义, 上面 SongList_t 定义是正确的, 虽然 struct Cell 未定义. 这种情况下, SongList_t 会隐式声明 一个 structure tag Cell, 但是直到明确定义 Cell 前, Cell 都是不完整的, 并且 *pFirst, *pLast 指针也不能用来访问 objects</p>
+<p>这样可以用来声明互相应用彼此的 structure type</p>
+<pre><code class="language-C">	struct A { struct B *pB; /* ... other members of struct A ... */};
+	struct B { struct A *pA; /* ... other members of struct B ... */};
+</code></pre>
+<p>以上情况有个例外, 如下:</p>
+<pre><code class="language-C">	struct B {
+		struct A *pA;
+		int key[10];
+	};
+	
+	{
+		struct A {
+			struct B pB; // 此时变量 pb 为 block 外层 struct B
+			int key;
+		};
+		printf(&quot;%d&quot;, sizeof(struct A));
+		
+		struct B {
+			struct A *pA;
+			int key;
+		};
+	}
+</code></pre>
+<p>为了避免上述情况可以采取一下方式</p>
+<pre><code class="language-C">	struct B; // incomplete type
+	struct A { struct B *pB; /* ... */ };
+	struct B { struct A *pA; /* ... */ };
+</code></pre>
+<h2 id="accessing-structure-members">Accessing Structure Members</h2>
+<p>2种方式, dot operator(.) 和 arrow operator(-&gt;)</p>
+<ul>
+<li><strong>.</strong> : 左值是 structure object(variable) 变量</li>
+<li><strong>-&gt;</strong> : 左值是 structure point 指针</li>
+</ul>
+<blockquote>
+<p>p-&gt;m == (*p).m</p>
+</blockquote>
+<h2 id="initializing-structures">Initializing Structures</h2>
+<pre><code class="language-C">	Song_t mySong = {
+		&quot;what it is&quot;,
+		&quot;Aubrey Haynie: Mark Knopfler&quot;,
+		&quot;Mark Knopfler&quot;,
+		297,
+		{ 9, 26, 200 }
+	}
+	
+	Song_t yourSong = { &quot;El Macho&quot; };
+	Song_t yourSong = {
+		&quot;El Macho&quot;,
+		&quot;&quot;,
+		&quot;&quot;,
+		0,
+		{ 0, 0, 0}
+	};
+	
+	Song_t yourSong = mySong; // 可以是其他已存在的structure变量
+</code></pre>
+<h2 id="initializing-specific-members">Initializing Specific Members</h2>
+<blockquote>
+<p>.member  // member designator</p>
+</blockquote>
+<pre><code class="language-C">	Song_t aSong = {
+		.title = &quot;I've Just Seen a Face&quot;,
+		.composer = &quot;John Lennon; Paul McCartney&quot;,
+		127
+	}
+</code></pre>
+<h2 id="structure-members-in-memory">Structure Members in Memory</h2>
+<p>等同与 member 声明顺序, 第一个 member 地址 == structure object 地址
+为了快速访问 member, compiler 会按照某种对齐方式进行对齐操作, 会在最后一个 member 后增加额外的 bytes 统称 padding, 这就导致 structure 实际的大小大与 members 的大小</p>
+<p>你可以控制 compiler 的对齐操作, 防止 member 之间的缝隙(gap), 通过 complier 的选项, 例如 GCC 的 -fpack-struct</p>
+<h2 id="flexible-structure-members">Flexible Structure members</h2>
+<pre><code class="language-C">	typedef struct { int len; float array[]; } DynArray_t;
+</code></pre>
+<ul>
+<li>以 flexible member 结尾的 structure 的大小等于 flexible member 的偏移量</li>
+</ul>
+<blockquote>
+<p>sizeof(DynArray_t) == offsetof(DynArray_t, array)</p>
+</blockquote>
+<ul>
+<li>通过 . 和 -&gt; 访问 flexiable member 时, 要确保 flexiable member 有足够大的空间, 可以通过 malloc 申请所需要的内存大小</li>
+</ul>
+<pre><code class="language-C">	DynArray_t *daPtr = malloc(sizeof(DynArrray_t) + 10*sizeof(float));
+	
+	DynArray_t da1 = { 100 }, // OK
+				 da2 = { 3, { 1.0F, 0.5F, 0.25F } }; // Error 看compiler是否支持
+</code></pre>
+<h2 id="pointer-as-structure-members">Pointer as Structure Members</h2>
+<pre><code class="language-C">	typedef struct { struct Cell *pFirst, *pLast; } SongList_t;
+	typedef struct { struct Song song; struct Cell *pNext; } Cell_t;
+</code></pre>
+<h1 id="unions">Unions</h1>
+<p>所有 members 共用同一内存地址</p>
+<h2 id="defining-union-types">Defining Union Types</h2>
+<blockquote>
+<p>** union [tag_name] { membber_declaration_list };</p>
+</blockquote>
+<pre><code class="language-C">	union Data { int i; double x; char str[16]; }
+</code></pre>
+<p><strong>union VS structure members 占用内存比较</strong></p>
+<p><img src="/images/14598539077422.jpg" alt="">
+<img src="/images/14598539482939.jpg" alt=""></p>
+<h2 id="initializing-unions">Initializing Unions</h2>
+<p>同 Initializing Structure</p>
+<h2 id="anonymous-structure-and-unions">Anonymous Structure and Unions</h2>
+<pre><code class="language-C">	union WordByte {
+		short w;
+		struct { char b0, b1 }; // anonymous structure
+	}
+	
+	union WordByte wb = { 256 };
+	char lowByte = wb.b0;
+	
+	struct Demo {
+		union {	// anonymous union
+			struct { long a, b; };	// anonymous structure
+			struct { float x, y; } fl; // named structure
+		}
+	} dObj;
+	
+	dObj.a = 100; // ok
+	dObj.y = 1.0; // wrong 不能直接访问 y, 因为他是 struct fl 的 member
+	dObj.fl.y = 1.0; // ok
+</code></pre>
+<h2 id="bit-fields">Bit-Fields</h2>
+<p>可以像 structure 和 union 一样通过 member name 来操作 bit</p>
+<blockquote>
+<p><strong>type [member_name] : width;</strong></p>
+</blockquote>
+<ul>
+<li>
+<p><strong>type</strong>
+bit-field 值的 integer type, 例如: _Bool, signed int, unsigned int, const int&hellip;</p>
+</li>
+<li>
+<p><strong>member_name</strong>
+bit-field 的 name, 可选, 没有指定 name 时无法访问该 bit-field, 可以当做 padding 来确定后续 bit-field 在机器 word 中的位置</p>
+</li>
+<li>
+<p><strong>width</strong>
+bit-field 的 bit 数量, 非负且不能小余 type 的 width</p>
+</li>
+</ul>
+<pre><code class="language-C">	struct Date {
+		unsigned int month : 4;  // 1 is January; 12 is December
+		unsigned int day   : 5;  // The day of the month (1 to 31)
+		signed int   year  : 22; // (-2097152 to +2097151)
+		_Bool        isDST : 1;  // True if daylight saving time is in effect
+	}
+	
+	struct Date birthday = { 5, 17, 1982 };
+</code></pre>
+<p>n bits 可以代表 2 n次方个不同的值</p>
+    </div>
+    <div class="article-footer">
+<blockquote class="mt-2x">
+  <ul class="post-copyright list-unstyled">
+    <li class="post-copyright-link hidden-xs">
+      <strong>Permalink: </strong>
+      <a href="https://www.luyang.ink/2016/04/structure/" title="Structure" target="_blank" rel="external">https://www.luyang.ink/2016/04/structure/</a>
+    </li>
+    <li class="post-copyright-license">
+      <strong>License：</strong><a href="http://creativecommons.org/licenses/by/4.0/deed.zh" target="_blank" rel="external">CC BY 4.0 CN</a>
+    </li>
+  </ul>
+</blockquote>
+
+<div class="panel panel-default panel-badger">
+  <div class="panel-body">
+    <figure class="media">
+      <div class="media-left">
+        <a href="https://github.com/xiaoheiAh" target="_blank" class="img-burn thumb-sm visible-lg">
+          <img src="https://www.luyang.ink/avatar.png" class="img-rounded w-full" alt="">
+        </a>
+      </div>
+      <div class="media-body">
+        <h3 class="media-heading"><a href="https://github.com/xiaoheiAh" target="_blank"><span class="text-dark">xiaoheiAh</span><small class="ml-1x">author title</small></a></h3>
+        <div>Good Good Study, Day Day Up~</div>
+      </div>
+    </figure>
+  </div>
+</div>
+    </div>
+  </article>
+<section id="comments">
+</section>
+
+</div><nav class="bar bar-footer clearfix" data-stick-bottom>
+    <div class="bar-inner">
+        <ul class="pager pull-left">
+            <li class="prev">
+                <a href="https://www.luyang.ink/2014/11/references-in-php/" title="references in php"><i
+                        class="icon icon-angle-left"
+                        aria-hidden="true"></i><span>&nbsp;&nbsp;Older</span></a>
+            </li>
+            <li class="next">
+                <a href="https://www.luyang.ink/2016/04/declarations/"
+                    title="Declarations"><span>Newer&nbsp;&nbsp;</span><i
+                        class="icon icon-angle-right" aria-hidden="true"></i></a>
+            </li>
+            
+            <li class="toggle-toc">
+                <a class="toggle-btn collapsed" data-toggle="collapse" href="#collapseToc" aria-expanded="false"
+                    title="Catalogue" role="button">
+                    <span>[&nbsp;</span><span>Catalogue</span>
+                    <i class="text-collapsed icon icon-anchor"></i>
+                    <i class="text-in icon icon-close"></i>
+                    <span>]</span>
+                </a>
+            </li>
+        </ul>
+        <div class="bar-right">
+            <div class="share-component" data-sites="weibo,qq,wechat,facebook,twitter"
+                data-mobile-sites="weibo,qq,qzone"></div>
+        </div>
+    </div>
+</nav>
+
+</main><footer class="footer" itemscope itemtype="http://schema.org/WPFooter">
+<ul class="social-links">
+    <li><a href="https://github.com/xiaoheiAh" target="_blank" title="github" data-toggle=tooltip data-placement=top >
+            <i class="icon icon-github"></i></a></li>
+    <li><a href="https://www.luyang.ink/index.xml" target="_blank" title="rss" data-toggle=tooltip data-placement=top >
+            <i class="icon icon-rss"></i></a></li>
+</ul>
+  <div class="copyright">
+    &copy;2017  -
+    2020
+    <div class="publishby">
+        Theme by <a href="https://github.com/xiaoheiAh" target="_blank"> xiaoheiAh </a>base on<a href="https://github.com/xiaoheiAh/hugo-theme-pure" target="_blank"> pure</a>.
+    </div>
+  </div>
+</footer>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.2/MathJax.js?config=TeX-MML-AM_SVG"></script>
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+            showMathMenu: false, //disables context menu
+            tex2jax: {
+            inlineMath: [ ['$','$'], ['\\(','\\)'] ]
+           }
+    });
+</script>
+
+
+<script src="https://cdn.jsdelivr.net/npm/jquery@3.4.1/dist/jquery.min.js"></script>
+<script>
+    window.jQuery || document.write('<script src="js/jquery.min.js"><\/script>')
+</script>
+<script type="text/javascript" src="https://cdn.staticfile.org/highlight.js/9.15.10/highlight.min.js"></script>
+<script type="text/javascript" src="https://cdn.staticfile.org/highlight.js/9.15.10/languages/python.min.js" defer></script>
+<script type="text/javascript" src="https://cdn.staticfile.org/highlight.js/9.15.10/languages/javascript.min.js" defer></script><script>
+    hljs.configure({
+        tabReplace: '    ', 
+        classPrefix: ''     
+        
+    })
+    hljs.initHighlightingOnLoad();
+</script>
+<script src="https://www.luyang.ink/js/application.min.bdeb64b910570b6c41badc6a05b7afb0c8ad9efd8525de3c7257d59e786326a3.js"></script>
+<script src="https://www.luyang.ink/js/plugin.min.51ff8c7317566f82259170fa36e09c4493adc9b9378b427a01ad3f017ebac7dd.js"></script>
+
+<script>
+    (function (window) {
+        var INSIGHT_CONFIG = {
+            TRANSLATION: {
+                POSTS: 'Posts',
+                PAGES: 'Pages',
+                CATEGORIES: 'Categories',
+                TAGS: 'Tags',
+                UNTITLED: '(Untitled)',
+            },
+            ROOT_URL: 'https:\/\/www.luyang.ink\/',
+            CONTENT_URL: 'https:\/\/www.luyang.ink\/\/searchindex.json ',
+        };
+        window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+    })(window);
+</script>
+<script type="text/javascript" src="https://www.luyang.ink/js/insight.min.a343cd9a5a7698336b28ef3a7c16a3a1b1d2d5fb17dc8ed04022bbe08cc5459073a15bdafa3a8a58cdd56080784bdd69fa70b1ae8597565c799c57ed00f0e120.js" defer></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/tocbot/4.4.2/tocbot.min.js"></script>
+<script>
+    tocbot.init({
+        
+        tocSelector: '.js-toc',
+        
+        contentSelector: '.js-toc-content',
+        
+        headingSelector: 'h1, h2, h3',
+        
+        hasInnerContainers: true,
+    });
+</script>
+
+
+  </body>
+</html>

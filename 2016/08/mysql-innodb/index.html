@@ -1,0 +1,497 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+    <title>
+        MySQL 之 InnoDB . 初见 - Yang
+      </title>
+    <head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <meta name="viewport"
+    content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no, minimal-ui">
+  <meta name="renderer" content="webkit">
+  <meta http-equiv="Cache-Control" content="no-transform" />
+  <meta http-equiv="Cache-Control" content="no-siteapp" />
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+  <meta name="format-detection" content="telephone=no,email=no,adress=no">
+  
+  <meta name="theme-color" content="#000000" />
+  
+  <meta http-equiv="window-target" content="_top" />
+  
+  
+  <meta name="description" content="InnoDB 存储引擎支持事务, 其设计目的主要面向在线事务处理(OLTP)的应用. 其特点是行锁, 外键, 非锁定读等, MySQL在5.5.8版本后将其设为默认存储引擎.
+" />
+  <meta name="generator" content="Hugo 0.69.0 with theme pure" />
+  <title>MySQL 之 InnoDB . 初见 - Yang</title>
+  
+  
+  <link rel="stylesheet" href="https://www.luyang.ink/css/style.min.7dc20efbc53647d41aa9ddea0c48e59300223d084e66ea0cbe7c30bd88903acc.css">
+  
+  <link rel="stylesheet" href="https://cdn.staticfile.org/highlight.js/9.15.10/styles/github.min.css" async>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tocbot/4.4.2/tocbot.css" async>
+  <meta property="og:title" content="MySQL 之 InnoDB . 初见" />
+<meta property="og:description" content="InnoDB 存储引擎支持事务, 其设计目的主要面向在线事务处理(OLTP)的应用. 其特点是行锁, 外键, 非锁定读等, MySQL在5.5.8版本后将其设为默认存储引擎." />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://www.luyang.ink/2016/08/mysql-innodb/" />
+<meta property="article:published_time" content="2016-08-24T22:43:39+08:00" />
+<meta property="article:modified_time" content="2016-08-24T22:43:39+08:00" />
+<meta itemprop="name" content="MySQL 之 InnoDB . 初见">
+<meta itemprop="description" content="InnoDB 存储引擎支持事务, 其设计目的主要面向在线事务处理(OLTP)的应用. 其特点是行锁, 外键, 非锁定读等, MySQL在5.5.8版本后将其设为默认存储引擎.">
+<meta itemprop="datePublished" content="2016-08-24T22:43:39&#43;08:00" />
+<meta itemprop="dateModified" content="2016-08-24T22:43:39&#43;08:00" />
+<meta itemprop="wordCount" content="828">
+
+
+
+<meta itemprop="keywords" content="MySQL," /><meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="MySQL 之 InnoDB . 初见"/>
+<meta name="twitter:description" content="InnoDB 存储引擎支持事务, 其设计目的主要面向在线事务处理(OLTP)的应用. 其特点是行锁, 外键, 非锁定读等, MySQL在5.5.8版本后将其设为默认存储引擎."/>
+
+  <!--[if lte IE 9]>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
+    <![endif]-->
+
+  <!--[if lt IE 9]>
+      <script src="https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js"></script>
+      <script src="https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js"></script>
+    <![endif]-->
+
+</head>
+  </head>
+
+  
+  
+
+  <body class="main-center theme-black" itemscope itemtype="http://schema.org/WebPage"><header class="header" itemscope itemtype="http://schema.org/WPHeader">
+    <div class="slimContent">
+      <div class="navbar-header">
+        <div class="profile-block text-center">
+          <a id="avatar" href="https://github.com/xiaoheiAh" target="_blank">
+            <img class="img-circle img-rotate" src="https://www.luyang.ink/avatar.png" width="200" height="200">
+          </a>
+          <h2 id="name" class="hidden-xs hidden-sm">xiaoheiAh</h2>
+          <h3 id="title" class="hidden-xs hidden-sm hidden-md">author title</h3>
+          <small id="location" class="text-muted hidden-xs hidden-sm"><i class="icon icon-map-marker"></i>Shanghai, China</small>
+        </div><div class="search" id="search-form-wrap">
+    <form class="search-form sidebar-form">
+        <div class="input-group">
+            <input type="text" class="search-form-input form-control" placeholder="Search" />
+            <span class="input-group-btn">
+                <button type="submit" class="search-form-submit btn btn-flat" onclick="return false;"><i
+                        class="icon icon-search"></i></button>
+            </span>
+        </div>
+        <div class="ins-search">
+            <div class="ins-search-mask"></div>
+            <div class="ins-search-container">
+                <div class="ins-input-wrapper">
+                    <input type="text" class="ins-search-input" placeholder="Type something..."
+                        x-webkit-speech />
+                    <button type="button" class="close ins-close ins-selectable" data-dismiss="modal"
+                        aria-label="Close"><span aria-hidden="true">×</span></button>
+                </div>
+                <div class="ins-section-wrapper">
+                    <div class="ins-section-container"></div>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+        <button class="navbar-toggle collapsed" type="button" data-toggle="collapse" data-target="#main-navbar" aria-controls="main-navbar" aria-expanded="false">
+          <span class="sr-only">Toggle navigation</span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+      </div>
+      <nav id="main-navbar" class="collapse navbar-collapse" itemscope itemtype="http://schema.org/SiteNavigationElement" role="navigation">
+        <ul class="nav navbar-nav main-nav">
+            <li class="menu-item menu-item-home">
+                <a href="/">
+                    <i class="icon icon-home-fill"></i>
+                  <span class="menu-title">Home</span>
+                </a>
+            </li>
+            <li class="menu-item menu-item-archives">
+                <a href="/posts/">
+                    <i class="icon icon-archives-fill"></i>
+                  <span class="menu-title">Archives</span>
+                </a>
+            </li>
+            <li class="menu-item menu-item-categories">
+                <a href="/categories/">
+                    <i class="icon icon-folder"></i>
+                  <span class="menu-title">Categories</span>
+                </a>
+            </li>
+            <li class="menu-item menu-item-tags">
+                <a href="/tags/">
+                    <i class="icon icon-tags"></i>
+                  <span class="menu-title">Tags</span>
+                </a>
+            </li>
+            <li class="menu-item menu-item-about">
+                <a href="/about/">
+                    <i class="icon icon-cup-fill"></i>
+                  <span class="menu-title">About</span>
+                </a>
+            </li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+<aside class="sidebar" itemscope itemtype="http://schema.org/WPSideBar">
+  <div class="slimContent">
+    
+      <div class="widget">
+    <h3 class="widget-title">Board</h3>
+    <div class="widget-body">
+        <div id="board">
+            <div class="content"><p>enjoy~</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+      <div class="widget">
+    <h3 class="widget-title"> Categories</h3>
+    <div class="widget-body">
+        <ul class="category-list">
+            <li class="category-list-item"><a href="https://www.luyang.ink/categories/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" class="category-list-link">学习笔记</a><span class="category-list-count">16</span></li>
+            <li class="category-list-item"><a href="https://www.luyang.ink/categories/%E5%B7%A5%E5%85%B7/" class="category-list-link">工具</a><span class="category-list-count">1</span></li>
+        </ul>
+    </div>
+</div>
+      <div class="widget">
+    <h3 class="widget-title"> Tags</h3>
+    <div class="widget-body">
+        <ul class="tag-list">
+            
+            
+            <li class="tag-list-item"><a href="https://www.luyang.ink/tags/c/" class="tag-list-link">c</a><span
+                    class="tag-list-count">5</span></li>
+            
+            
+            <li class="tag-list-item"><a href="https://www.luyang.ink/tags/go/" class="tag-list-link">go</a><span
+                    class="tag-list-count">2</span></li>
+            
+            
+            <li class="tag-list-item"><a href="https://www.luyang.ink/tags/homebrew/" class="tag-list-link">homebrew</a><span
+                    class="tag-list-count">1</span></li>
+            
+            
+            <li class="tag-list-item"><a href="https://www.luyang.ink/tags/mysql/" class="tag-list-link">mysql</a><span
+                    class="tag-list-count">8</span></li>
+            
+            
+            <li class="tag-list-item"><a href="https://www.luyang.ink/tags/php/" class="tag-list-link">php</a><span
+                    class="tag-list-count">1</span></li>
+            
+        </ul>
+
+    </div>
+</div>
+      
+<div class="widget">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget-body">
+        <ul class="recent-post-list list-unstyled no-thumbnail">
+            <li>
+                <div class="item-inner">
+                    <p class="item-title">
+                        <a href="https://www.luyang.ink/2016/11/mysql-server-turning/" class="title">MySQL Server调优</a>
+                    </p>
+                    <p class="item-date">
+                        <time datetime="2016-11-04 23:04:23 &#43;0800 CST" itemprop="datePublished">2016-11-04</time>
+                    </p>
+                </div>
+            </li>
+            <li>
+                <div class="item-inner">
+                    <p class="item-title">
+                        <a href="https://www.luyang.ink/2016/10/mysql-explain/" class="title">MySQL EXPLAIN</a>
+                    </p>
+                    <p class="item-date">
+                        <time datetime="2016-10-25 21:07:41 &#43;0800 CST" itemprop="datePublished">2016-10-25</time>
+                    </p>
+                </div>
+            </li>
+            <li>
+                <div class="item-inner">
+                    <p class="item-title">
+                        <a href="https://www.luyang.ink/2016/10/mysql-innode-rep/" class="title">MySQL 之 InnoDB . 复制</a>
+                    </p>
+                    <p class="item-date">
+                        <time datetime="2016-10-11 21:07:41 &#43;0800 CST" itemprop="datePublished">2016-10-11</time>
+                    </p>
+                </div>
+            </li>
+            <li>
+                <div class="item-inner">
+                    <p class="item-title">
+                        <a href="https://www.luyang.ink/2016/10/mysql-innodb-trx/" class="title">MySQL 之 InnoDB . 事务</a>
+                    </p>
+                    <p class="item-date">
+                        <time datetime="2016-10-06 10:22:35 &#43;0800 CST" itemprop="datePublished">2016-10-06</time>
+                    </p>
+                </div>
+            </li>
+            <li>
+                <div class="item-inner">
+                    <p class="item-title">
+                        <a href="https://www.luyang.ink/2016/10/mysql-innodb-lock/" class="title">MySQL 之 InnoDB . 锁</a>
+                    </p>
+                    <p class="item-date">
+                        <time datetime="2016-10-05 16:12:43 &#43;0800 CST" itemprop="datePublished">2016-10-05</time>
+                    </p>
+                </div>
+            </li>
+        </ul>
+    </div>
+</div>
+  </div>
+</aside>
+
+    
+    
+<aside class="sidebar sidebar-toc collapse" id="collapseToc" itemscope itemtype="http://schema.org/WPSideBar">
+  <div class="slimContent">
+    <h4 class="toc-title">Catalogue</h4>
+    <nav id="toc" class="js-toc toc">
+
+    </nav>
+  </div>
+</aside>
+<main class="main" role="main"><div class="content">
+  <article id="-" class="article article-type-" itemscope
+    itemtype="http://schema.org/BlogPosting">
+    
+    <div class="article-header">
+      <h1 itemprop="name">
+  <a
+    class="article-title"
+    href="/2016/08/mysql-innodb/"
+    >MySQL 之 InnoDB . 初见</a
+  >
+</h1>
+
+      <div class="article-meta">
+        
+<span class="article-date">
+  <i class="icon icon-calendar-check"></i>&nbsp;
+<a href="https://www.luyang.ink/2016/08/mysql-innodb/" class="article-date">
+  <time datetime="2016-08-24 22:43:39 &#43;0800 CST" itemprop="datePublished">2016-08-24</time>
+</a>
+</span>
+<span class="article-category">
+  <i class="icon icon-folder"></i>&nbsp;
+  <a class="article-category-link" href="/categories/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/"> 学习笔记 </a>
+</span>  
+  <span class="article-tag">
+    <i class="icon icon-tags"></i>&nbsp;
+    <a class="article-tag-link" href="/tags/mysql/"> MySQL </a>
+  </span>
+
+        <span class="post-comment"><i class="icon icon-comment"></i>&nbsp;<a href="/2016/08/mysql-innodb/#comments"
+            class="article-comment-link">Comments</a></span>
+		<span class="post-wordcount hidden-xs" itemprop="wordCount">Word Count: 828words</span>
+		<span class="post-readcount hidden-xs" itemprop="timeRequired">Read Count: 2minutes </span>
+      </div>
+    </div>
+    <div class="article-entry marked-body js-toc-content" itemprop="articleBody">
+      <p>InnoDB 存储引擎支持事务, 其设计目的主要面向在线事务处理(OLTP)的应用. 其特点是行锁, 外键, 非锁定读等, MySQL在5.5.8版本后将其设为默认存储引擎.</p>
+<h2 id="体系结构">体系结构</h2>
+<p>InnoDB 存储引擎架构由 内存中(in-memory) 和 磁盘上(on-disk) 2部分结构组成</p>
+<p><img src="/images/innodb-architecture.png" alt="">
+图片中是 MySQL 5.7 中 InnoDB 的体系结构</p>
+<h3 id="in-memory-结构">in-memory 结构</h3>
+<h4 id="缓冲池-buffer-pool">缓冲池 Buffer Pool</h4>
+<p>缓冲池是主内存中的一个区域, InnoDB在访问表和索引数据时会在其中进行缓存, 用来减轻CPU速度与磁盘速度的差异, 提高数据库的整体性能. 在专用服务器上, 通常将多达80％的物理内存分配给缓冲池.</p>
+<p>缓冲池被分成一个一个的page, 每个page可以存储多条rows. 缓冲池用List来管理这些page, 使用LRU算法变体淘汰最近很少使用的数据, 如下图:</p>
+<p><img src="/images/innodb-buffer-pool-list.png" alt=""></p>
+<ul>
+<li>New Sublist: 最近访问的pages, 在 List 的 Head</li>
+<li>Old Sublist: 最近很少访问的pages, 在 List 的 Tail</li>
+</ul>
+<p>Old Sublist 占用 3/8 的空间, 以 New Sublist 的 Tail 与其 Head 做 midpoint</p>
+<p>InnoDB 将读取的数据放入缓冲池时, 先将其放在 midpoint(old sublist 的 head), 这样操作可以防止一些数据库的操作, 例如:mysqldump命令, 将 New Sublist 中的热点数据刷掉</p>
+<p>可以通过 <code>SHOW ENGINE INNODB STATUS</code> 查看 InnoDB 相关信息</p>
+<pre><code>----------------------
+BUFFER POOL AND MEMORY
+----------------------
+Total large memory allocated 2198863872
+Dictionary memory allocated 776332
+Buffer pool size   131072
+Free buffers       124908
+Database pages     5720
+Old database pages 2071
+Modified db pages  910
+Pending reads 0
+Pending writes: LRU 0, flush list 0, single page 0
+Pages made young 4, not young 0
+0.10 youngs/s, 0.00 non-youngs/s
+Pages read 197, created 5523, written 5060
+0.00 reads/s, 190.89 creates/s, 244.94 writes/s
+Buffer pool hit rate 1000 / 1000, young-making rate 0 / 1000 not
+0 / 1000
+Pages read ahead 0.00/s, evicted without access 0.00/s, Random read
+ahead 0.00/s
+LRU len: 5720, unzip_LRU len: 0
+I/O sum[0]:cur[0], unzip sum[0]:cur[0]
+</code></pre>
+<h4 id="变更缓冲区-change-buffer">变更缓冲区 Change Buffer</h4>
+<p>变更缓冲区中有 Insert Buffer, Update Buffer, Delete Buffer</p>
+<p>由于二级索引(secondary index)的插入/更新/删除操作不是每一次都直接插入到索引页中, 而是先判断该页是否在缓冲池中, 若在, 则直接操作; 若不在, 则跟根据操作放到对应的  Buffer 中, 之后再周期性的将其merge后加载到 buffer pool 中</p>
+<p><img src="/images/innodb-change-buffer.png" alt=""></p>
+<h4 id="自适应hash索引-adaptive-hash-index">自适应Hash索引 Adaptive Hash Index</h4>
+<p>InnoDB 会根据数据访问的频率和模式来自动的为某些热点数据建立Hash索引, 这是数据库自优化的(self-tuning), 无需人为干涉</p>
+<h4 id="日志缓冲区-log-buffer">日志缓冲区 Log Buffer</h4>
+<p>日志缓冲区保存要写入磁盘上的日志文件的数据. 增大 Log Buffer, 可以让Update, Delete操作大量数据的事物正常进行</p>
+    </div>
+    <div class="article-footer">
+<blockquote class="mt-2x">
+  <ul class="post-copyright list-unstyled">
+    <li class="post-copyright-link hidden-xs">
+      <strong>Permalink: </strong>
+      <a href="https://www.luyang.ink/2016/08/mysql-innodb/" title="MySQL 之 InnoDB . 初见" target="_blank" rel="external">https://www.luyang.ink/2016/08/mysql-innodb/</a>
+    </li>
+    <li class="post-copyright-license">
+      <strong>License：</strong><a href="http://creativecommons.org/licenses/by/4.0/deed.zh" target="_blank" rel="external">CC BY 4.0 CN</a>
+    </li>
+  </ul>
+</blockquote>
+
+<div class="panel panel-default panel-badger">
+  <div class="panel-body">
+    <figure class="media">
+      <div class="media-left">
+        <a href="https://github.com/xiaoheiAh" target="_blank" class="img-burn thumb-sm visible-lg">
+          <img src="https://www.luyang.ink/avatar.png" class="img-rounded w-full" alt="">
+        </a>
+      </div>
+      <div class="media-body">
+        <h3 class="media-heading"><a href="https://github.com/xiaoheiAh" target="_blank"><span class="text-dark">xiaoheiAh</span><small class="ml-1x">author title</small></a></h3>
+        <div>Good Good Study, Day Day Up~</div>
+      </div>
+    </figure>
+  </div>
+</div>
+    </div>
+  </article>
+<section id="comments">
+</section>
+
+</div><nav class="bar bar-footer clearfix" data-stick-bottom>
+    <div class="bar-inner">
+        <ul class="pager pull-left">
+            <li class="prev">
+                <a href="https://www.luyang.ink/2016/07/homebrew-proxy/" title="Homebrew设置代理"><i
+                        class="icon icon-angle-left"
+                        aria-hidden="true"></i><span>&nbsp;&nbsp;Older</span></a>
+            </li>
+            <li class="next">
+                <a href="https://www.luyang.ink/2016/09/mysql-innodb-table/"
+                    title="MySQL 之 InnoDB . 表"><span>Newer&nbsp;&nbsp;</span><i
+                        class="icon icon-angle-right" aria-hidden="true"></i></a>
+            </li>
+            
+            <li class="toggle-toc">
+                <a class="toggle-btn collapsed" data-toggle="collapse" href="#collapseToc" aria-expanded="false"
+                    title="Catalogue" role="button">
+                    <span>[&nbsp;</span><span>Catalogue</span>
+                    <i class="text-collapsed icon icon-anchor"></i>
+                    <i class="text-in icon icon-close"></i>
+                    <span>]</span>
+                </a>
+            </li>
+        </ul>
+        <div class="bar-right">
+            <div class="share-component" data-sites="weibo,qq,wechat,facebook,twitter"
+                data-mobile-sites="weibo,qq,qzone"></div>
+        </div>
+    </div>
+</nav>
+
+</main><footer class="footer" itemscope itemtype="http://schema.org/WPFooter">
+<ul class="social-links">
+    <li><a href="https://github.com/xiaoheiAh" target="_blank" title="github" data-toggle=tooltip data-placement=top >
+            <i class="icon icon-github"></i></a></li>
+    <li><a href="https://www.luyang.ink/index.xml" target="_blank" title="rss" data-toggle=tooltip data-placement=top >
+            <i class="icon icon-rss"></i></a></li>
+</ul>
+  <div class="copyright">
+    &copy;2017  -
+    2020
+    <div class="publishby">
+        Theme by <a href="https://github.com/xiaoheiAh" target="_blank"> xiaoheiAh </a>base on<a href="https://github.com/xiaoheiAh/hugo-theme-pure" target="_blank"> pure</a>.
+    </div>
+  </div>
+</footer>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.2/MathJax.js?config=TeX-MML-AM_SVG"></script>
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+            showMathMenu: false, //disables context menu
+            tex2jax: {
+            inlineMath: [ ['$','$'], ['\\(','\\)'] ]
+           }
+    });
+</script>
+
+
+<script src="https://cdn.jsdelivr.net/npm/jquery@3.4.1/dist/jquery.min.js"></script>
+<script>
+    window.jQuery || document.write('<script src="js/jquery.min.js"><\/script>')
+</script>
+<script type="text/javascript" src="https://cdn.staticfile.org/highlight.js/9.15.10/highlight.min.js"></script>
+<script type="text/javascript" src="https://cdn.staticfile.org/highlight.js/9.15.10/languages/python.min.js" defer></script>
+<script type="text/javascript" src="https://cdn.staticfile.org/highlight.js/9.15.10/languages/javascript.min.js" defer></script><script>
+    hljs.configure({
+        tabReplace: '    ', 
+        classPrefix: ''     
+        
+    })
+    hljs.initHighlightingOnLoad();
+</script>
+<script src="https://www.luyang.ink/js/application.min.bdeb64b910570b6c41badc6a05b7afb0c8ad9efd8525de3c7257d59e786326a3.js"></script>
+<script src="https://www.luyang.ink/js/plugin.min.51ff8c7317566f82259170fa36e09c4493adc9b9378b427a01ad3f017ebac7dd.js"></script>
+
+<script>
+    (function (window) {
+        var INSIGHT_CONFIG = {
+            TRANSLATION: {
+                POSTS: 'Posts',
+                PAGES: 'Pages',
+                CATEGORIES: 'Categories',
+                TAGS: 'Tags',
+                UNTITLED: '(Untitled)',
+            },
+            ROOT_URL: 'https:\/\/www.luyang.ink\/',
+            CONTENT_URL: 'https:\/\/www.luyang.ink\/\/searchindex.json ',
+        };
+        window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+    })(window);
+</script>
+<script type="text/javascript" src="https://www.luyang.ink/js/insight.min.a343cd9a5a7698336b28ef3a7c16a3a1b1d2d5fb17dc8ed04022bbe08cc5459073a15bdafa3a8a58cdd56080784bdd69fa70b1ae8597565c799c57ed00f0e120.js" defer></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/tocbot/4.4.2/tocbot.min.js"></script>
+<script>
+    tocbot.init({
+        
+        tocSelector: '.js-toc',
+        
+        contentSelector: '.js-toc-content',
+        
+        headingSelector: 'h1, h2, h3',
+        
+        hasInnerContainers: true,
+    });
+</script>
+
+
+  </body>
+</html>
