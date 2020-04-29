@@ -68,6 +68,21 @@
   </url>
   
   <url>
+    <loc>https://www.luyang.ink/posts/drivie-license/</loc>
+    <lastmod>2016-08-14T12:51:41+08:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://www.luyang.ink/tags/%E7%94%9F%E6%B4%BB/</loc>
+    <lastmod>2016-08-14T12:51:41+08:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://www.luyang.ink/tags/%E9%A9%BE%E7%85%A7/</loc>
+    <lastmod>2016-08-14T12:51:41+08:00</lastmod>
+  </url>
+  
+  <url>
     <loc>https://www.luyang.ink/tags/homebrew/</loc>
     <lastmod>2016-07-19T22:51:41+08:00</lastmod>
   </url>
@@ -139,7 +154,12 @@
   
   <url>
     <loc>https://www.luyang.ink/tags/php/</loc>
-    <lastmod>2014-11-03T22:20:49+20:02</lastmod>
+    <lastmod>2015-12-04T19:48:21+08:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://www.luyang.ink/posts/php7-released/</loc>
+    <lastmod>2015-12-04T19:48:21+08:00</lastmod>
   </url>
   
   <url>

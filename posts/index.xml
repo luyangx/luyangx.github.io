@@ -84,12 +84,21 @@
     </item>
     
     <item>
-      <title>Homebrew设置代理</title>
+      <title>热乎的驾照</title>
+      <link>https://www.luyang.ink/posts/drivie-license/</link>
+      <pubDate>Sun, 14 Aug 2016 12:51:41 +0800</pubDate>
+      
+      <guid>https://www.luyang.ink/posts/drivie-license/</guid>
+      <description>&lt;p&gt;从今年4月份报名开始, 经历了整个夏天, 久违的驾照终于到手了. 科目1到科目4竟然都是一把过, 这你能受的了吗, 😄~~&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>Homebrew 设置代理</title>
       <link>https://www.luyang.ink/posts/homebrew-proxy/</link>
       <pubDate>Tue, 19 Jul 2016 22:51:41 +0800</pubDate>
       
       <guid>https://www.luyang.ink/posts/homebrew-proxy/</guid>
-      <description>&lt;p&gt;由于国情, homebrew update/install非常缓慢, 还是不是遇到链接超时问题. 虽然可以缓存国内的源, 更新是快了,
+      <description>&lt;p&gt;由于国情, &lt;code&gt;homebrew update/install&lt;/code&gt; 非常缓慢, 还是不是遇到链接超时问题. 虽然可以缓存国内的源, 更新是快了,
 不过下载还是鸟样, 治标不治本&lt;/p&gt;</description>
     </item>
     
@@ -163,6 +172,15 @@
       
       <guid>https://www.luyang.ink/posts/structure/</guid>
       <description>&lt;p&gt;&amp;laquo;C in a Nutshell&amp;raquo;笔记 - 结构体&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>PHP7 发布了</title>
+      <link>https://www.luyang.ink/posts/php7-released/</link>
+      <pubDate>Fri, 04 Dec 2015 19:48:21 +0800</pubDate>
+      
+      <guid>https://www.luyang.ink/posts/php7-released/</guid>
+      <description>&lt;p&gt;今天看到鸟哥(&lt;a href=&#34;https://www.laruence.com/&#34;&gt;惠新宸&lt;/a&gt;)微信公众号的一篇 &lt;a href=&#34;https://mp.weixin.qq.com/s?__biz=MzIwNDExMjIzNA==&amp;amp;mid=401036257&amp;amp;idx=1&amp;amp;sn=f2272863c3bd1d9404f0da677c0a232d&amp;amp;scene=23&amp;amp;srcid=1202GHLzDus0AHfkcgCwIbfq#rd&#34;&gt;写在PHP7发布之际一些话&lt;/a&gt;, 感觉 PHPer 又行了😄&lt;/p&gt;</description>
     </item>
     
     <item>
