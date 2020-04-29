@@ -94,12 +94,21 @@
     </item>
     
     <item>
+      <title>Go 语言基础 . 面向并发的内存模型</title>
+      <link>https://www.luyang.ink/posts/go-basic-concurrence/</link>
+      <pubDate>Thu, 28 Apr 2016 22:15:41 +0800</pubDate>
+      
+      <guid>https://www.luyang.ink/posts/go-basic-concurrence/</guid>
+      <description>&lt;p&gt;记录一下学习 &lt;a href=&#34;https://legacy.gitbook.com/book/chai2010/advanced-go-programming-book&#34;&gt;《Go语言高级编程》&lt;/a&gt; 中的函数、方法和接口&lt;/p&gt;</description>
+    </item>
+    
+    <item>
       <title>Go 语言基础 . 函数、方法和接口</title>
       <link>https://www.luyang.ink/posts/go-basic-func-method-interface/</link>
       <pubDate>Tue, 26 Apr 2016 21:03:56 +0800</pubDate>
       
       <guid>https://www.luyang.ink/posts/go-basic-func-method-interface/</guid>
-      <description>&lt;p&gt;记录一下 Go 语言中的函数、方法和接口&lt;/p&gt;</description>
+      <description>&lt;p&gt;记录一下学习 &lt;a href=&#34;https://legacy.gitbook.com/book/chai2010/advanced-go-programming-book&#34;&gt;《Go语言高级编程》&lt;/a&gt; 中的函数、方法和接口&lt;/p&gt;</description>
     </item>
     
     <item>
@@ -108,7 +117,7 @@
       <pubDate>Sat, 23 Apr 2016 19:21:34 +0800</pubDate>
       
       <guid>https://www.luyang.ink/posts/go-basic-array-string-slice/</guid>
-      <description>&lt;p&gt;记录一下 Go 语言中的数据结构 . 数组、字符串和切片&lt;/p&gt;</description>
+      <description>&lt;p&gt;记录一下学习 &lt;a href=&#34;https://legacy.gitbook.com/book/chai2010/advanced-go-programming-book&#34;&gt;《Go语言高级编程》&lt;/a&gt; 中的数据结构 . 数组、字符串和切片&lt;/p&gt;</description>
     </item>
     
     <item>

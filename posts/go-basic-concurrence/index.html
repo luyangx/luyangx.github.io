@@ -7,7 +7,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="format-detection" content="telephone=no"/>
 
-    <title>Go | 扬</title>
+    <title>Go 语言基础 . 面向并发的内存模型 | 扬</title>
     
     <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
     <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
@@ -28,8 +28,6 @@
     
     
  
-    
-    <link rel="alternate" type="application/rss+xml" href="https://www.luyang.ink/tags/go/index.xml" title="扬" />
     </head>
 
     <body>
@@ -144,59 +142,141 @@
         <div id="content" class="content-container">
         
 
-  <h1>Tagged "Go"</h1>
-  
-  
+<h1 class="post-title">Go 语言基础 . 面向并发的内存模型</h1>
     
-    <article>
-            <h2>
-                <a href="https://www.luyang.ink/posts/go-basic-concurrence/">
-                    Go 语言基础 . 面向并发的内存模型
-                </a>
-            </h2>
-            <div>
-                <p><p>记录一下学习 <a href="https://legacy.gitbook.com/book/chai2010/advanced-go-programming-book">《Go语言高级编程》</a> 中的函数、方法和接口</p></p>
-                
-            </div>
-            <div class="post-footer">
-            <time>April 28, 2016</time>
-            </div> 
-        </article>
+    <time>April 28, 2016</time>
     
-  
+    <div>
+        <p>
+        <p>记录一下学习 <a href="https://legacy.gitbook.com/book/chai2010/advanced-go-programming-book">《Go语言高级编程》</a> 中的函数、方法和接口</p>
+<p>常见的并行编程有多种模型，主要有多线程、消息传递等. 主流编程语言基本都是多线程, 较少支持基于消息的并发, Erlang 是支持基于消息传递并发编程模型的代表, 对 Erlang 感兴趣可以看一下 <a href="https://learnyousomeerlang.com/">《Learn You Some Erlang for Great Good》</a>, Erlang 的并发之间不共享内存. Go是基于消息并发模型的集大成者, 基于 <a href="https://en.wikipedia.org/wiki/Communicating_sequential_processes">CSP模型</a> 的并发编程内置到了语言中, 通过一个 go 关键字, 可以轻易地启动一个 Goroutine, 与 Erlang 不同的是, Go 的 Goroutine 之间是共享内存的.</p>
+<h2 id="goroutine-和-系统线程">Goroutine 和 系统线程</h2>
+<p>Goroutine 是 Go 的并发体, 是一种轻量级的线程, 由 go 关键字启动. 与系统线程不等价.  一个用户态, 一个在内核. 首先系统级线程都会有一个固定大小的栈(一般默认2MB), 固定栈大小可能会面临空间浪费或栈溢出. 相反 Goroutine 是可以动态调整栈大小的.</p>
+<p>Go 有自己的调度器, 可以在 n 个操作系统线程上调度 m 个 Goroutine. Goroutine 采用半抢占式的协作调度, 只有当 Groutine 发生阻塞时才会导致调度. 运行时又一个 <code>runtime.GOMAXPROCS</code> 变量, 用于控制当前运行非阻塞 Goroutine 的系统线程数.</p>
+<h2 id="原子操作">原子操作</h2>
+<p>最小的且不可并行化的操作. 标准库的 <code>sync/atomic</code> 包对原子操作提供了支持.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#f92672">import</span> (
+    <span style="color:#e6db74">&#34;sync&#34;</span>
+    <span style="color:#e6db74">&#34;sync/atomic&#34;</span>
+)
+
+<span style="color:#66d9ef">var</span> <span style="color:#a6e22e">total</span> <span style="color:#66d9ef">uint64</span>
+
+<span style="color:#66d9ef">func</span> <span style="color:#a6e22e">main</span>() {
+    <span style="color:#66d9ef">var</span> <span style="color:#a6e22e">wg</span> <span style="color:#a6e22e">sync</span>.<span style="color:#a6e22e">WaitGroup</span>
+    <span style="color:#a6e22e">wg</span>.<span style="color:#a6e22e">Add</span>(<span style="color:#ae81ff">2</span>)
     
-    <article>
-            <h2>
-                <a href="https://www.luyang.ink/posts/go-basic-func-method-interface/">
-                    Go 语言基础 . 函数、方法和接口
-                </a>
-            </h2>
-            <div>
-                <p><p>记录一下学习 <a href="https://legacy.gitbook.com/book/chai2010/advanced-go-programming-book">《Go语言高级编程》</a> 中的函数、方法和接口</p></p>
-                
-            </div>
-            <div class="post-footer">
-            <time>April 26, 2016</time>
-            </div> 
-        </article>
+    <span style="color:#66d9ef">go</span> <span style="color:#a6e22e">work</span>(<span style="color:#f92672">&amp;</span><span style="color:#a6e22e">wg</span>)
+    <span style="color:#66d9ef">go</span> <span style="color:#a6e22e">work</span>(<span style="color:#f92672">&amp;</span><span style="color:#a6e22e">wg</span>)
+    <span style="color:#a6e22e">wg</span>.<span style="color:#a6e22e">wait</span>()
+}
+
+<span style="color:#66d9ef">func</span> <span style="color:#a6e22e">worker</span>(<span style="color:#a6e22e">wg</span> <span style="color:#f92672">*</span><span style="color:#a6e22e">sync</span>.<span style="color:#a6e22e">WaitGroup</span>) {
+    <span style="color:#66d9ef">defer</span> <span style="color:#a6e22e">wg</span>.<span style="color:#a6e22e">Done</span>()
     
-  
+    <span style="color:#66d9ef">var</span> <span style="color:#a6e22e">i</span> <span style="color:#66d9ef">uint64</span>
+    <span style="color:#66d9ef">for</span> <span style="color:#a6e22e">i</span> = <span style="color:#ae81ff">0</span>; <span style="color:#a6e22e">i</span> <span style="color:#f92672">&lt;=</span> <span style="color:#ae81ff">100</span>; <span style="color:#a6e22e">i</span><span style="color:#f92672">++</span> {
+        <span style="color:#a6e22e">atomic</span>.<span style="color:#a6e22e">AddUint64</span>(<span style="color:#f92672">&amp;</span><span style="color:#a6e22e">total</span>, <span style="color:#a6e22e">i</span>)
+    }
+}
+</code></pre></div><p><code>atomic.AddUint64</code> 函数调用保证了 total 的读取/更新/保存是一个原子操作, 因此在多线程中访问也是安全的.</p>
+<h2 id="顺序一致性内存模型">顺序一致性内存模型</h2>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#66d9ef">func</span> <span style="color:#a6e22e">main</span>() {
+    <span style="color:#66d9ef">go</span> println(<span style="color:#e6db74">&#34;你好, 世界&#34;</span>)
+}
+</code></pre></div><p>main 函数退出时程序结束, 不会等待任何后台线程. 因为 Goroutine 的执行和 main 函数的返回事件是并发的, 什么时候打印, 能否打印都是未知的. 可以通过同步原语来给两个事件明确排序：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#66d9ef">func</span> <span style="color:#a6e22e">main</span>() {
+    <span style="color:#a6e22e">done</span> <span style="color:#f92672">:=</span> make(<span style="color:#66d9ef">chan</span> <span style="color:#66d9ef">int</span>)
+
+    <span style="color:#66d9ef">go</span> <span style="color:#66d9ef">func</span>(){
+        println(<span style="color:#e6db74">&#34;你好, 世界&#34;</span>)
+        <span style="color:#a6e22e">done</span> <span style="color:#f92672">&lt;-</span> <span style="color:#ae81ff">1</span>
+    }()
+
+    <span style="color:#f92672">&lt;-</span><span style="color:#a6e22e">done</span>
+}
+</code></pre></div><p>当 <code>&lt;-done</code> 执行时, 必然要求 <code>done &lt;- 1</code> 也已经执行. 根据同一个 Gorouine 依然满足顺序一致性规则, 我们可以判断当 <code>done &lt;- 1</code> 执行时, <code>println(&quot;你好, 世界&quot;)</code> 语句必然已经执行完成了. 因此, 现在的程序确保可以正常打印结果.</p>
+<h2 id="初始化顺序">初始化顺序</h2>
+<p>Go程序初始化总是从 main.main 函数开始. 导入包的初始化是由内到外的, 根据 init 函数出现的顺序进行初始化的. 多次导入的包, 只会导入一次. 在 main 包的所有包常量/包变量被创建和初始化, 并且 init 函数被执行完后, 才会进入 main.main 函数, 程序才会开始执行, 如下示意图:</p>
+<p><img src="/images/go-pkg-init-flow.png" alt=""></p>
+<p>main.main 函数执行之前, 所有代码都允许在同一个 Goroutine 中, 如果某个 init 中用 go 启动了新的 Goroutine, 那么它跟 main.main 是并发执行的</p>
+<h2 id="gorouting-的创建">Gorouting 的创建</h2>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#66d9ef">var</span> <span style="color:#a6e22e">a</span> <span style="color:#66d9ef">string</span>
+
+<span style="color:#66d9ef">func</span> <span style="color:#a6e22e">f</span>() {
+    print(<span style="color:#a6e22e">a</span>)
+}
+
+<span style="color:#66d9ef">func</span> <span style="color:#a6e22e">hello</span>() {
+    <span style="color:#a6e22e">a</span> = <span style="color:#e6db74">&#34;hello, world&#34;</span>
+    <span style="color:#66d9ef">go</span> <span style="color:#a6e22e">f</span>()
+}
+</code></pre></div><p>执行 <code>go f()</code> 创建 Goroutine 和 hello 函数是在同一个 Goroutine 中执行且 Goroutine 的创建发生在 hello 函数返回之前, 但新创建 Goroutine 和 hello 函数是并发的.</p>
+<h2 id="基于-channel-的通信">基于 channel 的通信</h2>
+<p>Channel 通信是在 Goroutine 之间进行同步的主要方法. Channel 分为无缓存和有缓存.</p>
+<ul>
+<li><strong>无缓存的 Channel 上的发送操作总在对应的接收操作完成前发生.</strong></li>
+<li><strong>对于从无缓冲 Channel 进行的接收, 发生在对该 Channel 进行的发送完成之前.</strong></li>
+</ul>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#66d9ef">var</span> <span style="color:#a6e22e">done</span> = make(<span style="color:#66d9ef">chan</span> <span style="color:#66d9ef">bool</span>)
+<span style="color:#66d9ef">var</span> <span style="color:#a6e22e">msg</span> <span style="color:#66d9ef">string</span>
+
+<span style="color:#66d9ef">func</span> <span style="color:#a6e22e">aGoroutine</span>() {
+    <span style="color:#a6e22e">msg</span> = <span style="color:#e6db74">&#34;你好, 世界&#34;</span>
+    <span style="color:#a6e22e">done</span> <span style="color:#f92672">&lt;-</span> <span style="color:#66d9ef">true</span>
+}
+
+<span style="color:#66d9ef">func</span> <span style="color:#a6e22e">main</span>() {
+    <span style="color:#66d9ef">go</span> <span style="color:#a6e22e">aGoroutine</span>()
+    <span style="color:#f92672">&lt;-</span><span style="color:#a6e22e">done</span>
+    println(<span style="color:#a6e22e">msg</span>)
+}
+</code></pre></div><p>可保证打印出 &ldquo;你好, 世界&rdquo;. 该程序首先对 msg 进行赋值, 然后在 done 管道上发送同步信号, 随后从 done 接收对应的同步信号. 最后执行 println 函数.</p>
+<p>关闭 Channel 后继续从中接收数据, 接收者会收到该 Channel 返回的零值.</p>
+<ul>
+<li><strong>对于带缓冲的 Channel, 第 K 个接收完成操作发生在第 K+C 个发送操作完成之前, 其中 C 是 Channel 的缓存大小.</strong></li>
+</ul>
+<p>可以根据控制 Channel 的缓存大小来控制并发执行的 Goroutine 的最大数目, 例如:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#66d9ef">var</span> <span style="color:#a6e22e">limit</span> = make(<span style="color:#66d9ef">chan</span> <span style="color:#66d9ef">int</span>, <span style="color:#ae81ff">3</span>)
+
+<span style="color:#66d9ef">func</span> <span style="color:#a6e22e">main</span>() {
+    <span style="color:#66d9ef">for</span> <span style="color:#a6e22e">_</span>, <span style="color:#a6e22e">w</span> <span style="color:#f92672">:=</span> <span style="color:#66d9ef">range</span> <span style="color:#a6e22e">work</span> {
+        <span style="color:#66d9ef">go</span> <span style="color:#66d9ef">func</span>(<span style="color:#a6e22e">w</span> <span style="color:#66d9ef">func</span>()) {
+            <span style="color:#a6e22e">limit</span> <span style="color:#f92672">&lt;-</span> <span style="color:#ae81ff">1</span>
+            <span style="color:#a6e22e">w</span>()
+            <span style="color:#f92672">&lt;-</span><span style="color:#a6e22e">limit</span>
+        }(<span style="color:#a6e22e">w</span>)
+    }
+    <span style="color:#66d9ef">select</span>{}
+}
+
+<span style="color:#66d9ef">var</span> <span style="color:#a6e22e">work</span> = []<span style="color:#66d9ef">func</span>(){
+    <span style="color:#66d9ef">func</span>() { println(<span style="color:#e6db74">&#34;1&#34;</span>); <span style="color:#a6e22e">time</span>.<span style="color:#a6e22e">Sleep</span>(<span style="color:#ae81ff">1</span> <span style="color:#f92672">*</span> <span style="color:#a6e22e">time</span>.<span style="color:#a6e22e">Second</span>) },
+    <span style="color:#66d9ef">func</span>() { println(<span style="color:#e6db74">&#34;2&#34;</span>); <span style="color:#a6e22e">time</span>.<span style="color:#a6e22e">Sleep</span>(<span style="color:#ae81ff">1</span> <span style="color:#f92672">*</span> <span style="color:#a6e22e">time</span>.<span style="color:#a6e22e">Second</span>) },
+    <span style="color:#66d9ef">func</span>() { println(<span style="color:#e6db74">&#34;3&#34;</span>); <span style="color:#a6e22e">time</span>.<span style="color:#a6e22e">Sleep</span>(<span style="color:#ae81ff">1</span> <span style="color:#f92672">*</span> <span style="color:#a6e22e">time</span>.<span style="color:#a6e22e">Second</span>) },
+    <span style="color:#66d9ef">func</span>() { println(<span style="color:#e6db74">&#34;4&#34;</span>); <span style="color:#a6e22e">time</span>.<span style="color:#a6e22e">Sleep</span>(<span style="color:#ae81ff">1</span> <span style="color:#f92672">*</span> <span style="color:#a6e22e">time</span>.<span style="color:#a6e22e">Second</span>) },
+    <span style="color:#66d9ef">func</span>() { println(<span style="color:#e6db74">&#34;5&#34;</span>); <span style="color:#a6e22e">time</span>.<span style="color:#a6e22e">Sleep</span>(<span style="color:#ae81ff">1</span> <span style="color:#f92672">*</span> <span style="color:#a6e22e">time</span>.<span style="color:#a6e22e">Second</span>) },
+}
+</code></pre></div><h2 id="不靠谱的同步">不靠谱的同步</h2>
+<p>通过加入一个 sleep() 让程序可以&quot;正常&quot;输出结果是不靠谱的.</p>
+<p>严谨的并发程序的正确性不应该是依赖于CPU的执行速度和休眠时间等不靠谱的因素的. 严谨的并发也应该是可以静态推导出结果的: 根据线程内顺序一致性, 结合 Channel 或 sync 同步事件的可排序性来推导, 最终完成各个线程各段代码的偏序关系排序. 如果两个事件无法根据此规则来排序, 那么它们就是并发的, 也就是执行先后顺序不可靠的.</p>
+<p>解决同步问题的思路是相同的: 使用显式的同步!</p>
+        </p>
+    </div>
     
-    <article>
-            <h2>
-                <a href="https://www.luyang.ink/posts/go-basic-array-string-slice/">
-                    Go 语言基础 . 数组、字符串和切片
-                </a>
-            </h2>
-            <div>
-                <p><p>记录一下学习 <a href="https://legacy.gitbook.com/book/chai2010/advanced-go-programming-book">《Go语言高级编程》</a> 中的数据结构 . 数组、字符串和切片</p></p>
-                
-            </div>
-            <div class="post-footer">
-            <time>April 23, 2016</time>
-            </div> 
-        </article>
+
     
+
+    <div class="page-footer">
+        
+        <hr class="footer-divider">
+        
+            <a class="tag" href="/tags/go">#Go</a>
+        
+            <a class="tag" href="/tags/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0">#学习笔记</a>
+        
+      
+    </div>
 
 
         
