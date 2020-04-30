@@ -2,13 +2,12 @@
 
 <html lang="zh-cn">
     <head>
-	<meta name="generator" content="Hugo 0.69.0" />
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="format-detection" content="telephone=no"/>
 
-    <title>扬</title>
+    <title>Go 语言基础 . 错误和异常 | 扬</title>
     
     <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
     <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
@@ -29,8 +28,6 @@
     
     
  
-    
-    <link rel="alternate" type="application/rss+xml" href="https://www.luyang.ink/index.xml" title="扬" />
     </head>
 
     <body>
@@ -144,238 +141,68 @@
 
         <div id="content" class="content-container">
         
-<div class = "article-content">
-        
-        <div class="description">
-            <p>Stay Young.  😁</p>
-        </div>
-        
-        
-        
-        
-        <article>
-            <h2>
-                <a href="https://www.luyang.ink/posts/go-error-exception/">
-                    Go 语言基础 . 错误和异常
-                </a>
-            </h2>
-            <div>
-                <p><p>记录一下学习 <a href="https://legacy.gitbook.com/book/chai2010/advanced-go-programming-book">《Go语言高级编程》</a> 中的错误和异常</p></p>
-                
-            </div>
-            <div class="post-footer">
-            <time>May 5, 2018</time>
 
-            
-            
-                
-                    <a class="tag" href="/tags/go">#Go</a>
-                
-                    <a class="tag" href="/tags/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0">#学习笔记</a>
-                
-            
-            </div> 
-           
-        </article>
-        
-        <article>
-            <h2>
-                <a href="https://www.luyang.ink/posts/go-concurrent-mode%E7%9A%84%E5%89%AF%E6%9C%AC/">
-                    Go 语言基础 . 并发模式
-                </a>
-            </h2>
-            <div>
-                <p><p>记录一下学习 <a href="https://legacy.gitbook.com/book/chai2010/advanced-go-programming-book">《Go语言高级编程》</a> 中的常见并发模式</p></p>
-                
-            </div>
-            <div class="post-footer">
-            <time>April 30, 2018</time>
-
-            
-            
-                
-                    <a class="tag" href="/tags/go">#Go</a>
-                
-                    <a class="tag" href="/tags/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0">#学习笔记</a>
-                
-            
-            </div> 
-           
-        </article>
-        
-        <article>
-            <h2>
-                <a href="https://www.luyang.ink/posts/go-concurrent/">
-                    Go 语言基础 . 面向并发的内存模型
-                </a>
-            </h2>
-            <div>
-                <p><p>记录一下学习 <a href="https://legacy.gitbook.com/book/chai2010/advanced-go-programming-book">《Go语言高级编程》</a> 中的函数、方法和接口</p></p>
-                
-            </div>
-            <div class="post-footer">
-            <time>April 28, 2018</time>
-
-            
-            
-                
-                    <a class="tag" href="/tags/go">#Go</a>
-                
-                    <a class="tag" href="/tags/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0">#学习笔记</a>
-                
-            
-            </div> 
-           
-        </article>
-        
-        <article>
-            <h2>
-                <a href="https://www.luyang.ink/posts/go-func-method-interface/">
-                    Go 语言基础 . 函数、方法和接口
-                </a>
-            </h2>
-            <div>
-                <p><p>记录一下学习 <a href="https://legacy.gitbook.com/book/chai2010/advanced-go-programming-book">《Go语言高级编程》</a> 中的函数、方法和接口</p></p>
-                
-            </div>
-            <div class="post-footer">
-            <time>April 26, 2018</time>
-
-            
-            
-                
-                    <a class="tag" href="/tags/go">#Go</a>
-                
-                    <a class="tag" href="/tags/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0">#学习笔记</a>
-                
-            
-            </div> 
-           
-        </article>
-        
-        <article>
-            <h2>
-                <a href="https://www.luyang.ink/posts/go-array-string-slice/">
-                    Go 语言基础 . 数组、字符串和切片
-                </a>
-            </h2>
-            <div>
-                <p><p>记录一下学习 <a href="https://legacy.gitbook.com/book/chai2010/advanced-go-programming-book">《Go语言高级编程》</a> 中的数据结构 . 数组、字符串和切片</p></p>
-                
-            </div>
-            <div class="post-footer">
-            <time>April 23, 2018</time>
-
-            
-            
-                
-                    <a class="tag" href="/tags/go">#Go</a>
-                
-                    <a class="tag" href="/tags/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0">#学习笔记</a>
-                
-            
-            </div> 
-           
-        </article>
-        
-        <article>
-            <h2>
-                <a href="https://www.luyang.ink/posts/mysql-server-turning/">
-                    MySQL Server调优
-                </a>
-            </h2>
-            <div>
-                <p><p>衡量数据库性能的指标, 一般有2个指标: 响应时间和吞吐率. 响应时间又包括等待时间和执行时间. 调优的目的是降低响应时间, 提高吞吐率.</p></p>
-                
-            </div>
-            <div class="post-footer">
-            <time>November 4, 2016</time>
-
-            
-            
-                
-                    <a class="tag" href="/tags/mysql">#MySQL</a>
-                
-                    <a class="tag" href="/tags/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0">#学习笔记</a>
-                
-            
-            </div> 
-           
-        </article>
-        
-        <article>
-            <h2>
-                <a href="https://www.luyang.ink/posts/mysql-explain/">
-                    MySQL EXPLAIN
-                </a>
-            </h2>
-            <div>
-                <p><p>EXPLAIN 命令输出的信息可以告诉我们 MySQL 是怎么执行 SQL 语句的, 访问了哪些表, 以及如何访问数据的. 其中有很重要的索引使用信息, 可以根据此信息来判断 SQL 是否需要优化</p></p>
-                
-            </div>
-            <div class="post-footer">
-            <time>October 25, 2016</time>
-
-            
-            
-                
-                    <a class="tag" href="/tags/mysql">#MySQL</a>
-                
-                    <a class="tag" href="/tags/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0">#学习笔记</a>
-                
-            
-            </div> 
-           
-        </article>
-        
-        <article>
-            <h2>
-                <a href="https://www.luyang.ink/posts/mysql-innode-rep/">
-                    MySQL 之 InnoDB . 复制
-                </a>
-            </h2>
-            <div>
-                <p><p>学习记录 InnoDB 复制相关内容</p></p>
-                
-            </div>
-            <div class="post-footer">
-            <time>October 11, 2016</time>
-
-            
-            
-                
-                    <a class="tag" href="/tags/mysql">#MySQL</a>
-                
-                    <a class="tag" href="/tags/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0">#学习笔记</a>
-                
-            
-            </div> 
-           
-        </article>
-        
+<h1 class="post-title">Go 语言基础 . 错误和异常</h1>
+    
+    <time>May 5, 2018</time>
+    
+    <div>
+        <p>
+        <p>记录一下学习 <a href="https://legacy.gitbook.com/book/chai2010/advanced-go-programming-book">《Go语言高级编程》</a> 中的错误和异常</p>
+<p>Go中, 错误被认为是一种可以预期的结果; 而异常则是一种非预期的结果, 发生异常可能表示程序中存在 BUG 或发生了其它不可控的问题. Go语言推荐使用 recover 函数将内部异常转为错误处理, 这使得用户可以真正的关心业务相关的错误处理.</p>
+<p>捕获异常不是最终的目的. 如果异常不可预测, 直接输出异常信息是最好的处理方式.</p>
+<h2 id="错误处理策略">错误处理策略</h2>
+<p>为了提高系统的稳定性, Web 框架一般会通过 recover 来防御性地捕获所有处理流程中可能产生的异常, 然后将异常转为普通的错误返回.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#66d9ef">func</span> <span style="color:#a6e22e">ParseJSON</span>(<span style="color:#a6e22e">input</span> <span style="color:#66d9ef">string</span>) (<span style="color:#a6e22e">s</span> <span style="color:#f92672">*</span><span style="color:#a6e22e">Syntax</span>, <span style="color:#a6e22e">err</span> <span style="color:#66d9ef">error</span>) {
+    <span style="color:#66d9ef">defer</span> <span style="color:#66d9ef">func</span>() {
+        <span style="color:#66d9ef">if</span> <span style="color:#a6e22e">p</span> <span style="color:#f92672">:=</span> recover(); <span style="color:#a6e22e">p</span> <span style="color:#f92672">!=</span> <span style="color:#66d9ef">nil</span> {
+            <span style="color:#a6e22e">err</span> = <span style="color:#a6e22e">fmt</span>.<span style="color:#a6e22e">Errorf</span>(<span style="color:#e6db74">&#34;JSON: internal error: %v&#34;</span>, <span style="color:#a6e22e">p</span>)
+        }
+    }()
+    
+    <span style="color:#75715e">// parser...
+</span><span style="color:#75715e"></span>}
+</code></pre></div><p>Go 语言库的实现习惯: 即使在包内部使用了 <code>panic</code>, 但在导出函数时会被转化为明确的错误值.</p>
+<h2 id="异常">异常</h2>
+<p><code>panic</code> 抛出任意类型异常, <code>recover</code>函数调用的返回值和 <code>panic</code> 函数的输入参数类型一致</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#66d9ef">func</span> panic(<span style="color:#66d9ef">interface</span>{})
+<span style="color:#66d9ef">func</span> recover() <span style="color:#66d9ef">interface</span>{}
+</code></pre></div><p>在函数执行中如果没有异常, 调用 <code>recover</code> 始终返回 nil. 当有异常抛出时, <code>panic</code> 后续代码不会执行, 但是 <code>defer</code> 正常执行.</p>
+<p>异常发生时, 可以在 <code>defer</code> 中调用 <code>recover</code> 来捕获异常, <code>panic</code> 调用会导致函数马上执行已注册的 <code>defer</code> 函数后返回. <code>recover</code> 函数捕获的是祖父一级调用函数栈帧的异常(刚好可以跨一层 <code>defer</code> 函数)!</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#66d9ef">func</span> <span style="color:#a6e22e">foo</span>() (<span style="color:#a6e22e">err</span> <span style="color:#66d9ef">error</span>) {
+    <span style="color:#66d9ef">defer</span> <span style="color:#66d9ef">func</span>() {
+        <span style="color:#66d9ef">if</span> <span style="color:#a6e22e">r</span> <span style="color:#f92672">:=</span> recover(); <span style="color:#a6e22e">r</span> <span style="color:#f92672">!=</span> <span style="color:#66d9ef">nil</span> {
+            <span style="color:#66d9ef">switch</span> <span style="color:#a6e22e">x</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">r</span>.(<span style="color:#66d9ef">type</span>) {
+            <span style="color:#66d9ef">case</span> <span style="color:#66d9ef">string</span>:
+                <span style="color:#a6e22e">err</span> = <span style="color:#a6e22e">errors</span>.<span style="color:#a6e22e">New</span>(<span style="color:#a6e22e">x</span>)
+            <span style="color:#66d9ef">case</span> <span style="color:#66d9ef">error</span>
+                <span style="color:#a6e22e">err</span> = <span style="color:#a6e22e">x</span>
+            <span style="color:#66d9ef">default</span>:
+                <span style="color:#a6e22e">err</span> = <span style="color:#a6e22e">fmt</span>.<span style="color:#a6e22e">Errorf</span>(<span style="color:#e6db74">&#34;Unknown panic: %v&#34;</span>, <span style="color:#a6e22e">r</span>)
+            }
+        }
+    }()
+    
+    panic(<span style="color:#e6db74">&#34;xxx&#34;</span>)
+}
+</code></pre></div>
+        </p>
     </div>
+    
+
+    
+
+    <div class="page-footer">
         
-        <div class="paginator">
+        <hr class="footer-divider">
         
+            <a class="tag" href="/tags/go">#Go</a>
         
-        <p>Page 1 of 3</p>
-        <div class="paginator-group">
-            
-            
-                <a class="color-link older" href="/page/2/">
-                    Older
-                    <svg width="13px" height="9px" viewBox="0 0 13 9" version="1.1" xmlns="https://www.w3.org/2000/svg" xmlns:xlink="https://www.w3.org/1999/xlink">
-                            <g class="color-arrow" fill="#63BDA2" fill-rule="nonzero">
-                                <polygon points="7.6707477 1.37628835 8.3292523 0.623711653 12.7592994 4.50000282 8.32918951 8.37629079 7.67069049 7.62370921 11.2407006 4.49999718"></polygon>
-                                <polygon id="Path" points="0 5 0 4 12 4 12 5"></polygon>
-                            </g>
-                    </svg>
-                        
-                </a>
-            
-        </div>
+            <a class="tag" href="/tags/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0">#学习笔记</a>
         
+      
     </div>
+
 
         
 
