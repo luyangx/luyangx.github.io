@@ -6,10 +6,46 @@
     <description>Recent content in 学习笔记 on 扬</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>zh-cn</language>
-    <lastBuildDate>Fri, 04 Nov 2016 23:04:23 +0800</lastBuildDate>
+    <lastBuildDate>Mon, 30 Apr 2018 21:34:15 +0800</lastBuildDate>
     
 	<atom:link href="https://www.luyang.ink/tags/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>Go 语言基础 . 并发模式</title>
+      <link>https://www.luyang.ink/posts/go-basic-concurrence-class/</link>
+      <pubDate>Mon, 30 Apr 2018 21:34:15 +0800</pubDate>
+      
+      <guid>https://www.luyang.ink/posts/go-basic-concurrence-class/</guid>
+      <description>&lt;p&gt;记录一下学习 &lt;a href=&#34;https://legacy.gitbook.com/book/chai2010/advanced-go-programming-book&#34;&gt;《Go语言高级编程》&lt;/a&gt; 中的常见并发模式&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>Go 语言基础 . 面向并发的内存模型</title>
+      <link>https://www.luyang.ink/posts/go-basic-concurrence/</link>
+      <pubDate>Sat, 28 Apr 2018 22:15:41 +0800</pubDate>
+      
+      <guid>https://www.luyang.ink/posts/go-basic-concurrence/</guid>
+      <description>&lt;p&gt;记录一下学习 &lt;a href=&#34;https://legacy.gitbook.com/book/chai2010/advanced-go-programming-book&#34;&gt;《Go语言高级编程》&lt;/a&gt; 中的函数、方法和接口&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>Go 语言基础 . 函数、方法和接口</title>
+      <link>https://www.luyang.ink/posts/go-basic-func-method-interface/</link>
+      <pubDate>Thu, 26 Apr 2018 21:03:56 +0800</pubDate>
+      
+      <guid>https://www.luyang.ink/posts/go-basic-func-method-interface/</guid>
+      <description>&lt;p&gt;记录一下学习 &lt;a href=&#34;https://legacy.gitbook.com/book/chai2010/advanced-go-programming-book&#34;&gt;《Go语言高级编程》&lt;/a&gt; 中的函数、方法和接口&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>Go 语言基础 . 数组、字符串和切片</title>
+      <link>https://www.luyang.ink/posts/go-basic-array-string-slice/</link>
+      <pubDate>Mon, 23 Apr 2018 19:21:34 +0800</pubDate>
+      
+      <guid>https://www.luyang.ink/posts/go-basic-array-string-slice/</guid>
+      <description>&lt;p&gt;记录一下学习 &lt;a href=&#34;https://legacy.gitbook.com/book/chai2010/advanced-go-programming-book&#34;&gt;《Go语言高级编程》&lt;/a&gt; 中的数据结构 . 数组、字符串和切片&lt;/p&gt;</description>
+    </item>
     
     <item>
       <title>MySQL Server调优</title>
@@ -81,33 +117,6 @@
       
       <guid>https://www.luyang.ink/posts/mysql-innodb/</guid>
       <description>&lt;p&gt;InnoDB 存储引擎支持事务, 其设计目的主要面向在线事务处理(OLTP)的应用. 其特点是行锁, 外键, 非锁定读等, MySQL在5.5.8版本后将其设为默认存储引擎.&lt;/p&gt;</description>
-    </item>
-    
-    <item>
-      <title>Go 语言基础 . 面向并发的内存模型</title>
-      <link>https://www.luyang.ink/posts/go-basic-concurrence/</link>
-      <pubDate>Thu, 28 Apr 2016 22:15:41 +0800</pubDate>
-      
-      <guid>https://www.luyang.ink/posts/go-basic-concurrence/</guid>
-      <description>&lt;p&gt;记录一下学习 &lt;a href=&#34;https://legacy.gitbook.com/book/chai2010/advanced-go-programming-book&#34;&gt;《Go语言高级编程》&lt;/a&gt; 中的函数、方法和接口&lt;/p&gt;</description>
-    </item>
-    
-    <item>
-      <title>Go 语言基础 . 函数、方法和接口</title>
-      <link>https://www.luyang.ink/posts/go-basic-func-method-interface/</link>
-      <pubDate>Tue, 26 Apr 2016 21:03:56 +0800</pubDate>
-      
-      <guid>https://www.luyang.ink/posts/go-basic-func-method-interface/</guid>
-      <description>&lt;p&gt;记录一下学习 &lt;a href=&#34;https://legacy.gitbook.com/book/chai2010/advanced-go-programming-book&#34;&gt;《Go语言高级编程》&lt;/a&gt; 中的函数、方法和接口&lt;/p&gt;</description>
-    </item>
-    
-    <item>
-      <title>Go 语言基础 . 数组、字符串和切片</title>
-      <link>https://www.luyang.ink/posts/go-basic-array-string-slice/</link>
-      <pubDate>Sat, 23 Apr 2016 19:21:34 +0800</pubDate>
-      
-      <guid>https://www.luyang.ink/posts/go-basic-array-string-slice/</guid>
-      <description>&lt;p&gt;记录一下学习 &lt;a href=&#34;https://legacy.gitbook.com/book/chai2010/advanced-go-programming-book&#34;&gt;《Go语言高级编程》&lt;/a&gt; 中的数据结构 . 数组、字符串和切片&lt;/p&gt;</description>
     </item>
     
     <item>
