@@ -148,7 +148,7 @@
     
     <div>
         <p>
-        <p>通过 Dockerfile 定制一个基于 ubuntu, 包含 sshd, mysqld 服务的 image, 记录一下, 后面可能会用到, 例如搭建 mha 环境, 可以不需要安装虚拟机了.</p>
+        <p>通过 Dockerfile 定制一个基于 ubuntu, 包含 sshd, mysqld 服务的 image, 记录一下, 后面可能会用到, 例如搭建 <a href="https://code.google.com/archive/p/mysql-master-ha/">mha</a> 环境, 可以不需要安装虚拟机了.</p>
 <p>docker build 目录</p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">xmysql // 镜像目录
 ├── Dockerfile
@@ -171,18 +171,18 @@
 </span><span style="color:#960050;background-color:#1e0010"></span> <span style="color:#f92672">&amp;&amp;</span> echo <span style="color:#e6db74">&#39;root:root&#39;</span> | chpasswd <span style="color:#ae81ff">\</span><span style="color:#960050;background-color:#1e0010">
 </span><span style="color:#960050;background-color:#1e0010"></span> <span style="color:#f92672">&amp;&amp;</span> sed -i <span style="color:#e6db74">&#39;s/PermitRootLogin prohibit-password/PermitRootLogin yes/&#39;</span> /etc/ssh/sshd_config <span style="color:#ae81ff">\</span><span style="color:#960050;background-color:#1e0010">
 </span><span style="color:#960050;background-color:#1e0010"></span> <span style="color:#f92672">&amp;&amp;</span> sed <span style="color:#e6db74">&#39;s@session\s*required\s*pam_loginuid.so@session optional pam_loginuid.so@g&#39;</span> -i /etc/pam.d/sshd <span style="color:#ae81ff">\</span><span style="color:#960050;background-color:#1e0010">
-</span><span style="color:#960050;background-color:#1e0010"></span> <span style="color:#f92672">&amp;&amp;</span> echo <span style="color:#e6db74">&#34;export VISIBLE=now&#34;</span> &gt;&gt; /etc/profile<span style="color:#960050;background-color:#1e0010">
+</span><span style="color:#960050;background-color:#1e0010"></span> <span style="color:#f92672">&amp;&amp;</span> echo <span style="color:#e6db74">&#34;export VISIBLE=now&#34;</span> &gt;&gt; /etc/profile<span style="color:#960050;background-color:#1e0010">
+</span><span style="color:#960050;background-color:#1e0010"></span> <span style="color:#960050;background-color:#1e0010">
+</span><span style="color:#960050;background-color:#1e0010"></span><span style="color:#66d9ef">COPY</span> xmy.cnf /etc/mysql/conf.d/ <span style="color:#75715e"># mysql 配置文件</span><span style="color:#960050;background-color:#1e0010">
 </span><span style="color:#960050;background-color:#1e0010"></span><span style="color:#960050;background-color:#1e0010">
-</span><span style="color:#960050;background-color:#1e0010"></span><span style="color:#66d9ef">COPY</span> xmy.cnf /etc/mysql/conf.d/ <span style="color:#75715e"># mysql 配置文件</span><span style="color:#960050;background-color:#1e0010">
+</span><span style="color:#960050;background-color:#1e0010"></span><span style="color:#66d9ef">ENV</span> NOTVISIBLE <span style="color:#e6db74">&#34;in users profile&#34;</span><span style="color:#960050;background-color:#1e0010">
 </span><span style="color:#960050;background-color:#1e0010"></span><span style="color:#960050;background-color:#1e0010">
-</span><span style="color:#960050;background-color:#1e0010"></span><span style="color:#66d9ef">ENV</span> NOTVISIBLE <span style="color:#e6db74">&#34;in users profile&#34;</span><span style="color:#960050;background-color:#1e0010">
-</span><span style="color:#960050;background-color:#1e0010"></span><span style="color:#960050;background-color:#1e0010">
-</span><span style="color:#960050;background-color:#1e0010"></span><span style="color:#66d9ef">VOLUME</span> [<span style="color:#e6db74">&#34;/var/lib/mysql&#34;</span>]<span style="color:#960050;background-color:#1e0010">
+</span><span style="color:#960050;background-color:#1e0010"></span><span style="color:#66d9ef">VOLUME</span> [<span style="color:#e6db74">&#34;/var/lib/mysql&#34;</span>]<span style="color:#960050;background-color:#1e0010">
 </span><span style="color:#960050;background-color:#1e0010"></span><span style="color:#960050;background-color:#1e0010">
 </span><span style="color:#960050;background-color:#1e0010"></span><span style="color:#66d9ef">ADD</span> start.sh / <span style="color:#75715e"># 启动服务shell脚本</span><span style="color:#960050;background-color:#1e0010">
-</span><span style="color:#960050;background-color:#1e0010"></span><span style="color:#66d9ef">RUN</span> chmod +x /start.sh<span style="color:#960050;background-color:#1e0010">
+</span><span style="color:#960050;background-color:#1e0010"></span><span style="color:#66d9ef">RUN</span> chmod +x /start.sh<span style="color:#960050;background-color:#1e0010">
 </span><span style="color:#960050;background-color:#1e0010"></span><span style="color:#960050;background-color:#1e0010">
-</span><span style="color:#960050;background-color:#1e0010"></span><span style="color:#66d9ef">EXPOSE</span><span style="color:#e6db74"> 3306 22 # 对外暴露服务接口</span><span style="color:#960050;background-color:#1e0010">
+</span><span style="color:#960050;background-color:#1e0010"></span><span style="color:#66d9ef">EXPOSE</span><span style="color:#e6db74"> 3306 22 # 对外暴露服务接口</span><span style="color:#960050;background-color:#1e0010">
 </span><span style="color:#960050;background-color:#1e0010"></span><span style="color:#960050;background-color:#1e0010">
 </span><span style="color:#960050;background-color:#1e0010"></span><span style="color:#66d9ef">CMD</span> [<span style="color:#e6db74">&#34;/start.sh&#34;</span>]<span style="color:#960050;background-color:#1e0010">
 </span></code></pre></div><p>start.sh 启动服务脚本内容:</p>
@@ -192,7 +192,7 @@ service ssh start  // sshd
 mysqld_safe  // mysql
 </code></pre></div><p>一切准备就绪后, 执行 <code>docker build</code></p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">docker build -t xmysql .
-</code></pre></div><p>出现下面信息代表 build 成功</p>
+</code></pre></div><p>出现下面信息代表 <code>build</code> 成功</p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">Sending build context to Docker daemon  4.608kB
 ... 省略部分输出 ...
 Step 9/9 : CMD <span style="color:#f92672">[</span><span style="color:#e6db74">&#34;/start.sh&#34;</span><span style="color:#f92672">]</span>

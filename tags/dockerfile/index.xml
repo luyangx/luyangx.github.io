@@ -17,7 +17,7 @@
       <pubDate>Tue, 25 Oct 2016 21:07:41 +0800</pubDate>
       
       <guid>https://www.luyang.ink/posts/docker-mysql-sshd/</guid>
-      <description>&lt;p&gt;通过 Dockerfile 定制一个基于 ubuntu, 包含 sshd, mysqld 服务的 image, 记录一下, 后面可能会用到, 例如搭建 mha 环境, 可以不需要安装虚拟机了.&lt;/p&gt;</description>
+      <description>&lt;p&gt;通过 Dockerfile 定制一个基于 ubuntu, 包含 sshd, mysqld 服务的 image, 记录一下, 后面可能会用到, 例如搭建 &lt;a href=&#34;https://code.google.com/archive/p/mysql-master-ha/&#34;&gt;mha&lt;/a&gt; 环境, 可以不需要安装虚拟机了.&lt;/p&gt;</description>
     </item>
     
   </channel>
