@@ -53,21 +53,6 @@
   </url>
   
   <url>
-    <loc>https://www.luyang.ink/tags/tcp/</loc>
-    <lastmod>2018-04-23T19:21:34+08:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>https://www.luyang.ink/posts/tcp/</loc>
-    <lastmod>2018-04-23T19:21:34+08:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>https://www.luyang.ink/tags/%E7%BD%91%E7%BB%9C/</loc>
-    <lastmod>2018-04-23T19:21:34+08:00</lastmod>
-  </url>
-  
-  <url>
     <loc>https://www.luyang.ink/tags/php/</loc>
     <lastmod>2018-04-13T19:58:16+08:00</lastmod>
   </url>
@@ -213,12 +198,32 @@
   </url>
   
   <url>
-    <loc>https://www.luyang.ink/posts/vim/</loc>
-    <lastmod>2014-03-12T15:42:13+08:00</lastmod>
+    <loc>https://www.luyang.ink/tags/tcp/</loc>
+    <lastmod>2014-04-23T20:13:54+08:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://www.luyang.ink/posts/tcp-key-points/</loc>
+    <lastmod>2014-04-23T20:13:54+08:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://www.luyang.ink/tags/%E7%BD%91%E7%BB%9C/</loc>
+    <lastmod>2014-04-23T20:13:54+08:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://www.luyang.ink/posts/tcp-connection/</loc>
+    <lastmod>2014-04-19T19:21:34+08:00</lastmod>
   </url>
   
   <url>
     <loc>https://www.luyang.ink/tags/vim/</loc>
+    <lastmod>2014-03-12T15:42:13+08:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://www.luyang.ink/posts/vim/</loc>
     <lastmod>2014-03-12T15:42:13+08:00</lastmod>
   </url>
   

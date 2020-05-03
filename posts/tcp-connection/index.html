@@ -7,7 +7,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="format-detection" content="telephone=no"/>
 
-    <title>PHP | 扬</title>
+    <title>TCP . 连接过程 | 扬</title>
     
     <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
     <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
@@ -28,8 +28,6 @@
     
     
  
-    
-    <link rel="alternate" type="application/rss+xml" href="https://www.luyang.ink/tags/php/index.xml" title="扬" />
     </head>
 
     <body>
@@ -144,60 +142,202 @@
         <div id="content" class="content-container">
         
 
-  <h1>Tagged "PHP"</h1>
-  
-  
+<h1 class="post-title">TCP . 连接过程</h1>
     
-    <article>
-            <h2>
-                <a href="https://www.luyang.ink/posts/php7-vs-php5-zval/">
-                    PHP7 vs PHP5 zval 变化
-                </a>
-            </h2>
-            <div>
-                <p><p>PHP7 已经发布很长时间了, 奈何公司现在还在用 PHP5.6, 不知何时可以上 7? PHP7 对 zval 做了优化, 之前看到鸟哥发了一篇对比 PHP5.6 zval 的<a href="https://www.laruence.com/2018/04/08/3170.html">博文</a>, 学校整理下.</p></p>
-                
-            </div>
-            <div class="post-footer">
-            <time>April 13, 2018</time>
-            </div> 
-        </article>
+    <time>April 19, 2014</time>
     
-  
+    <div>
+        <p>
+        <p>传输控制协议(TCP, Transmission Control Protocol)是一种面向连接的/可靠的/基于字节流的传输层通信协议, 由IETF的<a href="https://tools.ietf.org/html/rfc793">RFC 793</a>定义</p>
+<p>先看下 TCP 的首部格式(Header Format), RFC 大佬的 ascii 作图是真流弊!</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">    <span style="color:#ae81ff">0</span>                   <span style="color:#ae81ff">1</span>                   <span style="color:#ae81ff">2</span>                   <span style="color:#ae81ff">3</span>
+    <span style="color:#ae81ff">0</span> <span style="color:#ae81ff">1</span> <span style="color:#ae81ff">2</span> <span style="color:#ae81ff">3</span> <span style="color:#ae81ff">4</span> <span style="color:#ae81ff">5</span> <span style="color:#ae81ff">6</span> <span style="color:#ae81ff">7</span> <span style="color:#ae81ff">8</span> <span style="color:#ae81ff">9</span> <span style="color:#ae81ff">0</span> <span style="color:#ae81ff">1</span> <span style="color:#ae81ff">2</span> <span style="color:#ae81ff">3</span> <span style="color:#ae81ff">4</span> <span style="color:#ae81ff">5</span> <span style="color:#ae81ff">6</span> <span style="color:#ae81ff">7</span> <span style="color:#ae81ff">8</span> <span style="color:#ae81ff">9</span> <span style="color:#ae81ff">0</span> <span style="color:#ae81ff">1</span> <span style="color:#ae81ff">2</span> <span style="color:#ae81ff">3</span> <span style="color:#ae81ff">4</span> <span style="color:#ae81ff">5</span> <span style="color:#ae81ff">6</span> <span style="color:#ae81ff">7</span> <span style="color:#ae81ff">8</span> <span style="color:#ae81ff">9</span> <span style="color:#ae81ff">0</span> <span style="color:#ae81ff">1</span>
+   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+   |          Source Port          |       Destination Port        |
+   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+   |                        Sequence Number                        |
+   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+   |                    Acknowledgment Number                      |
+   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+   |  Data |           |U|A|P|R|S|F|                               |
+   | Offset| Reserved  |R|C|S|S|Y|I|            Window             |
+   |       |           |G|K|H|T|N|N|                               |
+   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+   |           Checksum            |         Urgent Pointer        |
+   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+   |                    Options                    |    Padding    |
+   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+   |                             data                              |
+   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+</code></pre></div><p>各个字段所代表的大概含有如下:</p>
+<table>
+<thead>
+<tr>
+<th>字段</th>
+<th>大小</th>
+<th>说明</th>
+<th>补充</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Source Port</td>
+<td>16 bits</td>
+<td>源地址端口号</td>
+<td>端口号个数: 2^16 = 65536</td>
+</tr>
+<tr>
+<td>Destination Port</td>
+<td>16 bits</td>
+<td>目的地端口号</td>
+<td></td>
+</tr>
+<tr>
+<td>Sequence Number</td>
+<td>32 bits</td>
+<td>报文的序列号</td>
+<td></td>
+</tr>
+<tr>
+<td>Acknowledgment Number</td>
+<td>32 bits</td>
+<td>确认的序列号</td>
+<td></td>
+</tr>
+<tr>
+<td>Data Offset</td>
+<td>4 bits</td>
+<td>数据开始位置, 偏移量</td>
+<td>大部分情况从20个字节开始</td>
+</tr>
+<tr>
+<td>Reserved</td>
+<td>6 bits</td>
+<td>保留</td>
+<td></td>
+</tr>
+<tr>
+<td>Control Bits</td>
+<td>6 bits</td>
+<td>控制位</td>
+<td>包的类型, URG, ACK, PSH, RST, SYN, FIN</td>
+</tr>
+<tr>
+<td>|- URG</td>
+<td>1 bit</td>
+<td>Urgent 标识位</td>
+<td>表示当前报文很重要, 应优先送达</td>
+</tr>
+<tr>
+<td>|- ACK</td>
+<td>1 bit</td>
+<td>Acknowledgment 标识位</td>
+<td></td>
+</tr>
+<tr>
+<td>|- PSH</td>
+<td>1 bit</td>
+<td>Push 标识位</td>
+<td>TCP 立即发送数据, 即使缓冲区未满(数据小余MTU)</td>
+</tr>
+<tr>
+<td>|- RST</td>
+<td>1 bit</td>
+<td>重置连接 标识位</td>
+<td></td>
+</tr>
+<tr>
+<td>|- SYN</td>
+<td>1 bit</td>
+<td>同步序列号 标识位</td>
+<td></td>
+</tr>
+<tr>
+<td>|- FIN</td>
+<td>1 bit</td>
+<td>发送方没有更多数据</td>
+<td>意味着连接即将断开</td>
+</tr>
+<tr>
+<td>Window</td>
+<td>16 bits</td>
+<td>窗口大小</td>
+<td>可接收数据大小, 大小自适应</td>
+</tr>
+<tr>
+<td>Checksum</td>
+<td>16 bits</td>
+<td>校验和</td>
+<td>校验头部和数据是否被改动</td>
+</tr>
+<tr>
+<td>Urgent Pointer</td>
+<td>16 bits</td>
+<td>标识 Urgent 数据位置</td>
+<td></td>
+</tr>
+<tr>
+<td>Options</td>
+<td>变长</td>
+<td>选项</td>
+<td>包含:MSS, Window Scaling, SACK, Timestamps, Nop等信息</td>
+</tr>
+<tr>
+<td>Padding</td>
+<td>变长</td>
+<td>填充</td>
+<td>确保 TCP 头部和 data 以 32 bits 对齐</td>
+</tr>
+</tbody>
+</table>
+<p>上面表格中有几个重要的字段:</p>
+<ul>
+<li>Sequence Number: 包的序列号, 用来解决乱序问题</li>
+<li>Acknowledgment Number: 用于确认收到, 用来解决不丢包</li>
+<li>Window: 滑动窗口, 用来解决流控</li>
+<li>Control Bits: 控制 TCP 状态</li>
+</ul>
+<h2 id="建立链接">建立链接</h2>
+<p>经常说的 3次握手(three-way handshake)</p>
+<p><img src="/images/tcp-connection-extablishment.png" alt=""></p>
+<ol>
+<li>Client 发起连接请求, 会将 SYN 标识位置1, 还会将自己的 seq, MSS 大小, Window 大小发送给 Server.</li>
+<li>Server 收到 Client 连接请求, 会将 SYN 和 ACK 标识位置1, 回复 ACK 确认信息, 也会将自己的 seq, MSS 大小, Window 大小等信息发送给 Client.</li>
+<li>Client 收到 Server 答复后, 将SYN 标识位置0, ACK 标识位置1, 回复 ACK 确认信息.</li>
+</ol>
+<h2 id="数据传输">数据传输</h2>
+<p><img src="/images/tcp-data-trasmit.png" alt=""></p>
+<h2 id="断开连接">断开连接</h2>
+<p>4次挥手</p>
+<p><img src="/images/tcp-connection-close.png" alt=""></p>
+<ol>
+<li>Client 发送关闭连接请求, 会将 FIN 标识位置1, 进入 FIN_WAIT_1 状态</li>
+<li>Server 收到关闭连接请求, 回复 ACK, 进入 CLOSE_WAIT 状态</li>
+<li>Client 收到 Server 回复关闭连接请求的 ACK, 进入 FIN_WAIT_2 状态</li>
+<li>Server 再发送关闭链接请求给 Client, 进入 LAST_ACK 状态</li>
+<li>Client 收到 Server 发送的关闭连接请求后发送确认 ACK 进入 TIME_WAIT 状态</li>
+<li>超时过后, 连接关闭</li>
+</ol>
+<p>最后可以通过 Wireshark 软件抓包, 看一下 TCP 的建立链接及传输数据的过程, 注意右侧红框内 Seq, Ack 的变化.</p>
+<p><img src="/images/tcp-wireshark.jpg" alt=""></p>
+        </p>
+    </div>
     
-    <article>
-            <h2>
-                <a href="https://www.luyang.ink/posts/php7-released/">
-                    PHP7 发布了
-                </a>
-            </h2>
-            <div>
-                <p><p>今天看到鸟哥(<a href="https://www.laruence.com/">惠新宸</a>)微信公众号的一篇 <a href="https://mp.weixin.qq.com/s?__biz=MzIwNDExMjIzNA==&amp;mid=401036257&amp;idx=1&amp;sn=f2272863c3bd1d9404f0da677c0a232d&amp;scene=23&amp;srcid=1202GHLzDus0AHfkcgCwIbfq#rd">写在PHP7发布之际一些话</a>, 感觉 PHPer 又行了😄</p></p>
-                
-            </div>
-            <div class="post-footer">
-            <time>December 4, 2015</time>
-            </div> 
-        </article>
+
     
-  
-    
-    <article>
-            <h2>
-                <a href="https://www.luyang.ink/posts/references-in-php/">
-                    PHP . 引用
-                </a>
-            </h2>
-            <div>
-                <p><meta name="referrer" content="no-referrer">
-<p>PHP中的变量都是存储在一个叫 zval 的容器中(数据结构), 这个 zval 中存储着变量的相关信息, 其中就包括变量的引用状态(is_ref)和引用次数(refcount).</p></p>
-                
-            </div>
-            <div class="post-footer">
-            <time>October 3, 2014</time>
-            </div> 
-        </article>
-    
+
+    <div class="page-footer">
+        
+        <hr class="footer-divider">
+        
+            <a class="tag" href="/tags/tcp">#TCP</a>
+        
+            <a class="tag" href="/tags/%E7%BD%91%E7%BB%9C">#网络</a>
+        
+            <a class="tag" href="/tags/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0">#学习笔记</a>
+        
+      
+    </div>
 
 
         

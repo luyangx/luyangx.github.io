@@ -57,15 +57,6 @@
     </item>
     
     <item>
-      <title>TCP 连接过程</title>
-      <link>https://www.luyang.ink/posts/tcp/</link>
-      <pubDate>Mon, 23 Apr 2018 19:21:34 +0800</pubDate>
-      
-      <guid>https://www.luyang.ink/posts/tcp/</guid>
-      <description>&lt;p&gt;传输控制协议(TCP, Transmission Control Protocol)是一种面向连接的/可靠的/基于字节流的传输层通信协议, 由IETF的&lt;a href=&#34;https://tools.ietf.org/html/rfc793&#34;&gt;RFC 793&lt;/a&gt;定义&lt;/p&gt;</description>
-    </item>
-    
-    <item>
       <title>PHP7 vs PHP5 zval 变化</title>
       <link>https://www.luyang.ink/posts/php7-vs-php5-zval/</link>
       <pubDate>Fri, 13 Apr 2018 19:58:16 +0800</pubDate>
@@ -229,7 +220,7 @@
     </item>
     
     <item>
-      <title>references in php</title>
+      <title>PHP . 引用</title>
       <link>https://www.luyang.ink/posts/references-in-php/</link>
       <pubDate>Fri, 03 Oct 2014 22:20:49 +2002</pubDate>
       
@@ -239,7 +230,25 @@
     </item>
     
     <item>
-      <title>references in php</title>
+      <title>TCP . 重传机制/滑动窗口/拥塞处理</title>
+      <link>https://www.luyang.ink/posts/tcp-key-points/</link>
+      <pubDate>Wed, 23 Apr 2014 20:13:54 +0800</pubDate>
+      
+      <guid>https://www.luyang.ink/posts/tcp-key-points/</guid>
+      <description>&lt;p&gt;本文记录一下 TCP 的重传机制和拥塞处理.&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>TCP . 连接过程</title>
+      <link>https://www.luyang.ink/posts/tcp-connection/</link>
+      <pubDate>Sat, 19 Apr 2014 19:21:34 +0800</pubDate>
+      
+      <guid>https://www.luyang.ink/posts/tcp-connection/</guid>
+      <description>&lt;p&gt;传输控制协议(TCP, Transmission Control Protocol)是一种面向连接的/可靠的/基于字节流的传输层通信协议, 由IETF的&lt;a href=&#34;https://tools.ietf.org/html/rfc793&#34;&gt;RFC 793&lt;/a&gt;定义&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>vim</title>
       <link>https://www.luyang.ink/posts/vim/</link>
       <pubDate>Wed, 12 Mar 2014 15:42:13 +0800</pubDate>
       

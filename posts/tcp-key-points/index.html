@@ -7,7 +7,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="format-detection" content="telephone=no"/>
 
-    <title>PHP | 扬</title>
+    <title>TCP . 重传机制/滑动窗口/拥塞处理 | 扬</title>
     
     <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
     <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
@@ -28,8 +28,6 @@
     
     
  
-    
-    <link rel="alternate" type="application/rss+xml" href="https://www.luyang.ink/tags/php/index.xml" title="扬" />
     </head>
 
     <body>
@@ -144,60 +142,100 @@
         <div id="content" class="content-container">
         
 
-  <h1>Tagged "PHP"</h1>
-  
-  
+<h1 class="post-title">TCP . 重传机制/滑动窗口/拥塞处理</h1>
     
-    <article>
-            <h2>
-                <a href="https://www.luyang.ink/posts/php7-vs-php5-zval/">
-                    PHP7 vs PHP5 zval 变化
-                </a>
-            </h2>
-            <div>
-                <p><p>PHP7 已经发布很长时间了, 奈何公司现在还在用 PHP5.6, 不知何时可以上 7? PHP7 对 zval 做了优化, 之前看到鸟哥发了一篇对比 PHP5.6 zval 的<a href="https://www.laruence.com/2018/04/08/3170.html">博文</a>, 学校整理下.</p></p>
-                
-            </div>
-            <div class="post-footer">
-            <time>April 13, 2018</time>
-            </div> 
-        </article>
+    <time>April 23, 2014</time>
     
-  
+    <div>
+        <p>
+        <p>本文记录一下 TCP 的重传机制和拥塞处理.</p>
+<p>TCP 用重传机制来保证所有的数据包都能到达</p>
+<h2 id="重传机制">重传机制</h2>
+<p>举例, Client 发了 1,2,3,4,5 一共五份数据, Server 收到了1,2, 于是回 Ack=3, 接着收到了4, 此时3还没收到. 这种情况 TCP 会怎么办?</p>
+<h3 id="超时重传">超时重传</h3>
+<p>Server 不回 Ack, 一直等3的到来, 一段时间后, Client 还没有收到3的 Ack, 于是 Client 进行重传, 对此 Client 有 2 种方式:</p>
+<ul>
+<li>只重传超时 timeout 的包, <em>比较慢</em></li>
+<li>重传超时 timeout 后的所有的包, <em>浪费带宽</em></li>
+</ul>
+<p>2 种方式都要等到超时 timeout, 所以都不太好</p>
+<h3 id="快速重传机制--fast-retransmit">快速重传机制 – Fast Retransmit</h3>
+<p>包没有连续到达, Server 就 Ack 最后那个可能丢了的包, 如果 Client 连续收到3次相同的Ack, 就重传. 不需要等超时 timeout 了再重传.</p>
+<p>举例, Client 发了 1,2,3,4,5 一共五份数据, Server 收到了1,2, 于是回 Ack=3, 接着陆续收到了4,5, 还是 Ack=3, Client 收到了3个 Ack=3 的确认, 知道3还没有到, 于是马上重传2. 然后 Server 收到了3, 此时 3,4,5 都已经收到了, 于是 Ack=6.</p>
+<p>但是此机制存在一个问题, Client 是重传3还是重传3,4,5呢? 因为 Client 并不清楚这连续的3个 Ack=3 是对应接收的哪个包传回来的? 也许 Client 发了10份数据, 是6,7,8传回来的呢. Client 很有可能要重传从2到10的数据, 很蛋疼.</p>
+<h3 id="sack--selective-acknowledgment">SACK – Selective Acknowledgment</h3>
+<p>TCP 头里加一个 SACK, 用来记录哪些包到了, 哪些没有到. 解决 Fast Retransmit 算法遇到的问题.</p>
+<h2 id="滑动窗口--sliding-window">滑动窗口 – Sliding Window</h2>
+<p>TCP 通过滑动窗口来解决数据包乱序的问题.</p>
+<p>TCP 头部信息中有一个字段叫 Window(Advertised-Window), 是 Server 告诉 Client 自己还有多少缓冲区可以接收数据. 于是 Client 就根据此信息来发送数据, 不会导致 Server 处理不过来.</p>
+<p>滑动窗口示意图:</p>
+<p><img src="/images/tcp-sliding-window.png" alt=""></p>
+<ul>
+<li>Category #1: 已发送并收到 Ack 的数据</li>
+<li>Category #2: 已发送还没有收到 Ack 的数据</li>
+<li>Category #3: 未发送的数据, 但是数据已在缓冲区, 准备发送. Server 准备接收</li>
+<li>Category #4: 未发送, 数据还未到缓冲区</li>
+</ul>
+<p>滑动窗口的变化过程, 可以看一下油管中的视频演示(需要科学上网)</p>
+
+<div style="position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden;">
+  <iframe src="https://www.youtube-nocookie.com/embed/zY3Sxvj8kZA" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; border:0;" allowfullscreen title="YouTube Video"></iframe>
+</div>
+
+<h2 id="拥塞处理--congestion-handling">拥塞处理 – Congestion Handling</h2>
+<p>假设没有拥塞处理的 TCP, 在网络发生延迟时, TCP 会进行重传未收到 Ack 的数据, 加重网络负担, 延迟更加严重, TCP 又进行重传, 进入一个死循环.</p>
+<p>TCP 的拥塞控制主要是四个算法: 慢启动, 拥塞避免, 拥塞发生, 快速恢复</p>
+<h3 id="慢启动">慢启动</h3>
+<p>连接建立后, 慢慢提速, 过程如下:</p>
+<blockquote>
+<p>cwnd(Congestion Window): 拥塞窗口
+RTT(Round Trip Time): 一个数据包从发出到回来的时间
+MSS(Max Segment Size): 最大报文段长度
+ssthresh(slow start threshold): 慢启动阈值
+RTO(Retransmission TimeOut): 重传超时</p>
+</blockquote>
+<ol>
+<li>连接建好, 先初始化 cwnd = 1, 表明可以传一个 MSS 大小的数据。</li>
+<li>每当收到一个 ACK, cwnd++, 线性上升</li>
+<li>每当过了一个 RTT, cwnd = cwnd * 2, 指数让升</li>
+<li>还有一个 ssthresh(slow start threshold)是一个上限，当 cwnd &gt;= ssthresh 时, 就会进入&quot;拥塞避免算法&rdquo;</li>
+</ol>
+<h3 id="拥塞避免算法--congestion-avoidance">拥塞避免算法 – Congestion Avoidance</h3>
+<p>一般 ssthresh 的值是 65535 字节, 当 cwnd 达到这个值时后, 算法如下:</p>
+<ul>
+<li>收到一个 ACK 时, cwnd = cwnd + 1/cwnd</li>
+<li>当每过一个 RTT 时, cwnd = cwnd + 1</li>
+</ul>
+<p>这样就可以避免增长过快导致网络拥塞, 慢慢的增加调整到网络的最佳值. 就跟在高速上开车差不多, 先在慢车道加速进入快车道, 时速120. 当发现前面车辆过多时(达到阻塞阈值), 刹车减速, 再等到车辆少时再加速.</p>
+<h3 id="快速恢复算法--fast-recovery">快速恢复算法 – Fast Recovery</h3>
+<p>当 cwnd &lt;= sshthresh 时, 出现丢包重传, sshthresh = cwnd / 2</p>
+<p>快速恢复算法就是讲 cwnd 快速恢复到之前合理的大小, 算法如下:</p>
+<ul>
+<li>cwnd = sshthresh  + 3 * MSS （3的意思是确认有3个数据包被收到了）</li>
+<li>重传 Duplicated ACKs 指定的数据包</li>
+<li>如果再收到 duplicated Acks，那么 cwnd = cwnd +1</li>
+<li>如果收到了新的 ACK, 那么, cwnd = sshthresh, 然后就进入了拥塞避免的算法了</li>
+</ul>
+<h2 id="总结">总结</h2>
+<p>看了网上一些 TCP 的 blog, 结合自己的理解, 汇总了下这些 blog 中提到有关 TCP 的内容, 也是比较重要的内容. 学到了不少, 同时也知道 TCP 复杂性, 还需要继续学习.</p>
+        </p>
+    </div>
     
-    <article>
-            <h2>
-                <a href="https://www.luyang.ink/posts/php7-released/">
-                    PHP7 发布了
-                </a>
-            </h2>
-            <div>
-                <p><p>今天看到鸟哥(<a href="https://www.laruence.com/">惠新宸</a>)微信公众号的一篇 <a href="https://mp.weixin.qq.com/s?__biz=MzIwNDExMjIzNA==&amp;mid=401036257&amp;idx=1&amp;sn=f2272863c3bd1d9404f0da677c0a232d&amp;scene=23&amp;srcid=1202GHLzDus0AHfkcgCwIbfq#rd">写在PHP7发布之际一些话</a>, 感觉 PHPer 又行了😄</p></p>
-                
-            </div>
-            <div class="post-footer">
-            <time>December 4, 2015</time>
-            </div> 
-        </article>
+
     
-  
-    
-    <article>
-            <h2>
-                <a href="https://www.luyang.ink/posts/references-in-php/">
-                    PHP . 引用
-                </a>
-            </h2>
-            <div>
-                <p><meta name="referrer" content="no-referrer">
-<p>PHP中的变量都是存储在一个叫 zval 的容器中(数据结构), 这个 zval 中存储着变量的相关信息, 其中就包括变量的引用状态(is_ref)和引用次数(refcount).</p></p>
-                
-            </div>
-            <div class="post-footer">
-            <time>October 3, 2014</time>
-            </div> 
-        </article>
-    
+
+    <div class="page-footer">
+        
+        <hr class="footer-divider">
+        
+            <a class="tag" href="/tags/tcp">#TCP</a>
+        
+            <a class="tag" href="/tags/%E7%BD%91%E7%BB%9C">#网络</a>
+        
+            <a class="tag" href="/tags/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0">#学习笔记</a>
+        
+      
+    </div>
 
 
         
