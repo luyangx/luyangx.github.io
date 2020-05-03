@@ -21,15 +21,6 @@
     </item>
     
     <item>
-      <title>MySQL MHA</title>
-      <link>https://www.luyang.ink/posts/mysql-mha/</link>
-      <pubDate>Tue, 01 Nov 2016 23:45:27 +0800</pubDate>
-      
-      <guid>https://www.luyang.ink/posts/mysql-mha/</guid>
-      <description>MHA（Master HA） 是一款开源的 MySQL 的高可用程序. MHA 在监控到 master 节点故障时, 短时间内(通常为10-30s)会自动完成进行故障转移, 还提供了在线 master 切换</description>
-    </item>
-    
-    <item>
       <title>MySQL EXPLAIN</title>
       <link>https://www.luyang.ink/posts/mysql-explain/</link>
       <pubDate>Tue, 25 Oct 2016 21:07:41 +0800</pubDate>

@@ -144,12 +144,12 @@
 
 <h1 class="post-title">references in php</h1>
     
-    <time>October 3, 2015</time>
+    <time>October 3, 2014</time>
     
     <div>
         <p>
         <meta name="referrer" content="no-referrer">
-<p>PHP中的变量都是存储在一个叫zval的容器中(数据结构), 这个zval中存储着变量的相关信息，其中就包括变量的引用状态(is_ref)和引用次数(refcount)。</p>
+<p>PHP中的变量都是存储在一个叫 zval 的容器中(数据结构), 这个 zval 中存储着变量的相关信息, 其中就包括变量的引用状态(is_ref)和引用次数(refcount).</p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-c" data-lang="c"><span style="color:#66d9ef">typedef</span> <span style="color:#66d9ef">struct</span> _zval_struct zval;
 <span style="color:#66d9ef">struct</span> _zval_struct {
     <span style="color:#75715e">/* Variable information */</span>
@@ -158,50 +158,50 @@
     zend_uchar type;        <span style="color:#75715e">/* 变量具体类型*/</span>
     zend_uchar is_ref__gc;  <span style="color:#75715e">/* 是否引用 1为引用，0不是*/</span>
 };
-</code></pre></div><p>PHP的变量都存储在一个类似于关联数组(associative array)的符号表(symbol table)中，如下图</p>
+</code></pre></div><p>PHP 的变量都存储在一个类似于关联数组(associative array)的符号表(symbol table)中, 如下图</p>
 <p><img src="http://ww2.sinaimg.cn/large/9a667c8dgw1ely6s4hrb7j20bo0643yo.jpg" alt=""></p>
-<h3 id="引用计数reference-counting">引用计数(Reference Counting)</h3>
-<p>$a = $b, 在这个赋值语句中, PHP不会为变量$b创建一个$a的副本，只是将$a的zval中refcount字段增加1</p>
+<h3 id="引用计数-reference-counting">引用计数 Reference Counting</h3>
+<p><code>$a = $b</code>, 在这个赋值语句中, PHP 不会为变量 $b 创建一个 $a 的副本，只是将 $a 的 zval 中 refcount 字段增加1</p>
 <p><img src="http://ww1.sinaimg.cn/large/9a667c8dgw1ely72q3kt6j20ep0jgt9x.jpg" alt=""></p>
 <ol>
-<li>变量$a存储着一个『this is』字符串, 它的refcount=1(默认)</li>
-<li>将变量$a分别赋值(assign)给$b,$c, 这时没有任何zval的拷贝，只是根据赋值次数对$a的refcount依次增加1, 最终$a的refcount=3(2次赋值操作)</li>
-<li>当$c的值发生变化时, 这时会有2个相关的操作, 其所指向$a的refcount减1, 同时创建一个新的zval来保存$c的新值, 其中$c的refcount＝1(默认)</li>
-<li>unset($b), 会将其链接$a的refcount减1, 此时$a的refcount为1, 变成了它原先的样子</li>
-<li>unset($c), 将$c的rerfcount减1, 这时refcount &lt; 1, PHP会销毁用于保存$c的zval所占用的空间</li>
+<li>变量 $a 存储着一个 &ldquo;this is&rdquo; 字符串, 它的 refcount=1(默认)</li>
+<li>将变量 $a 分别赋值(assign)给 $b, $c, 这时没有任何 zval 的拷贝, 只是根据赋值次数对 $a 的 refcount 依次增加1, 最终 $a 的 refcount=3(2次赋值操作)</li>
+<li>当 $c 的值发生变化时, 这时会有2个相关的操作, 其所指向 $a 的 refcount 减1, 同时创建一个新的 zval 来保存 $c 的新值, 其中 $c 的 refcount＝1(默认)</li>
+<li><code>unset($b)</code>, 会将其链接 $a 的 refcount 减1, 此时 $a 的 refcount 为1, 变成了它原先的样子</li>
+<li><code>unset($c)</code>, 将 $c 的 refcount 减1, 这时 refcount&lt;1, PHP 会销毁用于保存 $c 的 zval 所占用的空间</li>
 </ol>
 <h3 id="passing-variables-to-functions">Passing Variables to Functions</h3>
-<p>在PHP中会有一个全局的符号表(global symbol table), 来保存相关的变量信息, 同样的当执行一个函数(function)时, 也会创建一个符号表来保存函数的局部变量, 当该函数通过return或其他隐式方式返回时, 其创建的符号表也会随之销毁.</p>
+<p>在 PHP 中会有一个全局的符号表(global symbol table), 来保存相关的变量信息, 同样的当执行一个函数(function)时, 也会创建一个符号表来保存函数的局部变量, 当该函数通过return或其他隐式方式返回时, 其创建的符号表也会随之销毁.</p>
 <p><img src="http://ww3.sinaimg.cn/large/9a667c8dgw1ely82mpr6pj20tq0k141m.jpg" alt=""></p>
 <ol>
-<li>我们将$a='this is'传递给函数do_something(), 函数将其保存在形参$s中</li>
-<li>接下来你看到的操作跟前面说过的$b=$a几乎相同, 除了变量所在的符号表不同-$s存储在调用函数的符号表中, $a的refcount增加2, 而不是1次, 因为在函数的stack中也包含$a的一个reference</li>
-<li>当我们给$s赋值一个新值时, $s之前所指向的zval对应refcount减1, 同时一个用来保存$s新值的容器会被创建</li>
-<li>当return返回时, 返回值$b获得了一个进入全局符号表的机会, 对应的refcount增加1</li>
-<li>当函数执行完毕时, 函数的符号表将会销毁,  在销毁期间PHP引擎将会检查函数符号表中的每一个变量, 对其zval的refcount减1, 如果其refcount等于0, 将启动垃圾回收机制</li>
+<li>我们将 <code>$a='this is'</code> 传递给函数 <code>do_something()</code>, 函数将其保存在形参 $s 中.</li>
+<li>接下来你看到的操作跟前面说过的 <code>$b=$a</code> 几乎相同, 除了变量所在的符号表不同, $s 存储在调用函数的符号表中, $a 的 refcount 增加2, 而不是1, 因为在函数的stack 中也包含 $a 的一个 reference.</li>
+<li>当我们给 $s 赋值一个新值时, $s 之前所指向的 zval 对应 refcount 减1, 同时一个用来保存 $s 新值的容器会被创建.</li>
+<li>当 return 返回时, 返回值 $b 获得了一个进入全局符号表的机会, 对应的 refcount 增加1.</li>
+<li>当函数执行完毕时, 函数的符号表将会销毁,  在销毁期间 PHP 引擎将会检查函数符号表中的每一个变量, 对其 zval 的 refcount 减1, 如果其 refcount 等于0, 将启动垃圾回收机制.</li>
 </ol>
 <h3 id="introducing-references">Introducing References</h3>
-<p>引用也就是一个变量有2个名字, 也就是说在一个符号表中存在2个不同的key指向同一个zval, 可以通过 =&amp; 引用赋值来创建一个变量的引用</p>
+<p>引用也就是一个变量有2个名字, 也就是说在一个符号表中存在2个不同的 key 指向同一个 zval, 可以通过 <code>=&amp;</code> 引用赋值来创建一个变量的引用</p>
 <p><img src="http://ww1.sinaimg.cn/mw690/9a667c8dgw1em0iw3x850j20ep0jgt9x.jpg" alt=""></p>
 <ol>
-<li>变量$a存储着一个『this is』字符串, 它的is_ref=0, refcount=1(默认)</li>
-<li>执行$b =&amp; $a 和 $c =&amp; $a之后, $a的refcount增加2变为3, 由于是引用赋值, $a的is_ref变为1. 当is_ref为0时, 有指向zval的变量有变化时, PHP引擎会创建一个新的zval来保存新值, 原始zval的refcount减1, 但是, 当is_ref为1时, 就不是这样了, PHP引擎回直接更新当前zval中的值</li>
-<li>如上所说, $b = 42的结果是$a, $b, $c的值都为42</li>
-<li>当使用unset($b)时, zval对应的refcount减1, 跟之前描述的一样</li>
-<li>再次unset($c), 同上一步一样, zval的refcount减1, 当refcount为1时, is_ref会重置为0, 因为只有2个以上变量指向同一个zval时, 才是一个引用变量, is_ref才会为1</li>
+<li>变量 $a 存储着一个 &ldquo;this is&rdquo; 字符串, 它的 is_ref=0, refcount=1(默认).</li>
+<li>执行 <code>$b = &amp;$a</code> 和 <code>$c = &amp;$a</code> 之后, $a 的 refcount 增加2变为3, 由于是引用赋值, $a 的 is_ref 变为1. 当 is_ref=0 时, 有指向 zval 的变量有变化时, PHP 引擎会创建一个新的 zval 来保存新值, 原始 zval 的 refcount 减1, 但是, 当 is_ref 为1时, 就不是这样了, PHP 引擎回直接更新当前 zval 中的值.</li>
+<li>如上所说, <code>$b = 42</code> 的结果是 $a, $b, $c 的值都为42.</li>
+<li>当使用 <code>unset($b)</code> 时, zval 对应的 refcount 减1, 跟之前描述的一样.</li>
+<li>再次 <code>unset($c)</code>, 同上一步一样, zval 的 refcount 减1, 当 refcount=1 时, is_ref 会重置为0, 因为只有2个以上变量指向同一个 zval 时, 才是一个引用变量, is_ref 才会为1.</li>
 </ol>
 <h3 id="mixing-assign-by-value-and-assign-by-reference">Mixing Assign-by-Value and Assign-by-Reference</h3>
-<p>= 赋值和 =&amp; 引用赋值</p>
+<p>赋值(=)和引用赋值(=&amp;)</p>
 <p><img src="http://ww3.sinaimg.cn/large/9a667c8dgw1em3fxlwip6j20e709fwey.jpg" alt=""></p>
 <ol>
-<li>创建2个变量, $a = &lsquo;this is&rsquo;; $b = $a; 这是普通的赋值操作, 这时$a,$b所指向的zval的refcount=2, is_ref=0</li>
-<li>$c = &amp;b, 这时PHP引擎会创建一个$b所指向zval的副本, $a还是指向原来的zval, 只不过对应的refcount减1, 而$b和$c则会指向刚刚创建的zval, 同时该zval的refcount = 2, is_ref = 1</li>
+<li>创建2个变量, <code>$a = 'this is'; $b = $a;</code> 这是普通的赋值操作, 这时 $a, $b 所指向的 zval 的 refcount=2, is_ref=0.</li>
+<li><code>$c = &amp;b</code>, 这时 PHP 引擎会创建一个 $b 所指向 zval 的副本, $a 还是指向原来的 zval, 只不过对应的 refcount 减1, 而 $b 和 $c 则会指向刚刚创建的 zval, 同时该 zval 的 refcount=2, is_ref=1</li>
 </ol>
-<p>这种情况使用引用不会为你节省内存空间, 有可能适得其反. 因为PHP引擎要保证变量再赋值(reassignment)操作正确, 所以在=和=&amp;混用的情况下,会有zval的副本产生. 再看下, 将上述赋值顺序颠倒一下的情况</p>
+<p>这种情况使用引用不会为你节省内存空间, 有可能适得其反. 因为 PHP 引擎要保证变量再赋值(reassignment)操作正确, 所以在 = 和 =&amp; 混用的情况下, 会有 zval 的副本产生. 再看下, 将上述赋值顺序颠倒一下的情况</p>
 <p><img src="http://ww1.sinaimg.cn/large/9a667c8dgw1em3gm93zqjj20dt094gm3.jpg" alt=""></p>
 <ol>
-<li>这次反过来 $a = &lsquo;this is&rsquo;; $b =&amp; $a; 引用赋值, 此时$a, $b所指向的zval的refcount=2, is_ref=1</li>
-<li>$c = $a, 普通赋值, PHP引擎为了变量的再赋值操作的处理, 这里又新建了一个zval的副本来存放$c的值, 此时$c的refcount=1, is_ref=0</li>
+<li>这次反过来 <code>$a = 'this is'; $b =&amp; $a;</code> 引用赋值, 此时 $a, $ b所指向的zval 的 refcount=2, is_ref=1.</li>
+<li><code>$c = $a</code>, 普通赋值, PHP 引擎为了变量的再赋值操作的处理, 这里又新建了一个zval 的副本来存放 $c 的值, 此时 $c 的refcount=1, is_ref=0</li>
 </ol>
         </p>
     </div>

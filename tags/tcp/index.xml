@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>TCP on 扬</title>
+    <link>https://www.luyang.ink/tags/tcp/</link>
+    <description>Recent content in TCP on 扬</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>zh-cn</language>
+    <lastBuildDate>Mon, 23 Apr 2018 19:21:34 +0800</lastBuildDate>
+    
+	<atom:link href="https://www.luyang.ink/tags/tcp/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>TCP 连接过程</title>
+      <link>https://www.luyang.ink/posts/tcp/</link>
+      <pubDate>Mon, 23 Apr 2018 19:21:34 +0800</pubDate>
+      
+      <guid>https://www.luyang.ink/posts/tcp/</guid>
+      <description>&lt;p&gt;传输控制协议(TCP, Transmission Control Protocol)是一种面向连接的/可靠的/基于字节流的传输层通信协议, 由IETF的&lt;a href=&#34;https://tools.ietf.org/html/rfc793&#34;&gt;RFC 793&lt;/a&gt;定义&lt;/p&gt;</description>
+    </item>
+    
+  </channel>
+</rss>

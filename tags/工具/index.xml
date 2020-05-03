@@ -21,5 +21,14 @@
 不过下载还是鸟样, 治标不治本&lt;/p&gt;</description>
     </item>
     
+    <item>
+      <title>references in php</title>
+      <link>https://www.luyang.ink/posts/vim/</link>
+      <pubDate>Wed, 12 Mar 2014 15:42:13 +0800</pubDate>
+      
+      <guid>https://www.luyang.ink/posts/vim/</guid>
+      <description>&lt;p&gt;最近把 NetBeans IDE 换成了 vim, 自己鼓捣了下设置, 通过 Vundle 管理插件. 配置好后, 瞬间小清新.&lt;/p&gt;</description>
+    </item>
+    
   </channel>
 </rss>

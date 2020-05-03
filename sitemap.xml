@@ -53,6 +53,21 @@
   </url>
   
   <url>
+    <loc>https://www.luyang.ink/tags/tcp/</loc>
+    <lastmod>2018-04-23T19:21:34+08:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://www.luyang.ink/posts/tcp/</loc>
+    <lastmod>2018-04-23T19:21:34+08:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://www.luyang.ink/tags/%E7%BD%91%E7%BB%9C/</loc>
+    <lastmod>2018-04-23T19:21:34+08:00</lastmod>
+  </url>
+  
+  <url>
     <loc>https://www.luyang.ink/tags/php/</loc>
     <lastmod>2018-04-13T19:58:16+08:00</lastmod>
   </url>
@@ -70,11 +85,6 @@
   <url>
     <loc>https://www.luyang.ink/posts/mysql-server-turning/</loc>
     <lastmod>2016-11-04T23:04:23+08:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>https://www.luyang.ink/posts/mysql-mha/</loc>
-    <lastmod>2016-11-01T23:45:27+08:00</lastmod>
   </url>
   
   <url>
@@ -199,7 +209,17 @@
   
   <url>
     <loc>https://www.luyang.ink/posts/references-in-php/</loc>
-    <lastmod>2015-10-03T22:20:49+20:02</lastmod>
+    <lastmod>2014-10-03T22:20:49+20:02</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://www.luyang.ink/posts/vim/</loc>
+    <lastmod>2014-03-12T15:42:13+08:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://www.luyang.ink/tags/vim/</loc>
+    <lastmod>2014-03-12T15:42:13+08:00</lastmod>
   </url>
   
 </urlset>

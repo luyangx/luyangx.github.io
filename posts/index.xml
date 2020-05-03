@@ -57,6 +57,15 @@
     </item>
     
     <item>
+      <title>TCP 连接过程</title>
+      <link>https://www.luyang.ink/posts/tcp/</link>
+      <pubDate>Mon, 23 Apr 2018 19:21:34 +0800</pubDate>
+      
+      <guid>https://www.luyang.ink/posts/tcp/</guid>
+      <description>&lt;p&gt;传输控制协议(TCP, Transmission Control Protocol)是一种面向连接的/可靠的/基于字节流的传输层通信协议, 由IETF的&lt;a href=&#34;https://tools.ietf.org/html/rfc793&#34;&gt;RFC 793&lt;/a&gt;定义&lt;/p&gt;</description>
+    </item>
+    
+    <item>
       <title>PHP7 vs PHP5 zval 变化</title>
       <link>https://www.luyang.ink/posts/php7-vs-php5-zval/</link>
       <pubDate>Fri, 13 Apr 2018 19:58:16 +0800</pubDate>
@@ -72,15 +81,6 @@
       
       <guid>https://www.luyang.ink/posts/mysql-server-turning/</guid>
       <description>&lt;p&gt;衡量数据库性能的指标, 一般有2个指标: 响应时间和吞吐率. 响应时间又包括等待时间和执行时间. 调优的目的是降低响应时间, 提高吞吐率.&lt;/p&gt;</description>
-    </item>
-    
-    <item>
-      <title>MySQL MHA</title>
-      <link>https://www.luyang.ink/posts/mysql-mha/</link>
-      <pubDate>Tue, 01 Nov 2016 23:45:27 +0800</pubDate>
-      
-      <guid>https://www.luyang.ink/posts/mysql-mha/</guid>
-      <description>MHA（Master HA） 是一款开源的 MySQL 的高可用程序. MHA 在监控到 master 节点故障时, 短时间内(通常为10-30s)会自动完成进行故障转移, 还提供了在线 master 切换</description>
     </item>
     
     <item>
@@ -231,11 +231,20 @@
     <item>
       <title>references in php</title>
       <link>https://www.luyang.ink/posts/references-in-php/</link>
-      <pubDate>Sat, 03 Oct 2015 22:20:49 +2002</pubDate>
+      <pubDate>Fri, 03 Oct 2014 22:20:49 +2002</pubDate>
       
       <guid>https://www.luyang.ink/posts/references-in-php/</guid>
       <description>&lt;meta name=&#34;referrer&#34; content=&#34;no-referrer&#34;&gt;
-&lt;p&gt;PHP中的变量都是存储在一个叫zval的容器中(数据结构), 这个zval中存储着变量的相关信息，其中就包括变量的引用状态(is_ref)和引用次数(refcount)。&lt;/p&gt;</description>
+&lt;p&gt;PHP中的变量都是存储在一个叫 zval 的容器中(数据结构), 这个 zval 中存储着变量的相关信息, 其中就包括变量的引用状态(is_ref)和引用次数(refcount).&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>references in php</title>
+      <link>https://www.luyang.ink/posts/vim/</link>
+      <pubDate>Wed, 12 Mar 2014 15:42:13 +0800</pubDate>
+      
+      <guid>https://www.luyang.ink/posts/vim/</guid>
+      <description>&lt;p&gt;最近把 NetBeans IDE 换成了 vim, 自己鼓捣了下设置, 通过 Vundle 管理插件. 配置好后, 瞬间小清新.&lt;/p&gt;</description>
     </item>
     
   </channel>
