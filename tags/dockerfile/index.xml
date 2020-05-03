@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Dockerfile on 扬</title>
+    <link>https://www.luyang.ink/tags/dockerfile/</link>
+    <description>Recent content in Dockerfile on 扬</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>zh-cn</language>
+    <lastBuildDate>Tue, 25 Oct 2016 21:07:41 +0800</lastBuildDate>
+    
+	<atom:link href="https://www.luyang.ink/tags/dockerfile/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>Docker 之 Dockerfile 定制镜像</title>
+      <link>https://www.luyang.ink/posts/docker-mysql-sshd/</link>
+      <pubDate>Tue, 25 Oct 2016 21:07:41 +0800</pubDate>
+      
+      <guid>https://www.luyang.ink/posts/docker-mysql-sshd/</guid>
+      <description>&lt;p&gt;通过 Dockerfile 定制一个基于 ubuntu, 包含 sshd, mysqld 服务的 image, 记录一下, 后面可能会用到, 例如搭建 mha 环境, 可以不需要安装虚拟机了.&lt;/p&gt;</description>
+    </item>
+    
+  </channel>
+</rss>

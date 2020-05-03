@@ -7,7 +7,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="format-detection" content="telephone=no"/>
 
-    <title>Go | 扬</title>
+    <title>Docker 之 Dockerfile 定制镜像 | 扬</title>
     
     <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
     <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
@@ -28,8 +28,6 @@
     
     
  
-    
-    <link rel="alternate" type="application/rss+xml" href="https://www.luyang.ink/tags/go/index.xml" title="扬" />
     </head>
 
     <body>
@@ -144,93 +142,113 @@
         <div id="content" class="content-container">
         
 
-  <h1>Tagged "Go"</h1>
-  
-  
+<h1 class="post-title">Docker 之 Dockerfile 定制镜像</h1>
     
-    <article>
-            <h2>
-                <a href="https://www.luyang.ink/posts/go-error-exception/">
-                    Go 语言基础 . 错误和异常
-                </a>
-            </h2>
-            <div>
-                <p><p>记录一下学习 <a href="https://legacy.gitbook.com/book/chai2010/advanced-go-programming-book">《Go语言高级编程》</a> 中的错误和异常</p></p>
-                
-            </div>
-            <div class="post-footer">
-            <time>May 5, 2018</time>
-            </div> 
-        </article>
+    <time>October 25, 2016</time>
     
-  
+    <div>
+        <p>
+        <p>通过 Dockerfile 定制一个基于 ubuntu, 包含 sshd, mysqld 服务的 image, 记录一下, 后面可能会用到, 例如搭建 mha 环境, 可以不需要安装虚拟机了.</p>
+<p>docker build 目录</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">xmysql // 镜像目录
+├── Dockerfile
+├── start.sh // 用于 CMD 启动服务
+└── xmy.cnf // mysql 配置文件
+</code></pre></div><p>Dockfile 文件内容:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-dockerfile" data-lang="dockerfile"><span style="color:#66d9ef">FROM</span><span style="color:#e6db74"> ubuntu:16.04 as mysql</span><span style="color:#960050;background-color:#1e0010">
+</span><span style="color:#960050;background-color:#1e0010">
+</span><span style="color:#960050;background-color:#1e0010"></span><span style="color:#75715e"># apt-get install mysql 前指定 root 密码</span><span style="color:#960050;background-color:#1e0010">
+</span><span style="color:#960050;background-color:#1e0010"></span><span style="color:#66d9ef">RUN</span> echo <span style="color:#e6db74">&#34;mysql-server mysql-server/root_password password root&#34;</span> | debconf-set-selections <span style="color:#ae81ff">\</span><span style="color:#960050;background-color:#1e0010">
+</span><span style="color:#960050;background-color:#1e0010"></span> <span style="color:#f92672">&amp;&amp;</span> echo <span style="color:#e6db74">&#34;mysql-server mysql-server/root_password_again password root&#34;</span> | debconf-set-selections <span style="color:#ae81ff">\</span><span style="color:#960050;background-color:#1e0010">
+</span><span style="color:#960050;background-color:#1e0010"></span> <span style="color:#f92672">&amp;&amp;</span> apt-get update <span style="color:#ae81ff">\
+</span><span style="color:#ae81ff"></span> <span style="color:#75715e"># apt-get install 无交互, 全部 Yes 安装</span><span style="color:#960050;background-color:#1e0010">
+</span><span style="color:#960050;background-color:#1e0010"></span> <span style="color:#f92672">&amp;&amp;</span> DEBIAN_FRONTEND<span style="color:#f92672">=</span>noninteractive apt-get install -y mysql-server openssh-server<span style="color:#ae81ff">\
+</span><span style="color:#ae81ff"></span> <span style="color:#75715e"># mysql 相关目录及权限</span><span style="color:#960050;background-color:#1e0010">
+</span><span style="color:#960050;background-color:#1e0010"></span> <span style="color:#f92672">&amp;&amp;</span> mkdir /var/run/mysqld <span style="color:#ae81ff">\</span><span style="color:#960050;background-color:#1e0010">
+</span><span style="color:#960050;background-color:#1e0010"></span> <span style="color:#f92672">&amp;&amp;</span> chown -R mysql:mysql /var/run/mysqld <span style="color:#ae81ff">\</span><span style="color:#960050;background-color:#1e0010">
+</span><span style="color:#960050;background-color:#1e0010"></span> <span style="color:#f92672">&amp;&amp;</span> mkdir /var/run/sshd <span style="color:#ae81ff">\
+</span><span style="color:#ae81ff"></span> <span style="color:#75715e"># sshd root账号相关设置</span><span style="color:#960050;background-color:#1e0010">
+</span><span style="color:#960050;background-color:#1e0010"></span> <span style="color:#f92672">&amp;&amp;</span> echo <span style="color:#e6db74">&#39;root:root&#39;</span> | chpasswd <span style="color:#ae81ff">\</span><span style="color:#960050;background-color:#1e0010">
+</span><span style="color:#960050;background-color:#1e0010"></span> <span style="color:#f92672">&amp;&amp;</span> sed -i <span style="color:#e6db74">&#39;s/PermitRootLogin prohibit-password/PermitRootLogin yes/&#39;</span> /etc/ssh/sshd_config <span style="color:#ae81ff">\</span><span style="color:#960050;background-color:#1e0010">
+</span><span style="color:#960050;background-color:#1e0010"></span> <span style="color:#f92672">&amp;&amp;</span> sed <span style="color:#e6db74">&#39;s@session\s*required\s*pam_loginuid.so@session optional pam_loginuid.so@g&#39;</span> -i /etc/pam.d/sshd <span style="color:#ae81ff">\</span><span style="color:#960050;background-color:#1e0010">
+</span><span style="color:#960050;background-color:#1e0010"></span> <span style="color:#f92672">&amp;&amp;</span> echo <span style="color:#e6db74">&#34;export VISIBLE=now&#34;</span> &gt;&gt; /etc/profile<span style="color:#960050;background-color:#1e0010">
+</span><span style="color:#960050;background-color:#1e0010"></span><span style="color:#960050;background-color:#1e0010">
+</span><span style="color:#960050;background-color:#1e0010"></span><span style="color:#66d9ef">COPY</span> xmy.cnf /etc/mysql/conf.d/ <span style="color:#75715e"># mysql 配置文件</span><span style="color:#960050;background-color:#1e0010">
+</span><span style="color:#960050;background-color:#1e0010"></span><span style="color:#960050;background-color:#1e0010">
+</span><span style="color:#960050;background-color:#1e0010"></span><span style="color:#66d9ef">ENV</span> NOTVISIBLE <span style="color:#e6db74">&#34;in users profile&#34;</span><span style="color:#960050;background-color:#1e0010">
+</span><span style="color:#960050;background-color:#1e0010"></span><span style="color:#960050;background-color:#1e0010">
+</span><span style="color:#960050;background-color:#1e0010"></span><span style="color:#66d9ef">VOLUME</span> [<span style="color:#e6db74">&#34;/var/lib/mysql&#34;</span>]<span style="color:#960050;background-color:#1e0010">
+</span><span style="color:#960050;background-color:#1e0010"></span><span style="color:#960050;background-color:#1e0010">
+</span><span style="color:#960050;background-color:#1e0010"></span><span style="color:#66d9ef">ADD</span> start.sh / <span style="color:#75715e"># 启动服务shell脚本</span><span style="color:#960050;background-color:#1e0010">
+</span><span style="color:#960050;background-color:#1e0010"></span><span style="color:#66d9ef">RUN</span> chmod +x /start.sh<span style="color:#960050;background-color:#1e0010">
+</span><span style="color:#960050;background-color:#1e0010"></span><span style="color:#960050;background-color:#1e0010">
+</span><span style="color:#960050;background-color:#1e0010"></span><span style="color:#66d9ef">EXPOSE</span><span style="color:#e6db74"> 3306 22 # 对外暴露服务接口</span><span style="color:#960050;background-color:#1e0010">
+</span><span style="color:#960050;background-color:#1e0010"></span><span style="color:#960050;background-color:#1e0010">
+</span><span style="color:#960050;background-color:#1e0010"></span><span style="color:#66d9ef">CMD</span> [<span style="color:#e6db74">&#34;/start.sh&#34;</span>]<span style="color:#960050;background-color:#1e0010">
+</span></code></pre></div><p>start.sh 启动服务脚本内容:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell"><span style="color:#75715e">#!/bin/bash
+</span><span style="color:#75715e"></span>
+service ssh start  // sshd
+mysqld_safe  // mysql
+</code></pre></div><p>一切准备就绪后, 执行 <code>docker build</code></p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">docker build -t xmysql .
+</code></pre></div><p>出现下面信息代表 build 成功</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">Sending build context to Docker daemon  4.608kB
+... 省略部分输出 ...
+Step 9/9 : CMD <span style="color:#f92672">[</span><span style="color:#e6db74">&#34;/start.sh&#34;</span><span style="color:#f92672">]</span>
+ ---&gt; Running in 808e9a34ce38
+Removing intermediate container 808e9a34ce38
+ ---&gt; 85a0fd3aa026
+Successfully built 85a0fd3aa026
+Successfully tagged xmysql:latest
+</code></pre></div><p>执行 <code>docker images</code> 查看下 <code>build</code> 好的 image</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">➜  xmysql docker images 
+REPOSITORY          TAG                 IMAGE ID            CREATED             SIZE
+xmysql              latest              85a0fd3aa026        <span style="color:#ae81ff">32</span> seconds ago      533MB
+</code></pre></div><p>运行 <code>build</code> 好的 image</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">➜  xmysql docker run --name xmysql -itd xmysql      
+f3ff245be385c6fc5336c8d82ee3115e3e0eaa9602b99facc98939a179421cdf
+</code></pre></div><p>查看 xmysql 运行状态</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">➜  xmysql docker ps      
+CONTAINER ID        IMAGE               COMMAND             CREATED             STATUS              PORTS               NAMES
+f3ff245be385        xmysql              <span style="color:#e6db74">&#34;/start.sh&#34;</span>         <span style="color:#ae81ff">59</span> seconds ago      Up <span style="color:#ae81ff">58</span> seconds       22/tcp, 3306/tcp    xmysql
+</code></pre></div><p>查看 xmysql 容器中 sshd, mysqld 服务运行状态</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">➜  xmysql docker exec -it xmysql bash service ssh status
+ * sshd is running
+
+➜  xmysql docker exec -it xmysql bash service mysql status
+ * /usr/bin/mysqladmin  Ver 8.42 Distrib 5.7.29, <span style="color:#66d9ef">for</span> Linux on x86_64
+Copyright <span style="color:#f92672">(</span>c<span style="color:#f92672">)</span> 2000, 2020, Oracle and/or its affiliates. All rights reserved.
+
+Oracle is a registered trademark of Oracle Corporation and/or its
+affiliates. Other names may be trademarks of their respective
+owners.
+
+Server version          5.7.29-0ubuntu0.16.04.1-log
+Protocol version        10
+Connection              Localhost via UNIX socket
+UNIX socket             /var/run/mysqld/mysqld.sock
+Uptime:                 <span style="color:#ae81ff">6</span> min <span style="color:#ae81ff">42</span> sec
+
+Threads: <span style="color:#ae81ff">1</span>  Questions: <span style="color:#ae81ff">4</span>  Slow queries: <span style="color:#ae81ff">0</span>  Opens: <span style="color:#ae81ff">108</span>  Flush tables: <span style="color:#ae81ff">1</span>  Open tables: <span style="color:#ae81ff">101</span>  Queries per second avg: 0.009
+</code></pre></div><p>通过查看上面信息可知 sshd, mysqld 服务正常运行.</p>
+<p>至此通过 Dockerfile 定制 image 也就完成了, 更多 Dockerfile 中相关指令可以参考 <a href="https://vuepress.mirror.docker-practice.com/image/build.html">Docker 从入门到实践 - Dockerfile 指令详解</a></p>
+        </p>
+    </div>
     
-    <article>
-            <h2>
-                <a href="https://www.luyang.ink/posts/go-concurrent-mode/">
-                    Go 语言基础 . 并发模式
-                </a>
-            </h2>
-            <div>
-                <p><p>记录一下学习 <a href="https://legacy.gitbook.com/book/chai2010/advanced-go-programming-book">《Go语言高级编程》</a> 中的常见并发模式</p></p>
-                
-            </div>
-            <div class="post-footer">
-            <time>April 30, 2018</time>
-            </div> 
-        </article>
+
     
-  
-    
-    <article>
-            <h2>
-                <a href="https://www.luyang.ink/posts/go-concurrent/">
-                    Go 语言基础 . 面向并发的内存模型
-                </a>
-            </h2>
-            <div>
-                <p><p>记录一下学习 <a href="https://legacy.gitbook.com/book/chai2010/advanced-go-programming-book">《Go语言高级编程》</a> 中的函数、方法和接口</p></p>
-                
-            </div>
-            <div class="post-footer">
-            <time>April 28, 2018</time>
-            </div> 
-        </article>
-    
-  
-    
-    <article>
-            <h2>
-                <a href="https://www.luyang.ink/posts/go-func-method-interface/">
-                    Go 语言基础 . 函数、方法和接口
-                </a>
-            </h2>
-            <div>
-                <p><p>记录一下学习 <a href="https://legacy.gitbook.com/book/chai2010/advanced-go-programming-book">《Go语言高级编程》</a> 中的函数、方法和接口</p></p>
-                
-            </div>
-            <div class="post-footer">
-            <time>April 26, 2018</time>
-            </div> 
-        </article>
-    
-  
-    
-    <article>
-            <h2>
-                <a href="https://www.luyang.ink/posts/go-array-string-slice/">
-                    Go 语言基础 . 数组、字符串和切片
-                </a>
-            </h2>
-            <div>
-                <p><p>记录一下学习 <a href="https://legacy.gitbook.com/book/chai2010/advanced-go-programming-book">《Go语言高级编程》</a> 中的数据结构 . 数组、字符串和切片</p></p>
-                
-            </div>
-            <div class="post-footer">
-            <time>April 23, 2018</time>
-            </div> 
-        </article>
-    
+
+    <div class="page-footer">
+        
+        <hr class="footer-divider">
+        
+            <a class="tag" href="/tags/docker">#Docker</a>
+        
+            <a class="tag" href="/tags/dockerfile">#Dockerfile</a>
+        
+      
+    </div>
 
 
         

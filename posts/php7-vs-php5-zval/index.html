@@ -7,7 +7,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="format-detection" content="telephone=no"/>
 
-    <title>Go | 扬</title>
+    <title>PHP7 vs PHP5 zval 变化 | 扬</title>
     
     <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
     <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
@@ -28,8 +28,6 @@
     
     
  
-    
-    <link rel="alternate" type="application/rss+xml" href="https://www.luyang.ink/tags/go/index.xml" title="扬" />
     </head>
 
     <body>
@@ -144,93 +142,111 @@
         <div id="content" class="content-container">
         
 
-  <h1>Tagged "Go"</h1>
-  
-  
+<h1 class="post-title">PHP7 vs PHP5 zval 变化</h1>
     
-    <article>
-            <h2>
-                <a href="https://www.luyang.ink/posts/go-error-exception/">
-                    Go 语言基础 . 错误和异常
-                </a>
-            </h2>
-            <div>
-                <p><p>记录一下学习 <a href="https://legacy.gitbook.com/book/chai2010/advanced-go-programming-book">《Go语言高级编程》</a> 中的错误和异常</p></p>
-                
-            </div>
-            <div class="post-footer">
-            <time>May 5, 2018</time>
-            </div> 
-        </article>
+    <time>April 13, 2018</time>
     
-  
+    <div>
+        <p>
+        <p>PHP7 已经发布很长时间了, 奈何公司现在还在用 PHP5.6, 不知何时可以上 7? PHP7 对 zval 做了优化, 之前看到鸟哥发了一篇对比 PHP5.6 zval 的<a href="https://www.laruence.com/2018/04/08/3170.html">博文</a>, 学校整理下.</p>
+<p>分别从 <a href="https://www.php.net/releases/">https://www.php.net/releases/</a> 下载了 PHP7.0 和 PHP5.6.29 的源码</p>
+<p>PHP5.6.29 源码 zend/zend.h 文件中 zval 定义</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-c" data-lang="c"><span style="color:#66d9ef">struct</span> _zval_struct {
+    <span style="color:#66d9ef">union</span> {
+        <span style="color:#66d9ef">long</span> lval;                  <span style="color:#75715e">/* long value */</span>
+        <span style="color:#66d9ef">double</span> dval;                <span style="color:#75715e">/* double value */</span>
+        <span style="color:#66d9ef">struct</span> {
+            <span style="color:#66d9ef">char</span> <span style="color:#f92672">*</span>val;
+            <span style="color:#66d9ef">int</span> len;
+        } str;
+        HashTable <span style="color:#f92672">*</span>ht;              <span style="color:#75715e">/* hash table value */</span>
+        zend_object_value obj;
+        zend_ast <span style="color:#f92672">*</span>ast;
+    } value; <span style="color:#75715e">// 实际变量值, 需跟进 type 确定
+</span><span style="color:#75715e"></span>    zend_uint refcount__gc; <span style="color:#75715e">// 引用记数
+</span><span style="color:#75715e"></span>    zend_uchar type;    <span style="color:#75715e">// 变量类型
+</span><span style="color:#75715e"></span>    zend_uchar is_ref__gc; <span style="color:#75715e">// 是否引用
+</span><span style="color:#75715e"></span>};
+</code></pre></div><p>zval 可以表示一切 PHP 中的数据类型, 其中有一个 type 标识变量类型(例如: 字符串 IS_STRING, 数组 IS_ARRAY, 对象 IS_OBJECT), 可以根据 type 来确定, value 用哪个.
+value 是1个联合体, type=IS_STRING, value=str; type=IS_ARRAY, value=HashTable</p>
+<p>存在的问题:</p>
+<ul>
+<li>在 64 位系统下占用 24 个字节, <code>value.zend_object_value</code> 可以优化成指针</li>
+<li>无法扩展, 存储关于 zval 相关信息时, 只能通过hack手段, 无形中增加了内存占用和维护的复杂度</li>
+<li>Zend 设计问题, 导致 object 是一个&quot;补丁&quot;类型, 效率低</li>
+<li>字符串类型的 zval 很容易产生复制, Hashtable 字符串 hash 值重复计算</li>
+<li>一个变量引用了一个大数, 后续由于 Copy On Write, 会导致数组复制, 极大的拖慢性能</li>
+<li>zval 在堆上分配内存, 大量的分配后再销毁, 性能低</li>
+</ul>
+<p>PHP7.0 源码 zend/zend_types.h 文件中 zval 定义</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-c" data-lang="c"><span style="color:#66d9ef">struct</span> _zval_struct {
+    <span style="color:#66d9ef">union</span> {
+        zend_long         lval;             <span style="color:#75715e">/* long value */</span>
+        <span style="color:#66d9ef">double</span>            dval;             <span style="color:#75715e">/* double value */</span>
+        zend_refcounted  <span style="color:#f92672">*</span>counted;
+        zend_string      <span style="color:#f92672">*</span>str;
+        zend_array       <span style="color:#f92672">*</span>arr;
+        zend_object      <span style="color:#f92672">*</span>obj;
+        zend_resource    <span style="color:#f92672">*</span>res;
+        zend_reference   <span style="color:#f92672">*</span>ref;
+        zend_ast_ref     <span style="color:#f92672">*</span>ast;
+        zval             <span style="color:#f92672">*</span>zv;
+        <span style="color:#66d9ef">void</span>             <span style="color:#f92672">*</span>ptr;
+        zend_class_entry <span style="color:#f92672">*</span>ce;
+        zend_function    <span style="color:#f92672">*</span>func;
+        <span style="color:#66d9ef">struct</span> {
+            uint32_t w1;
+            uint32_t w2;
+        } ww;
+    } value;            <span style="color:#75715e">/* value */</span>
+    <span style="color:#66d9ef">union</span> {
+        <span style="color:#66d9ef">struct</span> {
+            ZEND_ENDIAN_LOHI_4(
+                zend_uchar    type,         <span style="color:#75715e">/* active type */</span>
+                zend_uchar    type_flags,
+                zend_uchar    const_flags,
+                zend_uchar    reserved
+            ) 
+        } v;
+        uint32_t type_info;
+    } u1;
+    <span style="color:#66d9ef">union</span> {
+        uint32_t     var_flags;
+        uint32_t     next;                 <span style="color:#75715e">/* hash collision chain */</span>
+        uint32_t     cache_slot;           <span style="color:#75715e">/* literal cache slot */</span>
+        uint32_t     lineno;               <span style="color:#75715e">/* line number (for ast nodes) */</span>
+        uint32_t     num_args;             <span style="color:#75715e">/* arguments number for EX(This) */</span>
+        uint32_t     fe_pos;               <span style="color:#75715e">/* foreach position */</span>
+        uint32_t     fe_iter_idx;          <span style="color:#75715e">/* foreach iterator index */</span>
+    } u2;
+};
+</code></pre></div><p>有3个 union,</p>
+<ul>
+<li>value: 对应 lval, dval 直接保存其值, 其他类型保存执行具体值得指针</li>
+<li>u1: 跟类型有关的信息</li>
+<li>u2: 扩展字段</li>
+</ul>
+<p>优化:</p>
+<ul>
+<li>64 位系统下占 16 个字节</li>
+<li>zval.value 能保存的值, 不再进行引用记数操作, 例: IS_LONG, IS_DOUBLE, IS_NULL 等类型. 其他类型的值保存一个指向具体值得指针, 引用记数作用在具体值上</li>
+<li>zval 预先分配, 在编译时确定需要分配的大小, 大部分的内部函数 zval 在栈上分配内存</li>
+</ul>
+<p>总结: PHP7 的 zval 相当于 PHP5 的 zval *</p>
+        </p>
+    </div>
     
-    <article>
-            <h2>
-                <a href="https://www.luyang.ink/posts/go-concurrent-mode/">
-                    Go 语言基础 . 并发模式
-                </a>
-            </h2>
-            <div>
-                <p><p>记录一下学习 <a href="https://legacy.gitbook.com/book/chai2010/advanced-go-programming-book">《Go语言高级编程》</a> 中的常见并发模式</p></p>
-                
-            </div>
-            <div class="post-footer">
-            <time>April 30, 2018</time>
-            </div> 
-        </article>
+
     
-  
-    
-    <article>
-            <h2>
-                <a href="https://www.luyang.ink/posts/go-concurrent/">
-                    Go 语言基础 . 面向并发的内存模型
-                </a>
-            </h2>
-            <div>
-                <p><p>记录一下学习 <a href="https://legacy.gitbook.com/book/chai2010/advanced-go-programming-book">《Go语言高级编程》</a> 中的函数、方法和接口</p></p>
-                
-            </div>
-            <div class="post-footer">
-            <time>April 28, 2018</time>
-            </div> 
-        </article>
-    
-  
-    
-    <article>
-            <h2>
-                <a href="https://www.luyang.ink/posts/go-func-method-interface/">
-                    Go 语言基础 . 函数、方法和接口
-                </a>
-            </h2>
-            <div>
-                <p><p>记录一下学习 <a href="https://legacy.gitbook.com/book/chai2010/advanced-go-programming-book">《Go语言高级编程》</a> 中的函数、方法和接口</p></p>
-                
-            </div>
-            <div class="post-footer">
-            <time>April 26, 2018</time>
-            </div> 
-        </article>
-    
-  
-    
-    <article>
-            <h2>
-                <a href="https://www.luyang.ink/posts/go-array-string-slice/">
-                    Go 语言基础 . 数组、字符串和切片
-                </a>
-            </h2>
-            <div>
-                <p><p>记录一下学习 <a href="https://legacy.gitbook.com/book/chai2010/advanced-go-programming-book">《Go语言高级编程》</a> 中的数据结构 . 数组、字符串和切片</p></p>
-                
-            </div>
-            <div class="post-footer">
-            <time>April 23, 2018</time>
-            </div> 
-        </article>
-    
+
+    <div class="page-footer">
+        
+        <hr class="footer-divider">
+        
+            <a class="tag" href="/tags/php">#PHP</a>
+        
+      
+    </div>
 
 
         

@@ -6,10 +6,19 @@
     <description>Recent content in PHP on 扬</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>zh-cn</language>
-    <lastBuildDate>Fri, 04 Dec 2015 19:48:21 +0800</lastBuildDate>
+    <lastBuildDate>Fri, 13 Apr 2018 19:58:16 +0800</lastBuildDate>
     
 	<atom:link href="https://www.luyang.ink/tags/php/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>PHP7 vs PHP5 zval 变化</title>
+      <link>https://www.luyang.ink/posts/php7-vs-php5-zval/</link>
+      <pubDate>Fri, 13 Apr 2018 19:58:16 +0800</pubDate>
+      
+      <guid>https://www.luyang.ink/posts/php7-vs-php5-zval/</guid>
+      <description>&lt;p&gt;PHP7 已经发布很长时间了, 奈何公司现在还在用 PHP5.6, 不知何时可以上 7? PHP7 对 zval 做了优化, 之前看到鸟哥发了一篇对比 PHP5.6 zval 的&lt;a href=&#34;https://www.laruence.com/2018/04/08/3170.html&#34;&gt;博文&lt;/a&gt;, 学校整理下.&lt;/p&gt;</description>
+    </item>
     
     <item>
       <title>PHP7 发布了</title>
@@ -23,7 +32,7 @@
     <item>
       <title>references in php</title>
       <link>https://www.luyang.ink/posts/references-in-php/</link>
-      <pubDate>Mon, 03 Nov 2014 22:20:49 +2002</pubDate>
+      <pubDate>Sat, 03 Oct 2015 22:20:49 +2002</pubDate>
       
       <guid>https://www.luyang.ink/posts/references-in-php/</guid>
       <description>&lt;meta name=&#34;referrer&#34; content=&#34;no-referrer&#34;&gt;

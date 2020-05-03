@@ -33,7 +33,7 @@
   </url>
   
   <url>
-    <loc>https://www.luyang.ink/posts/go-concurrent-mode%E7%9A%84%E5%89%AF%E6%9C%AC/</loc>
+    <loc>https://www.luyang.ink/posts/go-concurrent-mode/</loc>
     <lastmod>2018-04-30T21:34:15+08:00</lastmod>
   </url>
   
@@ -53,6 +53,16 @@
   </url>
   
   <url>
+    <loc>https://www.luyang.ink/tags/php/</loc>
+    <lastmod>2018-04-13T19:58:16+08:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://www.luyang.ink/posts/php7-vs-php5-zval/</loc>
+    <lastmod>2018-04-13T19:58:16+08:00</lastmod>
+  </url>
+  
+  <url>
     <loc>https://www.luyang.ink/tags/mysql/</loc>
     <lastmod>2016-11-04T23:04:23+08:00</lastmod>
   </url>
@@ -60,6 +70,26 @@
   <url>
     <loc>https://www.luyang.ink/posts/mysql-server-turning/</loc>
     <lastmod>2016-11-04T23:04:23+08:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://www.luyang.ink/posts/mysql-mha/</loc>
+    <lastmod>2016-11-01T23:45:27+08:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://www.luyang.ink/tags/docker/</loc>
+    <lastmod>2016-10-25T21:07:41+08:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://www.luyang.ink/posts/docker-mysql-sshd/</loc>
+    <lastmod>2016-10-25T21:07:41+08:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://www.luyang.ink/tags/dockerfile/</loc>
+    <lastmod>2016-10-25T21:07:41+08:00</lastmod>
   </url>
   
   <url>
@@ -163,18 +193,13 @@
   </url>
   
   <url>
-    <loc>https://www.luyang.ink/tags/php/</loc>
-    <lastmod>2015-12-04T19:48:21+08:00</lastmod>
-  </url>
-  
-  <url>
     <loc>https://www.luyang.ink/posts/php7-released/</loc>
     <lastmod>2015-12-04T19:48:21+08:00</lastmod>
   </url>
   
   <url>
     <loc>https://www.luyang.ink/posts/references-in-php/</loc>
-    <lastmod>2014-11-03T22:20:49+20:02</lastmod>
+    <lastmod>2015-10-03T22:20:49+20:02</lastmod>
   </url>
   
 </urlset>
