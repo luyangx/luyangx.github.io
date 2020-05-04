@@ -1,0 +1,742 @@
+<!DOCTYPE html>
+
+<html lang="zh-cn">
+    <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="format-detection" content="telephone=no"/>
+
+    <title>HTTP/1.1 . 连接/缓存/安全 | 扬</title>
+    
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+    <link rel="manifest" href="/manifest.json">
+    <link rel="mask-icon" href="/safari-pinned-tab.svg" color="#FF3DB4">
+    <meta name="theme-color" content="#ffffff">
+
+    
+    
+    
+    <link rel="stylesheet" href="https://www.luyang.ink/css/main.min.15431d6c334f65809fe2bc329da3f2c81c6e3027ab1e25b56afb2bb85fa7fd64.css"/>
+
+    
+    
+    
+
+    
+    
+ 
+    </head>
+
+    <body>
+        
+<nav>
+  <header>
+    <div class="site-title">
+        <a href="/">扬</a>
+    </div>  
+</header>
+
+  <div class="nav-menu">
+  
+    <a class="color-link nav-link" href="/about/">About</a>
+  
+    <a class="color-link nav-link" href="/tags/">Tags</a>
+  
+  <a class="color-link nav-link" href="https://www.luyang.ink/index.xml" target="_blank" rel="noopener" type="application/rss+xml">RSS</a>
+</div>
+<footer class="footer">
+	<div class="social-icons">
+        
+    <a class="social-icon" href="0xd1ef@gmail.com" target="_blank" rel="noopener" title="Email">
+        <svg width="28px" height="28px" viewBox="0 0 28 28" version="1.1" fill="#ABABAB" xmlns="https://www.w3.org/2000/svg" xmlns:xlink="https://www.w3.org/1999/xlink">
+            <path d="M25.2794292,5.59128519 L14,16.8707144 L2.72057081,5.59128519 C3.06733103,5.30237414 3.51336915,5.12857603 4,5.12857603 L24,5.12857603 C24.4866308,5.12857603 24.932669,5.30237414 25.2794292,5.59128519 Z M25.9956978,6.99633695 C25.998551,7.04004843 26,7.08414302 26,7.12857603 L26,20.871424 C26,21.0798433 25.9681197,21.2808166 25.9089697,21.4697335 L18.7156355,14.2763993 L25.9956978,6.99633695 Z M24.9498374,22.6319215 C24.6672737,22.7846939 24.3437653,22.871424 24,22.871424 L4,22.871424 C3.5268522,22.871424 3.09207889,22.7071233 2.74962118,22.432463 L10.0950247,15.0870594 L13.9848068,18.9768415 L14.1878486,18.7737996 L14.2030419,18.7889929 L17.6549753,15.3370594 L24.9498374,22.6319215 Z M2.00810114,21.0526627 C2.00273908,20.9929669 2,20.9325153 2,20.871424 L2,7.12857603 C2,7.08414302 2.00144896,7.04004843 2.00430222,6.99633695 L9.03436454,14.0263993 L2.00810114,21.0526627 Z"></path>
+        </svg>
+    </a>
+    
+
+    
+
+    
+    <a class="social-icon" href="https://twitter.com/luyangx" target="_blank" rel="noopener" title="Twitter">
+        <svg width="28px" height="28px" viewBox="0 0 28 28" version="1.1" fill="#ABABAB" xmlns="https://www.w3.org/2000/svg" xmlns:xlink="https://www.w3.org/1999/xlink">
+            <path d="M8.991284,24.971612 C19.180436,24.971612 24.752372,16.530224 24.752372,9.210524 C24.752372,8.970656 24.747512,8.731868 24.736496,8.494376 C25.818008,7.712564 26.758256,6.737 27.5,5.62622 C26.507372,6.067076 25.439252,6.364292 24.318752,6.498212 C25.462472,5.812628 26.340512,4.727444 26.754584,3.434036 C25.684088,4.068536 24.499004,4.53002 23.23724,4.778528 C22.226468,3.701876 20.786828,3.028388 19.193828,3.028388 C16.134404,3.028388 13.653536,5.509256 13.653536,8.567492 C13.653536,9.0023 13.702244,9.424904 13.797176,9.830552 C9.19346,9.599108 5.11106,7.39472 2.3792,4.04294 C1.903028,4.861364 1.629032,5.812628 1.629032,6.827072 C1.629032,8.74904 2.606972,10.445612 4.094024,11.438132 C3.185528,11.41016 2.331788,11.160464 1.585184,10.745096 C1.583888,10.768208 1.583888,10.791428 1.583888,10.815728 C1.583888,13.49888 3.493652,15.738584 6.028088,16.246508 C5.562932,16.373084 5.07326,16.44134 4.56782,16.44134 C4.210988,16.44134 3.863876,16.406024 3.526484,16.34144 C4.231724,18.542264 6.276596,20.143796 8.701412,20.18894 C6.805148,21.674696 4.416836,22.56008 1.821488,22.56008 C1.374476,22.56008 0.93362,22.534592 0.5,22.4834 C2.951708,24.054476 5.862524,24.971612 8.991284,24.971612"></path>
+        </svg>
+    </a>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <a class="social-icon" href="https://weibo.com/0xd1ef" target="_blank" rel="noopener" title="Weibo">
+        <svg width="28px" height="28px" viewBox="0 0 28 28" version="1.1" fill="#ABABAB" xmlns="https://www.w3.org/2000/svg" xmlns:xlink="https://www.w3.org/1999/xlink">
+            <path d="M11.7643305,23.68043 C16.3966564,23.2245381 19.9124334,20.3848721 19.6072176,17.3404411 C19.3097287,14.2998735 15.3071519,12.2019978 10.6709625,12.6617533 C6.03863666,13.1215087 2.52285972,15.9573112 2.82421203,19.0017422 C3.12556434,22.0423098 7.12814116,24.1401855 11.7643305,23.68043 Z M21.0328458,13.5774007 C22.6400581,14.075791 24.4288545,15.2812003 24.424991,17.4061204 C24.424991,20.9180339 19.3599541,25.3417312 11.7450131,25.3417312 C5.93818589,25.3417312 -2.23820962e-13,22.5252462 -2.23820962e-13,17.8967838 C-2.23820962e-13,15.4743748 1.53380598,12.6733438 4.17257044,10.0345793 C7.69993785,6.50721189 11.8145559,4.89999957 13.3599524,6.44925952 C14.0399268,7.13309745 14.1056062,8.31146225 13.6690317,9.72163652 C13.4372222,10.4286554 14.3335521,10.0384428 14.3335521,10.0384428 C17.1848086,8.84462403 19.6728969,8.77508119 20.5808173,10.0732142 C21.0676172,10.7686426 21.0212553,11.7383789 20.5730903,12.8626548 C20.3683253,13.3803626 20.6387697,13.4576325 21.0328458,13.5774007 Z M26.0901557,5.1047646 C27.9291775,7.14082443 28.4275678,9.91867457 27.6394156,12.3488105 C27.6394156,12.3488105 27.6394156,12.352674 27.6394156,12.352674 C27.4578316,12.9128802 26.8551269,13.2219595 26.2910572,13.0403754 C25.7269875,12.8587913 25.4179082,12.2560867 25.5994923,11.692017 C26.1596985,9.96117297 25.8042573,7.98692899 24.4983973,6.53811982 C23.1925373,5.08931064 21.2646553,4.5368314 19.4835858,4.91545354 C18.9040622,5.03908525 18.336129,4.67205359 18.2124973,4.09252992 C18.0888655,3.51686974 18.4558972,2.94507305 19.0354209,2.82144134 C21.5389631,2.28827956 24.2511339,3.06484128 26.0901557,5.1047646 Z M23.2659437,7.65466876 C24.1622736,8.64758598 24.4018101,9.99980788 24.0193244,11.1858997 C23.8609213,11.6726995 23.3432135,11.9354169 22.8564136,11.7808773 C22.3696137,11.6224742 22.1068963,11.1009029 22.261436,10.6179665 C22.450747,10.0384428 22.3309788,9.37778581 21.8944043,8.89098592 C21.4578298,8.40804953 20.8087633,8.22260195 20.2137857,8.35009716 C19.7192588,8.45827491 19.2285954,8.14146864 19.1204177,7.64307828 C19.0161034,7.14468793 19.3329097,6.65016106 19.8313,6.5458468 C21.0482998,6.2831294 22.3696137,6.66175153 23.2659437,7.65466876 Z M12.0193209,18.1710916 C12.1738606,17.8890568 12.0734098,17.576114 11.7952385,17.4756632 C11.5209306,17.3674855 11.1770799,17.4988442 11.0148133,17.7692886 C10.8564101,18.039733 10.9414069,18.3526757 11.2195783,18.464717 C11.4977496,18.5806217 11.8570543,18.449263 12.0193209,18.1710916 Z M10.5396038,20.0642023 C10.9800418,19.3417295 10.7482324,18.5188059 10.021896,18.2058631 C9.30328667,17.9045108 8.3760488,18.2135901 7.93174732,18.9090185 C7.48358235,19.6083104 7.69607436,20.438961 8.40695673,20.7634942 C9.12942957,21.091891 10.0914389,20.7789482 10.5396038,20.0642023 Z M12.224086,15.0030289 C14.5074092,15.5941431 15.6741836,17.7461076 14.7392187,19.8401198 C13.7926634,21.9766304 11.0727656,23.1202238 8.76239791,22.37457 C6.53702702,21.6559607 5.59047169,19.4537707 6.56793494,17.4717998 C7.52608075,15.5284637 10.0180325,14.4273687 12.224086,15.0030289 Z"></path>
+        </svg>
+    </a>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    
+    
+    <a class="social-icon" href="https://github.com/luyangx" target="_blank" rel="noopener" title="GitHub">
+        <svg width="28px" height="28px" viewBox="0 0 28 28" version="1.1" fill="#ABABAB" xmlns="https://www.w3.org/2000/svg" xmlns:xlink="https://www.w3.org/1999/xlink">
+            <path d="M13.9988029,1.32087331 C6.82105037,1.32087331 1,7.14112562 1,14.3212723 C1,20.0649109 4.72454649,24.9370678 9.89038951,26.6560892 C10.5408085,26.7757983 10.7778323,26.374374 10.7778323,26.0296121 C10.7778323,25.7215609 10.7666595,24.9035493 10.760275,23.8189856 C7.14426471,24.6042767 6.38131925,22.0760223 6.38131925,22.0760223 C5.78995672,20.5740732 4.93762853,20.1742451 4.93762853,20.1742451 C3.75729765,19.3682044 5.02701126,19.3841656 5.02701126,19.3841656 C6.33183953,19.4759425 7.01817121,20.7241085 7.01817121,20.7241085 C8.17775254,22.7104801 10.0611744,22.1366749 10.8017741,21.8038838 C10.919887,20.9643246 11.2558703,20.3913175 11.6269683,20.066507 C8.74038491,19.7385043 5.70536235,18.6228163 5.70536235,13.6413251 C5.70536235,12.2223743 6.21213051,11.0611968 7.04370914,10.1530044 C6.90963504,9.82420367 6.46351945,8.50181809 7.17139875,6.71256734 C7.17139875,6.71256734 8.26234691,6.36301702 10.7459099,8.04532771 C11.78259,7.75642995 12.8950858,7.61277914 14.000399,7.60719272 C15.1049142,7.61277914 16.2166119,7.75642995 17.2548881,8.04532771 C19.736855,6.36301702 20.8262071,6.71256734 20.8262071,6.71256734 C21.5356825,8.50181809 21.0895669,9.82420367 20.9562909,10.1530044 C21.7894656,11.0611968 22.2922435,12.2223743 22.2922435,13.6413251 C22.2922435,18.6355852 19.2524325,19.734514 16.3570705,20.0561322 C16.8231376,20.4575564 17.2389269,21.2508282 17.2389269,22.4638795 C17.2389269,24.2012564 17.2229657,25.603448 17.2229657,26.0296121 C17.2229657,26.3775663 17.4575954,26.7821827 18.116793,26.6552912 C23.2786458,24.9322794 27,20.0633148 27,14.3212723 C27,7.14112562 21.1789496,1.32087331 13.9988029,1.32087331"></path>
+        </svg>
+    </a>
+    
+
+    
+    
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+</div>
+
+
+
+
+	<p><a href="https://github.com/kimcc/hugo-theme-noteworthy" target="_blank" rel="noopener">Noteworthy theme</a></p>
+	<p><a href="https://gohugo.io" target="_blank" rel="noopener">Built with Hugo</a></p>
+
+	<script src="https://www.luyang.ink/js/main.min.fa5c2b23e07b5d9bfad267a52b4b24fdb053e6fb7524993383594926a3ac270c.js" integrity="sha256-+lwrI+B7XZv60melK0sk/bBT5vt1JJkzg1lJJqOsJww=" crossorigin="anonymous"></script>
+</footer>
+</nav>
+
+        <div id="content" class="content-container">
+        
+
+<h1 class="post-title">HTTP/1.1 . 连接/缓存/安全</h1>
+    
+    <time>May 2, 2014</time>
+    
+    <div>
+        <p>
+        <p>HTTP/1.1 目前在互联网上被广泛使用, 记录一下 HTTP1.1 重要的几块内容, 包括连接, 缓存控制等.</p>
+<h2 id="连接-connection">连接 Connection</h2>
+<h3 id="串行连接">串行连接</h3>
+<p>浏览器中每个 HTTP 请求串行的建立连接, 加载速度慢, 连接延时叠加, 如下图:</p>
+<p><img src="/images/http-connection-serial.png" alt=""></p>
+<h3 id="并行连接">并行连接</h3>
+<p>浏览器中每个 HTTP 请求都建立自己的连接, 加载速度快, 连接延时重叠, 如下图:</p>
+<p><img src="/images/http-connection-concurrent.png" alt=""></p>
+<p>打开大量连接会消耗很多资源, 浏览器会将并行连接总数限制为一个娇小的值, 一般是4个, chrome 是6个.</p>
+<h3 id="持久连接">持久连接</h3>
+<p>一般持久连接和并行连接配合使用. 持久连接有2种类型:</p>
+<h4 id="http10---keep-alive">HTTP/1.0+ - Keep-Alive</h4>
+<p>客户端可以通过 <code>Connection: Keep-Alive</code> 来请求建立一条持久连接, 如果服务端响应中没有 <code>Connection: Keep-Alive</code>, 则标识服务端不支持, 连接会被客户端关闭.</p>
+<p>现在浏览器默认使用 Keep-Alive</p>
+<h4 id="http11---persistent">HTTP/1.1 - Persistent</h4>
+<p>工作机制比 Keep-Alive 更优. HTTP/1.1 持久连接默认是激活的, 除非显式发送 connection: close, 连接才会关闭, 否则连接一直是打开状态.</p>
+<h3 id="管道化连接">管道化连接</h3>
+<p>将度欧条请求放入到队列, 当第一条请求发出时, 后面的请求也可以开始发送了, 可以降低网络延时, 提高性能.</p>
+<p><img src="/images/http-connection-pipeline.png" alt=""></p>
+<h2 id="缓存">缓存</h2>
+<p>HTTP GET 报文的基本缓存处理包括7个步骤</p>
+<ol>
+<li>接收 - 缓存从网络中读取抵达的请求报文</li>
+<li>解析 - 缓存对报文进行解析, 提取出 URL 和各个首部</li>
+<li>查询 - 缓存查看是否有本地副本可以, 如果没有, 就获取一份副本保存在本地</li>
+<li>新鲜度检测 - 缓存查看已缓存的副本是否足够新, 如果不是, 就询问服务器是否有更新</li>
+<li>创建响应 - 缓存会用新的首部和已缓存的主体来构建一条响应报文</li>
+<li>发送 - 缓存通过网络将响应发回给客户端</li>
+<li>日志 - 缓存可选地创建一个日志文件来描述这个事务</li>
+</ol>
+<p><img src="/images/http-cache-process.png" alt=""></p>
+<h2 id="https">HTTPS</h2>
+<p>HTTPS 将 HTTP 协议与一组强大的对称/非对称和基于证书的加密技术结合在一起, 在安全的传输层上发送 HTTP 内容. HTTP 安全层是通过 TLS 来实现的.</p>
+<p><img src="/images/http-https.png" alt=""></p>
+<h3 id="建立安全传输">建立安全传输</h3>
+<p>HTTPS 默认打开 443 端口, 连接建立过程如下图:</p>
+<p><img src="/images/http-https-connection.png" alt=""></p>
+<h4 id="ssl-握手">SSL 握手</h4>
+<p>在发送加密的 HTTP 报文前, 需要进行一次 SSL 握手, 完成以下工作:</p>
+<ul>
+<li>交换协议版本号</li>
+<li>选择一个两端都了解的密码</li>
+<li>对两端的身份进行认证</li>
+<li>生成临时的会话密钥, 以便加密信道</li>
+</ul>
+<p><img src="/images/http-https-ssl.png" alt=""></p>
+<h2 id="http-状态码">HTTP 状态码</h2>
+<h3 id="分类">分类</h3>
+<table>
+<thead>
+<tr>
+<th>总体范围</th>
+<th>已定义范围</th>
+<th>类别</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>100~199</td>
+<td>100~101</td>
+<td>信息</td>
+</tr>
+<tr>
+<td>200~299</td>
+<td>200~206</td>
+<td>成功</td>
+</tr>
+<tr>
+<td>300~399</td>
+<td>300~305</td>
+<td>重定向</td>
+</tr>
+<tr>
+<td>400~499</td>
+<td>400~415</td>
+<td>客户端错误</td>
+</tr>
+<tr>
+<td>500~599</td>
+<td>500~505</td>
+<td>服务器错误</td>
+</tr>
+</tbody>
+</table>
+<h3 id="状态码">状态码</h3>
+<table>
+<thead>
+<tr>
+<th>状态码</th>
+<th>原因</th>
+<th>含义</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>100</td>
+<td>Continue(继续)</td>
+<td>收到了请求的起始部分, 客户端应继续请求</td>
+</tr>
+<tr>
+<td>101</td>
+<td>Switching Protocols(切换协议)</td>
+<td>服务器正根据客户端的知识将协议切换成 Upgrade 首部列出的协议</td>
+</tr>
+<tr>
+<td>200</td>
+<td>OK</td>
+<td>服务器已成功处理请求</td>
+</tr>
+<tr>
+<td>201</td>
+<td>Created(已创建)</td>
+<td>对那些要服务器创建对象的请求来说, 资源已创建完毕</td>
+</tr>
+<tr>
+<td>202</td>
+<td>Accepted(已接收)</td>
+<td>请求已接收, 当服务器尚未处理</td>
+</tr>
+<tr>
+<td>203</td>
+<td>Non-Authoritative Information(非权威信息)</td>
+<td>服务器已将事务处理成功, 只是实体首部包含的信息不是来自原始服务器, 而是来自资源的副本</td>
+</tr>
+<tr>
+<td>204</td>
+<td>No Content(无内容)</td>
+<td>响应啊博文包含一些首部和一个状态行, 但不包含实体的主题内容</td>
+</tr>
+<tr>
+<td>205</td>
+<td>Reset Content(重置内容)</td>
+<td>另一个主要用于浏览器的代码. 意思是浏览器应该重置当前页面上所有的 HTML 表单</td>
+</tr>
+<tr>
+<td>206</td>
+<td>Partial Content(部分内容)</td>
+<td>部分请求成功</td>
+</tr>
+<tr>
+<td>300</td>
+<td>Multiple Choices(多项选择)</td>
+<td>客户端请求了实际指向多个资源的 URL. 这个代码时和一个选项列表一起返回的, 然后用户可以选择他希望使用的选项</td>
+</tr>
+<tr>
+<td>301</td>
+<td>Moved Permanently(永久移除)</td>
+<td>请求 URL 已移走, 同时响应中包含一个 Location 首部给出资源现在所在位置</td>
+</tr>
+<tr>
+<td>302</td>
+<td>Found(已找到)</td>
+<td>同 301, 只不过是临时的</td>
+</tr>
+<tr>
+<td>303</td>
+<td>See Other(参见其他)</td>
+<td>告诉客户端应该用另一个 URL 获取资源, 这个 URL 在响应 Location 首部中</td>
+</tr>
+<tr>
+<td>304</td>
+<td>Not Modified(未修改)</td>
+<td>资源没有修改过</td>
+</tr>
+<tr>
+<td>305</td>
+<td>Use Proxy(使用代理)</td>
+<td>通过代理访问资源, 代理位置在 Location 首部中</td>
+</tr>
+<tr>
+<td>307</td>
+<td>Temporary Redirect(临时重定向)</td>
+<td>和 301 类似.</td>
+</tr>
+<tr>
+<td>400</td>
+<td>Bad Request(坏请求)</td>
+<td>告诉客户端发生了异常</td>
+</tr>
+<tr>
+<td>401</td>
+<td>Unauthorized(未授权)</td>
+<td>访问资源前, 先进行身份认证</td>
+</tr>
+<tr>
+<td>402</td>
+<td>Payment Required(要求付款)</td>
+<td>未使用</td>
+</tr>
+<tr>
+<td>403</td>
+<td>Forbidden(禁止)</td>
+<td>服务器拒绝请求</td>
+</tr>
+<tr>
+<td>404</td>
+<td>Not Found</td>
+<td>服务器无法找到请求</td>
+</tr>
+<tr>
+<td>405</td>
+<td>Method Not Allowed(不允许使用的方法)</td>
+<td>不支持请求方法, 响应中会返回允许使用的方法</td>
+</tr>
+<tr>
+<td>406</td>
+<td>Not Acceptable(无法接受)</td>
+<td>服务器没有资源与客户端可以接受的 URL 相匹配</td>
+</tr>
+<tr>
+<td>407</td>
+<td>Proxy Authentication Required(要求进行代理认证)</td>
+<td>同 401</td>
+</tr>
+<tr>
+<td>408</td>
+<td>Request Timeout(请求超时)</td>
+<td>请求超时</td>
+</tr>
+<tr>
+<td>409</td>
+<td>Conflict(冲突)</td>
+<td>发出的请求在资源上造成了冲突</td>
+</tr>
+<tr>
+<td>410</td>
+<td>Gone(消失了)</td>
+<td>同 404</td>
+</tr>
+<tr>
+<td>411</td>
+<td>Length Required(要求长度指示)</td>
+<td>服务器要求在请求报文中含有 Content-Length 首部时使用该代码</td>
+</tr>
+<tr>
+<td>412</td>
+<td>Precondition Failed(先决条件失败)</td>
+<td>服务器无法满足客户端的请求条件</td>
+</tr>
+<tr>
+<td>413</td>
+<td>Request Entity Too Large(请求实体太大)</td>
+<td>实体太大</td>
+</tr>
+<tr>
+<td>414</td>
+<td>Request URI Too Long(请求 URI 太长)</td>
+<td>URI 太长</td>
+</tr>
+<tr>
+<td>415</td>
+<td>Unsupported Media Type(不支持的媒体类型)</td>
+<td>媒体类型不支持</td>
+</tr>
+<tr>
+<td>416</td>
+<td>Request Range Not Satisfiable(请求范围未满足)</td>
+<td>请求范围无效或未满足</td>
+</tr>
+<tr>
+<td>417</td>
+<td>Expectation Failed(无法满足期望)</td>
+<td>服务器无法满足 Expect 给出的期望</td>
+</tr>
+<tr>
+<td>500</td>
+<td>Internal Server Error(内部服务器错误)</td>
+<td>服务器遇到错误, 无法提供请求服务</td>
+</tr>
+<tr>
+<td>501</td>
+<td>Not Implemented(未实现)</td>
+<td>服务器无法满足客户端请求的某个功能</td>
+</tr>
+<tr>
+<td>502</td>
+<td>Bad Gateway(网关故障)</td>
+<td>代理服务器或网关遇到来自响应链中上游的无效响应</td>
+</tr>
+<tr>
+<td>503</td>
+<td>Service Unavailable(服务不可用)</td>
+<td>服务器目前无法提供服务</td>
+</tr>
+<tr>
+<td>504</td>
+<td>Gateway Timeout(网关超时)</td>
+<td>网关或代理等待另一台服务器的响应时超时</td>
+</tr>
+<tr>
+<td>505</td>
+<td>HTTP Version Not Supported(不支持的 HTTP 版本)</td>
+<td>服务器不支持或不愿支持的协议</td>
+</tr>
+</tbody>
+</table>
+<h2 id="http-首部参考">HTTP 首部参考</h2>
+<p>请求示例:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-http" data-lang="http"><span style="color:#a6e22e">GET</span> / <span style="color:#66d9ef">HTTP</span><span style="color:#f92672">/</span><span style="color:#ae81ff">1.1</span>
+Host<span style="color:#f92672">:</span> <span style="color:#ae81ff">www.baidu.com</span>
+Connection<span style="color:#f92672">:</span> <span style="color:#ae81ff">keep-alive</span>
+Pragma<span style="color:#f92672">:</span> <span style="color:#ae81ff">no-cache</span>
+Cache-Control<span style="color:#f92672">:</span> <span style="color:#ae81ff">no-cache</span>
+Upgrade-Insecure-Requests<span style="color:#f92672">:</span> <span style="color:#ae81ff">1</span>
+User-Agent<span style="color:#f92672">:</span> <span style="color:#ae81ff">Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_4) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/81.0.4044.129 Safari/537.36</span>
+Accept<span style="color:#f92672">:</span> <span style="color:#ae81ff">text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9</span>
+Sec-Fetch-Site<span style="color:#f92672">:</span> <span style="color:#ae81ff">none</span>
+Sec-Fetch-Mode<span style="color:#f92672">:</span> <span style="color:#ae81ff">navigate</span>
+Sec-Fetch-User<span style="color:#f92672">:</span> <span style="color:#ae81ff">?1</span>
+Sec-Fetch-Dest<span style="color:#f92672">:</span> <span style="color:#ae81ff">document</span>
+Accept-Encoding<span style="color:#f92672">:</span> <span style="color:#ae81ff">gzip, deflate, br</span>
+Accept-Language<span style="color:#f92672">:</span> <span style="color:#ae81ff">zh-CN,zh;q=0.9,en-US;q=0.8,en;q=0.7,de;q=0.6</span>
+Cookie<span style="color:#f92672">:</span> <span style="color:#ae81ff">BIDUPSID=xxxxx</span>
+</code></pre></div><p>响应示例:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-http" data-lang="http"><span style="color:#66d9ef">HTTP</span><span style="color:#f92672">/</span><span style="color:#ae81ff">1.1</span> <span style="color:#ae81ff">200</span> <span style="color:#a6e22e">OK</span>
+Bdpagetype<span style="color:#f92672">:</span> <span style="color:#ae81ff">2</span>
+Bdqid<span style="color:#f92672">:</span> <span style="color:#ae81ff">0x07d257b</span>
+Cache-Control<span style="color:#f92672">:</span> <span style="color:#ae81ff">private</span>
+Connection<span style="color:#f92672">:</span> <span style="color:#ae81ff">keep-alive</span>
+Content-Encoding<span style="color:#f92672">:</span> <span style="color:#ae81ff">gzip</span>
+Content-Type<span style="color:#f92672">:</span> <span style="color:#ae81ff">text/html;charset=utf-8</span>
+Date<span style="color:#f92672">:</span> <span style="color:#ae81ff">Wen, 02 May 2014 10:14:05 GMT</span>
+Expires<span style="color:#f92672">:</span> <span style="color:#ae81ff">Wen, 02 May 2014 10:14:05 GMT</span>
+Server<span style="color:#f92672">:</span> <span style="color:#ae81ff">BWS/1.1</span>
+Set-Cookie<span style="color:#f92672">:</span> <span style="color:#ae81ff">BDSVRTM=281; path=/</span>
+Set-Cookie<span style="color:#f92672">:</span> <span style="color:#ae81ff">BD_HOME=1; path=/</span>
+Set-Cookie<span style="color:#f92672">:</span> <span style="color:#ae81ff">H_PS_PSSID=31261_131163_31474; path=/; domain=.baidu.com</span>
+Strict-Transport-Security<span style="color:#f92672">:</span> <span style="color:#ae81ff">max-age=172800</span>
+Traceid<span style="color:#f92672">:</span> <span style="color:#ae81ff">15885278133115</span>
+X-Ua-Compatible<span style="color:#f92672">:</span> <span style="color:#ae81ff">IE=Edge,chrome=1</span>
+Transfer-Encoding<span style="color:#f92672">:</span> <span style="color:#ae81ff">chunked</span>
+</code></pre></div><h3 id="accept">Accept</h3>
+<p>请求首部, 客户端用 Accept 通知服务器可以接收哪些媒体类型.</p>
+<h4 id="举例">举例</h4>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-html" data-lang="html">Accept: text/*, image/*
+Accept: text/*, image/gif, image/jpeg; q=1
+</code></pre></div><h3 id="accept-charset">Accept-Charset</h3>
+<p>请求首部, 客户端用 Accept-Charset 通知服务器可以接受哪些字符集或哪些是优选字符集.</p>
+<h4 id="举例-1">举例</h4>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-html" data-lang="html">Accept-Charset: utf8
+</code></pre></div><h3 id="accept-encoding">Accept-Encoding</h3>
+<p>请求首部, 客户端用 Accept-Encoding 通知服务器可以接受哪些编码方式.</p>
+<h4 id="举例-2">举例</h4>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-html" data-lang="html">Accept-Encoding: gzip
+</code></pre></div><h3 id="accept-language">Accept-Language</h3>
+<p>请求首部, 客户端用 Accept-Language 通知服务器可以接受哪些语言或哪些是优选语言.</p>
+<h4 id="举例-3">举例</h4>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-html" data-lang="html">Accept-Language: zh-cn
+</code></pre></div><h3 id="accept-ranges">Accept-Ranges</h3>
+<p>响应首部, 用来告知客户端是否请求资源的某个范围. 如果该首部有值, 说明服务器允许对指定资源的哪个范围类型进行访问.</p>
+<p>客户端可以在没有收到该首部时, 对某个资源发起范围请求. 如果服务器不支持, 会以适当的状态码响应, 将 Accept-Ranges 置 none.</p>
+<h4 id="举例-4">举例</h4>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-html" data-lang="html">Accept-Ranges: none
+Accept-Ranges: bytes
+</code></pre></div><h3 id="age">Age</h3>
+<p>响应首部, 告知接收端响应已产生多长时间.</p>
+<p>HTTP/1.1 缓存必须在发送的每条响应中都包含1个 Age 首部.</p>
+<h4 id="举例-5">举例</h4>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-html" data-lang="html">Age: 60
+</code></pre></div><h3 id="allow">Allow</h3>
+<p>响应首部, 通知客户端可以对特定资源使用哪些 HTTP 方法.</p>
+<p>405 响应必须包含 Allow 首部.</p>
+<h4 id="举例-6">举例</h4>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-html" data-lang="html">Allow: #Method
+</code></pre></div><h3 id="authorization">Authorization</h3>
+<p>请求首部, 客户端发送, 用来向服务器回应自己的身份信息. 客户端收到 401 响应后, 需在请求中包含该首部.</p>
+<p>405 响应必须包含 Allow 首部.</p>
+<h4 id="举例-7">举例</h4>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-html" data-lang="html">Authorization: Basic 123abc
+</code></pre></div><h3 id="cache-control">Cache-Control</h3>
+<p>通用首部, 用于传输对象的缓存信息.</p>
+<h4 id="举例-8">举例</h4>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-html" data-lang="html">Cache-Control: no-cache
+</code></pre></div><h3 id="connection">Connection</h3>
+<p>通用首部, 该首部的值是一个标记列表, 标记对应各种首部名称.</p>
+<h4 id="举例-9">举例</h4>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-html" data-lang="html">Connection: close
+</code></pre></div><h3 id="content-encoding">Content-Encoding</h3>
+<p>实体首部, 用于说明是否对某对象进行过编码. 客户端根据此信息对报文进行解码.</p>
+<h4 id="举例-10">举例</h4>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-html" data-lang="html">Content-Encoding: compress, gzip
+</code></pre></div><h3 id="content-language">Content-Language</h3>
+<p>实体首部, 用于告知对象是哪种语言.</p>
+<h4 id="举例-11">举例</h4>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-html" data-lang="html">Content-Language: zh-cn, en
+</code></pre></div><h3 id="content-length">Content-Length</h3>
+<p>实体首部, 实体主体部分的长度或尺度.</p>
+<h4 id="举例-12">举例</h4>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-html" data-lang="html">Content-Length: 2417
+</code></pre></div><h3 id="content-location">Content-Location</h3>
+<p>实体首部, 给出报文的实体部分对应的 URL. 客户端重定向.</p>
+<h4 id="举例-13">举例</h4>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-html" data-lang="html">Content-Location: http://www.baidu.com
+</code></pre></div><h3 id="content-range">Content-Range</h3>
+<p>实体首部, 请求传输某个范围内的文档, 并给出文档的长度.</p>
+<h4 id="举例-14">举例</h4>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-html" data-lang="html">Content-Range: bytes 500-999 / 5400
+</code></pre></div><h3 id="content-type">Content-Type</h3>
+<p>实体首部, 媒体类型</p>
+<h4 id="举例-15">举例</h4>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-html" data-lang="html">Content-Type: text/html; charset=utf8
+</code></pre></div><h3 id="cookie">Cookie</h3>
+<p>扩展请求首部, 用于客户端识别和跟踪的扩展首部</p>
+<h4 id="举例-16">举例</h4>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-html" data-lang="html">Cookie: XXXID=abc123
+</code></pre></div><h3 id="date">Date</h3>
+<p>通用首部, 服务器响应报文的创建日期和时间</p>
+<h4 id="举例-17">举例</h4>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-html" data-lang="html">Date: Wen, 02 May 2014 10:14:05 GMT
+</code></pre></div><h3 id="etag">ETag</h3>
+<p>通用首部, 报文实体标记, 标识资源.</p>
+<h4 id="举例-18">举例</h4>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-html" data-lang="html">ETag: &#34;11e92a-457b-31345aaa&#34;
+</code></pre></div><h3 id="expires">Expires</h3>
+<p>实体首部, 响应失效的日期和时间. 浏览器可以缓存一份副本, 在给定的时间之前, 不需要再询问服务器资源是否有效.</p>
+<h4 id="举例-19">举例</h4>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-html" data-lang="html">Expires: Wen, 02 May 2014 10:14:05 GMT
+</code></pre></div><h3 id="if-modified-since">If-Modified-Since</h3>
+<p>请求首部, 客户端用 GET 方法请求服务器上的资源, 在上次请求资源后, 该资源是否有修改过. 如果没有修改, 服务端返回 304 Not Modified 响应, 否则服务器会正常响应请求</p>
+<h4 id="举例-20">举例</h4>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-html" data-lang="html">If-Modified-Since: Wen, 02 May 2014 10:14:05 GMT
+</code></pre></div><h3 id="if-match">If-Match</h3>
+<p>请求首部, 客户端发起条件请求, 服务端会对比客户端发过来的实体标记是否与请求资源标记相等, 匹配成功, 返回实体.</p>
+<h4 id="举例-21">举例</h4>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-html" data-lang="html">If-Match: &#34;abc123&#34;
+</code></pre></div><h3 id="if-none-match">If-None-Match</h3>
+<p>请求首部, 客户端发起条件请求, 提供一个实体标记列表, 服务端会一一匹配, 只在都不匹配时, 才会返回资源.</p>
+<h4 id="举例-22">举例</h4>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-html" data-lang="html">If-None-Match: &#34;abc123-456cde-789fgh&#34; // * | ETag
+</code></pre></div><h3 id="if-range">If-Range</h3>
+<p>请求首部, 客户端发起条件请求, 需要验证范围内资源是否有效, 无效的话会获取新的资源.</p>
+<h4 id="举例-23">举例</h4>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-html" data-lang="html">If-Range: &#34;abc123-456cde-789fgh&#34; // HTTP-date | ETag
+</code></pre></div><h3 id="if-unmodified-since">If-Unmodified-Since</h3>
+<p>请求首部, 客户端发起条件请求, 服务器查看首部日期值, 只有从该首部提供的日期后, 对象未修改过, 才会返回对象</p>
+<h4 id="举例-24">举例</h4>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-html" data-lang="html">If-Unmodified-Since: Wen, 02 May 2014 10:14:05 GMT
+</code></pre></div><h3 id="last-modified">Last-Modified</h3>
+<p>实体首部, 提供实体最后一次被修改的相关信息.</p>
+<h4 id="举例-25">举例</h4>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-html" data-lang="html">Last-Modified: Wen, 02 May 2014 10:14:05 GMT
+</code></pre></div><h3 id="location">Location</h3>
+<p>响应首部, 将客户端导向某个资源的地址.</p>
+<h4 id="举例-26">举例</h4>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-html" data-lang="html">Location: &#34;http://www.baidu.com&#34;
+</code></pre></div><h3 id="pragma">Pragma</h3>
+<p>请求首部, 用于随报文传送一些指令. 指令通常用来控制缓存行为</p>
+<h4 id="举例-27">举例</h4>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-html" data-lang="html">Pragma: no-cache // 等价于 Cache-Control: no-cache
+</code></pre></div><h3 id="range">Range</h3>
+<p>实体首部, 请求某实体的部分内容. 它的值说明了报文所包含实体的范围.</p>
+<h4 id="举例-28">举例</h4>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-html" data-lang="html">Range: bytes=500-1500
+</code></pre></div><h3 id="referer">Referer</h3>
+<p>请求首部, 服务器可以知道客户端从哪里获得其请求的 URL.</p>
+<h4 id="举例-29">举例</h4>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-html" data-lang="html">Referer: http://www.baidu.com/index.html
+</code></pre></div><h3 id="set-cookie">Set-Cookie</h3>
+<p>扩展响应首部, 设置 Cookie</p>
+<h4 id="举例-30">举例</h4>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-html" data-lang="html">Set-Cookie: uid=123; xxx
+</code></pre></div><h3 id="upgrade">Upgrade</h3>
+<p>通用首部, 为报文发送者提供了一种手段, 使其指定另一种可能完全不同协议并将此意愿向外广播. 服务端发送 101 Switching Protocols 响应时, 必须包含该头部.</p>
+<h4 id="举例-31">举例</h4>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-html" data-lang="html">Upgrade: HTTP/2.0
+</code></pre></div><h3 id="user-agent">User-Agent</h3>
+<p>请求首部, 应用程序的名称, 可能还会包含其他信息, 例如操作系统等</p>
+<h4 id="举例-32">举例</h4>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-html" data-lang="html">User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_4) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/81.0.4044.129 Safari/537.36
+</code></pre></div>
+        </p>
+    </div>
+    
+
+    
+
+    <div class="page-footer">
+        
+        <hr class="footer-divider">
+        
+            <a class="tag" href="/tags/http">#HTTP</a>
+        
+            <a class="tag" href="/tags/%E7%BD%91%E7%BB%9C">#网络</a>
+        
+            <a class="tag" href="/tags/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0">#学习笔记</a>
+        
+      
+    </div>
+
+
+        
+
+<link rel="stylesheet" type="text/css" href="/css/katex.min.css" crossorigin="anonymous">
+<script type="text/javascript" src="/js/katex.min.js" crossorigin="anonymous"></script>
+<script type="text/javascript" src="/js/auto-render.min.js"onload="renderMathInElement(document.body);" crossorigin="anonymous"></script>
+
+        </div>
+        <footer class="footer-mobile">
+	<div class="social-icons">
+        
+    <a class="social-icon" href="0xd1ef@gmail.com" target="_blank" rel="noopener" title="Email">
+        <svg width="28px" height="28px" viewBox="0 0 28 28" version="1.1" fill="#ABABAB" xmlns="https://www.w3.org/2000/svg" xmlns:xlink="https://www.w3.org/1999/xlink">
+            <path d="M25.2794292,5.59128519 L14,16.8707144 L2.72057081,5.59128519 C3.06733103,5.30237414 3.51336915,5.12857603 4,5.12857603 L24,5.12857603 C24.4866308,5.12857603 24.932669,5.30237414 25.2794292,5.59128519 Z M25.9956978,6.99633695 C25.998551,7.04004843 26,7.08414302 26,7.12857603 L26,20.871424 C26,21.0798433 25.9681197,21.2808166 25.9089697,21.4697335 L18.7156355,14.2763993 L25.9956978,6.99633695 Z M24.9498374,22.6319215 C24.6672737,22.7846939 24.3437653,22.871424 24,22.871424 L4,22.871424 C3.5268522,22.871424 3.09207889,22.7071233 2.74962118,22.432463 L10.0950247,15.0870594 L13.9848068,18.9768415 L14.1878486,18.7737996 L14.2030419,18.7889929 L17.6549753,15.3370594 L24.9498374,22.6319215 Z M2.00810114,21.0526627 C2.00273908,20.9929669 2,20.9325153 2,20.871424 L2,7.12857603 C2,7.08414302 2.00144896,7.04004843 2.00430222,6.99633695 L9.03436454,14.0263993 L2.00810114,21.0526627 Z"></path>
+        </svg>
+    </a>
+    
+
+    
+
+    
+    <a class="social-icon" href="https://twitter.com/luyangx" target="_blank" rel="noopener" title="Twitter">
+        <svg width="28px" height="28px" viewBox="0 0 28 28" version="1.1" fill="#ABABAB" xmlns="https://www.w3.org/2000/svg" xmlns:xlink="https://www.w3.org/1999/xlink">
+            <path d="M8.991284,24.971612 C19.180436,24.971612 24.752372,16.530224 24.752372,9.210524 C24.752372,8.970656 24.747512,8.731868 24.736496,8.494376 C25.818008,7.712564 26.758256,6.737 27.5,5.62622 C26.507372,6.067076 25.439252,6.364292 24.318752,6.498212 C25.462472,5.812628 26.340512,4.727444 26.754584,3.434036 C25.684088,4.068536 24.499004,4.53002 23.23724,4.778528 C22.226468,3.701876 20.786828,3.028388 19.193828,3.028388 C16.134404,3.028388 13.653536,5.509256 13.653536,8.567492 C13.653536,9.0023 13.702244,9.424904 13.797176,9.830552 C9.19346,9.599108 5.11106,7.39472 2.3792,4.04294 C1.903028,4.861364 1.629032,5.812628 1.629032,6.827072 C1.629032,8.74904 2.606972,10.445612 4.094024,11.438132 C3.185528,11.41016 2.331788,11.160464 1.585184,10.745096 C1.583888,10.768208 1.583888,10.791428 1.583888,10.815728 C1.583888,13.49888 3.493652,15.738584 6.028088,16.246508 C5.562932,16.373084 5.07326,16.44134 4.56782,16.44134 C4.210988,16.44134 3.863876,16.406024 3.526484,16.34144 C4.231724,18.542264 6.276596,20.143796 8.701412,20.18894 C6.805148,21.674696 4.416836,22.56008 1.821488,22.56008 C1.374476,22.56008 0.93362,22.534592 0.5,22.4834 C2.951708,24.054476 5.862524,24.971612 8.991284,24.971612"></path>
+        </svg>
+    </a>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <a class="social-icon" href="https://weibo.com/0xd1ef" target="_blank" rel="noopener" title="Weibo">
+        <svg width="28px" height="28px" viewBox="0 0 28 28" version="1.1" fill="#ABABAB" xmlns="https://www.w3.org/2000/svg" xmlns:xlink="https://www.w3.org/1999/xlink">
+            <path d="M11.7643305,23.68043 C16.3966564,23.2245381 19.9124334,20.3848721 19.6072176,17.3404411 C19.3097287,14.2998735 15.3071519,12.2019978 10.6709625,12.6617533 C6.03863666,13.1215087 2.52285972,15.9573112 2.82421203,19.0017422 C3.12556434,22.0423098 7.12814116,24.1401855 11.7643305,23.68043 Z M21.0328458,13.5774007 C22.6400581,14.075791 24.4288545,15.2812003 24.424991,17.4061204 C24.424991,20.9180339 19.3599541,25.3417312 11.7450131,25.3417312 C5.93818589,25.3417312 -2.23820962e-13,22.5252462 -2.23820962e-13,17.8967838 C-2.23820962e-13,15.4743748 1.53380598,12.6733438 4.17257044,10.0345793 C7.69993785,6.50721189 11.8145559,4.89999957 13.3599524,6.44925952 C14.0399268,7.13309745 14.1056062,8.31146225 13.6690317,9.72163652 C13.4372222,10.4286554 14.3335521,10.0384428 14.3335521,10.0384428 C17.1848086,8.84462403 19.6728969,8.77508119 20.5808173,10.0732142 C21.0676172,10.7686426 21.0212553,11.7383789 20.5730903,12.8626548 C20.3683253,13.3803626 20.6387697,13.4576325 21.0328458,13.5774007 Z M26.0901557,5.1047646 C27.9291775,7.14082443 28.4275678,9.91867457 27.6394156,12.3488105 C27.6394156,12.3488105 27.6394156,12.352674 27.6394156,12.352674 C27.4578316,12.9128802 26.8551269,13.2219595 26.2910572,13.0403754 C25.7269875,12.8587913 25.4179082,12.2560867 25.5994923,11.692017 C26.1596985,9.96117297 25.8042573,7.98692899 24.4983973,6.53811982 C23.1925373,5.08931064 21.2646553,4.5368314 19.4835858,4.91545354 C18.9040622,5.03908525 18.336129,4.67205359 18.2124973,4.09252992 C18.0888655,3.51686974 18.4558972,2.94507305 19.0354209,2.82144134 C21.5389631,2.28827956 24.2511339,3.06484128 26.0901557,5.1047646 Z M23.2659437,7.65466876 C24.1622736,8.64758598 24.4018101,9.99980788 24.0193244,11.1858997 C23.8609213,11.6726995 23.3432135,11.9354169 22.8564136,11.7808773 C22.3696137,11.6224742 22.1068963,11.1009029 22.261436,10.6179665 C22.450747,10.0384428 22.3309788,9.37778581 21.8944043,8.89098592 C21.4578298,8.40804953 20.8087633,8.22260195 20.2137857,8.35009716 C19.7192588,8.45827491 19.2285954,8.14146864 19.1204177,7.64307828 C19.0161034,7.14468793 19.3329097,6.65016106 19.8313,6.5458468 C21.0482998,6.2831294 22.3696137,6.66175153 23.2659437,7.65466876 Z M12.0193209,18.1710916 C12.1738606,17.8890568 12.0734098,17.576114 11.7952385,17.4756632 C11.5209306,17.3674855 11.1770799,17.4988442 11.0148133,17.7692886 C10.8564101,18.039733 10.9414069,18.3526757 11.2195783,18.464717 C11.4977496,18.5806217 11.8570543,18.449263 12.0193209,18.1710916 Z M10.5396038,20.0642023 C10.9800418,19.3417295 10.7482324,18.5188059 10.021896,18.2058631 C9.30328667,17.9045108 8.3760488,18.2135901 7.93174732,18.9090185 C7.48358235,19.6083104 7.69607436,20.438961 8.40695673,20.7634942 C9.12942957,21.091891 10.0914389,20.7789482 10.5396038,20.0642023 Z M12.224086,15.0030289 C14.5074092,15.5941431 15.6741836,17.7461076 14.7392187,19.8401198 C13.7926634,21.9766304 11.0727656,23.1202238 8.76239791,22.37457 C6.53702702,21.6559607 5.59047169,19.4537707 6.56793494,17.4717998 C7.52608075,15.5284637 10.0180325,14.4273687 12.224086,15.0030289 Z"></path>
+        </svg>
+    </a>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    
+    
+    <a class="social-icon" href="https://github.com/luyangx" target="_blank" rel="noopener" title="GitHub">
+        <svg width="28px" height="28px" viewBox="0 0 28 28" version="1.1" fill="#ABABAB" xmlns="https://www.w3.org/2000/svg" xmlns:xlink="https://www.w3.org/1999/xlink">
+            <path d="M13.9988029,1.32087331 C6.82105037,1.32087331 1,7.14112562 1,14.3212723 C1,20.0649109 4.72454649,24.9370678 9.89038951,26.6560892 C10.5408085,26.7757983 10.7778323,26.374374 10.7778323,26.0296121 C10.7778323,25.7215609 10.7666595,24.9035493 10.760275,23.8189856 C7.14426471,24.6042767 6.38131925,22.0760223 6.38131925,22.0760223 C5.78995672,20.5740732 4.93762853,20.1742451 4.93762853,20.1742451 C3.75729765,19.3682044 5.02701126,19.3841656 5.02701126,19.3841656 C6.33183953,19.4759425 7.01817121,20.7241085 7.01817121,20.7241085 C8.17775254,22.7104801 10.0611744,22.1366749 10.8017741,21.8038838 C10.919887,20.9643246 11.2558703,20.3913175 11.6269683,20.066507 C8.74038491,19.7385043 5.70536235,18.6228163 5.70536235,13.6413251 C5.70536235,12.2223743 6.21213051,11.0611968 7.04370914,10.1530044 C6.90963504,9.82420367 6.46351945,8.50181809 7.17139875,6.71256734 C7.17139875,6.71256734 8.26234691,6.36301702 10.7459099,8.04532771 C11.78259,7.75642995 12.8950858,7.61277914 14.000399,7.60719272 C15.1049142,7.61277914 16.2166119,7.75642995 17.2548881,8.04532771 C19.736855,6.36301702 20.8262071,6.71256734 20.8262071,6.71256734 C21.5356825,8.50181809 21.0895669,9.82420367 20.9562909,10.1530044 C21.7894656,11.0611968 22.2922435,12.2223743 22.2922435,13.6413251 C22.2922435,18.6355852 19.2524325,19.734514 16.3570705,20.0561322 C16.8231376,20.4575564 17.2389269,21.2508282 17.2389269,22.4638795 C17.2389269,24.2012564 17.2229657,25.603448 17.2229657,26.0296121 C17.2229657,26.3775663 17.4575954,26.7821827 18.116793,26.6552912 C23.2786458,24.9322794 27,20.0633148 27,14.3212723 C27,7.14112562 21.1789496,1.32087331 13.9988029,1.32087331"></path>
+        </svg>
+    </a>
+    
+
+    
+    
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+</div>
+
+
+
+
+	<div class="footer-mobile-links">
+		<p><a href="https://github.com/kimcc/hugo-theme-noteworthy" target="_blank" rel="noopener">Noteworthy theme</a></p>
+		<span class="divider-bar">|</span>
+		<p><a href="https://gohugo.io" target="_blank" rel="noopener">Built with Hugo</a></p>
+	</div>
+
+	<script src="https://www.luyang.ink/js/main.min.fa5c2b23e07b5d9bfad267a52b4b24fdb053e6fb7524993383594926a3ac270c.js" integrity="sha256-+lwrI+B7XZv60melK0sk/bBT5vt1JJkzg1lJJqOsJww=" crossorigin="anonymous"></script>
+</footer>
+    </body>
+</html>

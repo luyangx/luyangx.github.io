@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>HTTP on 扬</title>
+    <link>https://www.luyang.ink/tags/http/</link>
+    <description>Recent content in HTTP on 扬</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>zh-cn</language>
+    <lastBuildDate>Fri, 02 May 2014 10:13:25 +0800</lastBuildDate>
+    
+	<atom:link href="https://www.luyang.ink/tags/http/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>HTTP/1.1 . 连接/缓存/安全</title>
+      <link>https://www.luyang.ink/posts/http-1x/</link>
+      <pubDate>Fri, 02 May 2014 10:13:25 +0800</pubDate>
+      
+      <guid>https://www.luyang.ink/posts/http-1x/</guid>
+      <description>&lt;p&gt;HTTP/1.1 目前在互联网上被广泛使用, 记录一下 HTTP1.1 重要的几块内容, 包括连接, 缓存控制等.&lt;/p&gt;</description>
+    </item>
+    
+  </channel>
+</rss>
