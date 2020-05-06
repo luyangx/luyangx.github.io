@@ -2,13 +2,12 @@
 
 <html lang="zh-cn">
     <head>
-	<meta name="generator" content="Hugo 0.69.0" />
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="format-detection" content="telephone=no"/>
 
-    <title>扬</title>
+    <title>Docker 学习记录 | 扬</title>
     
     <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
     <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
@@ -29,8 +28,6 @@
     
     
  
-    
-    <link rel="alternate" type="application/rss+xml" href="https://www.luyang.ink/index.xml" title="扬" />
     </head>
 
     <body>
@@ -144,251 +141,283 @@
 
         <div id="content" class="content-container">
         
-<div class = "article-content">
-        
-        <div class="description">
-            <p>Stay Young :)</p>
-        </div>
-        
-        
-        
-        
-        <article>
-            <h2>
-                <a href="https://www.luyang.ink/posts/mysql-innodb-lock/">
-                    MySQL 之 InnoDB . 锁
-                </a>
-            </h2>
-            <div>
-                <p><p>学习记录 InnoDB 锁相关内容</p></p>
-                
-            </div>
-            <div class="post-footer">
-            <time>October 5, 2016</time>
 
-            
-            
-                
-                    <a class="tag" href="/tags/mysql">#MySQL</a>
-                
-                    <a class="tag" href="/tags/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0">#学习笔记</a>
-                
-            
-            </div> 
-           
-        </article>
-        
-        <article>
-            <h2>
-                <a href="https://www.luyang.ink/posts/mysql-innodb-index/">
-                    MySQL 之 InnoDB . 索引
-                </a>
-            </h2>
-            <div>
-                <p><p>学习记录 InnoDB 索引相关内容</p></p>
-                
-            </div>
-            <div class="post-footer">
-            <time>September 30, 2016</time>
+<h1 class="post-title">Docker 学习记录</h1>
+    
+    <time>December 3, 2016</time>
+    
+    <div>
+        <p>
+        <p>Docker 给人很爽的地方就是一次创建或配置, 之后就可以在任何地方, 任何时间让应用正常运行. 不用再按照任何 VM 或 PD 虚拟机了, 绝对轻量.</p>
+<p>现看一下 Docker 和虚拟机不同之处, 下图:</p>
+<p><img src="/images/docker-vm.png" alt=""></p>
+<p>很明显, 虚拟机需要在虚拟的硬件上再虚拟一套操作系统, 而 Docker 正好不需要, 直接依赖宿主机. 一下是2种方式的特点对比:</p>
+<table>
+<thead>
+<tr>
+<th>特性</th>
+<th>容器</th>
+<th>虚拟机</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>启动速度</td>
+<td>秒级</td>
+<td>分钟级</td>
+</tr>
+<tr>
+<td>性能</td>
+<td>接近原生</td>
+<td>较弱</td>
+</tr>
+<tr>
+<td>内存</td>
+<td>很小</td>
+<td>较多</td>
+</tr>
+<tr>
+<td>硬盘</td>
+<td>一般 MB</td>
+<td>一般 GB</td>
+</tr>
+<tr>
+<td>运行数量</td>
+<td>单机支持上千</td>
+<td>单机几十个</td>
+</tr>
+<tr>
+<td>隔离性</td>
+<td>安全隔离</td>
+<td>完全隔离</td>
+</tr>
+<tr>
+<td>迁移</td>
+<td>优秀</td>
+<td>一般</td>
+</tr>
+</tbody>
+</table>
+<h2 id="基本概念">基本概念</h2>
+<h3 id="镜像-image">镜像 Image</h3>
+<p>类似网上下载的操作系统 iso 包, 镜像是创建 Docker 容器的基础</p>
+<h4 id="获取镜像">获取镜像</h4>
+<p>获取 redis 最新 Image, 命令很简单.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">$ docker pull redis
+$ docker pull redis:4.0 // :&lt;tag&gt; 指定版本, latest: 最新版本   
+Using default tag: latest
+latest: Pulling from library/redis
+54fec2fa59d0: Pull complete 
+9c94e11103d9: Pull complete 
+04ab1bfc453f: Pull complete 
+a22fde870392: Pull complete 
+def16cac9f02: Pull complete 
+1604f5999542: Pull complete 
+Digest: sha256:f7ee67d8d9050357a6ea362e2a7e8b65a6823d9b612bc430d057416788ef6df9
+Status: Downloaded newer image <span style="color:#66d9ef">for</span> redis:latest
+docker.io/library/redis:latest
+</code></pre></div><p>Image 由若个层(layer)组成, <code>1604f5999542</code> 这个就是每一层的 id. Digest 是 Image 的签名.</p>
+<h5 id="查看镜像信息">查看镜像信息</h5>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">$ docker images
+REPOSITORY          TAG                 IMAGE ID            CREATED             SIZE
+redis               latest              f9b990972689        <span style="color:#ae81ff">43</span> seconds ago          104MB
+</code></pre></div><ul>
+<li>REPOSITORY: 来自哪个仓库</li>
+<li>TAG: 标签信息, 可以看成版本</li>
+<li>IMAGE ID: 标识</li>
+<li>CREATED: 创建时间</li>
+<li>SIZE: 大小</li>
+</ul>
+<h5 id="删除清理镜像">删除清理镜像</h5>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">$ docker image rm &lt;image-id&gt; // 删除某个 Image
+$ docker image prune // 清理 Image
+</code></pre></div><p>更多命令可以通过 <code>docker image --help</code> 查看</p>
+<h3 id="容器-container">容器 Container</h3>
+<p>容器用来允许和隔离应用</p>
+<h4 id="容器操作">容器操作</h4>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">// 守护进程运行 redis Image
+$ docker run -d redis
+389dbbb8ebb69d162a478a784fb819084fb4933ee480a82699f34005caadd9a1 // Container ID
 
-            
-            
-                
-                    <a class="tag" href="/tags/mysql">#MySQL</a>
-                
-                    <a class="tag" href="/tags/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0">#学习笔记</a>
-                
-            
-            </div> 
-           
-        </article>
-        
-        <article>
-            <h2>
-                <a href="https://www.luyang.ink/posts/mysql-innodb-table/">
-                    MySQL 之 InnoDB . 表
-                </a>
-            </h2>
-            <div>
-                <p><p>学习记录 InnoDB 表相关内容</p></p>
-                
-            </div>
-            <div class="post-footer">
-            <time>September 7, 2016</time>
+// 守护进程运行 redis Image 做端口映射, 可以外部访问
+$ docker run -d -p 6379:6379 redis
 
-            
-            
-                
-                    <a class="tag" href="/tags/mysql">#MySQL</a>
-                
-                    <a class="tag" href="/tags/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0">#学习笔记</a>
-                
-            
-            </div> 
-           
-        </article>
-        
-        <article>
-            <h2>
-                <a href="https://www.luyang.ink/posts/mysql-innodb/">
-                    MySQL 之 InnoDB . 初见
-                </a>
-            </h2>
-            <div>
-                <p><p>InnoDB 存储引擎支持事务, 其设计目的主要面向在线事务处理(OLTP)的应用. 其特点是行锁, 外键, 非锁定读等, MySQL在5.5.8版本后将其设为默认存储引擎.</p></p>
-                
-            </div>
-            <div class="post-footer">
-            <time>August 24, 2016</time>
+// 进入 Container 后执行 bash
+$ docker exec -it 389d bash
+root@389dbbb8ebb6:/data# redis-cli 
+127.0.0.1:6379&gt;
 
-            
-            
-                
-                    <a class="tag" href="/tags/mysql">#MySQL</a>
-                
-                    <a class="tag" href="/tags/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0">#学习笔记</a>
-                
-            
-            </div> 
-           
-        </article>
-        
-        <article>
-            <h2>
-                <a href="https://www.luyang.ink/posts/drivie-license/">
-                    热乎的驾照
-                </a>
-            </h2>
-            <div>
-                <p><p>从今年4月份报名开始, 经历了整个夏天, 久违的驾照终于到手了. 科目1到科目4竟然都是一把过, 这你能受的了吗, 😄~~</p></p>
-                
-            </div>
-            <div class="post-footer">
-            <time>August 14, 2016</time>
+// 停止 Container
+$ docker stop 389d
 
-            
-            
-                
-                    <a class="tag" href="/tags/%E7%94%9F%E6%B4%BB">#生活</a>
-                
-                    <a class="tag" href="/tags/%E9%A9%BE%E7%85%A7">#驾照</a>
-                
-            
-            </div> 
-           
-        </article>
-        
-        <article>
-            <h2>
-                <a href="https://www.luyang.ink/posts/homebrew-proxy/">
-                    Homebrew 设置代理
-                </a>
-            </h2>
-            <div>
-                <p><p>由于国情, <code>homebrew update/install</code> 非常缓慢, 还是不是遇到链接超时问题. 虽然可以缓存国内的源, 更新是快了,
-不过下载还是鸟样, 治标不治本</p></p>
-                
-            </div>
-            <div class="post-footer">
-            <time>July 19, 2016</time>
+// 删除/清理容器
+$ docker container rm &lt;container-id&gt; // 删除指定已停止的 Container
+$ docker container prune // 清理所有停止的 Container
+</code></pre></div><p>更多命令可以通过 <code>docker container --help</code> 查看</p>
+<h3 id="仓库-repository">仓库 Repository</h3>
+<p>集中存放镜像的地方, <code>docker pull</code> 默认都是从 <a href="https://hub.docker.com/">https://hub.docker.com</a> 服务器下载, 访问可能需要科学上网, 也可以换成国内的镜像.</p>
+<h3 id="数据卷-volume">数据卷 Volume</h3>
+<p>将 Container 中的数据应收到宿主机环境, 类似 Linux 中的 <code>mount</code>.</p>
+<ul>
+<li>数据卷可以多 Container 共用</li>
+<li>数据卷内数据修改立马生效, 不影响 Image, 应用和数据解耦</li>
+</ul>
+<h4 id="数据卷操作">数据卷操作</h4>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">// 创建 Volume
+$ docker volume create -d local test
+test
+$ ll /var/lib/docker/volumes/
+drwxr-xr-x  <span style="color:#ae81ff">3</span> root root  <span style="color:#ae81ff">4096</span> May  <span style="color:#ae81ff">6</span> 20:31 test
 
-            
-            
-                
-                    <a class="tag" href="/tags/homebrew">#Homebrew</a>
-                
-                    <a class="tag" href="/tags/%E5%B7%A5%E5%85%B7">#工具</a>
-                
-                    <a class="tag" href="/tags/mac">#Mac</a>
-                
-            
-            </div> 
-           
-        </article>
-        
-        <article>
-            <h2>
-                <a href="https://www.luyang.ink/posts/dynamic-memory-management/">
-                    Dynamic Memory Management
-                </a>
-            </h2>
-            <div>
-                <p><p>&laquo;C in a Nutshell&raquo;笔记 - 内存管理</p></p>
-                
-            </div>
-            <div class="post-footer">
-            <time>April 18, 2016</time>
-
-            
-            
-                
-                    <a class="tag" href="/tags/c">#C</a>
-                
-                    <a class="tag" href="/tags/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0">#学习笔记</a>
-                
-            
-            </div> 
-           
-        </article>
-        
-        <article>
-            <h2>
-                <a href="https://www.luyang.ink/posts/input-and-output/">
-                    Input and Output
-                </a>
-            </h2>
-            <div>
-                <p><p>&laquo;C in a Nutshell&raquo;笔记 - 输入输出</p></p>
-                
-            </div>
-            <div class="post-footer">
-            <time>April 16, 2016</time>
-
-            
-            
-                
-                    <a class="tag" href="/tags/c">#C</a>
-                
-                    <a class="tag" href="/tags/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0">#学习笔记</a>
-                
-            
-            </div> 
-           
-        </article>
-        
+// 运行时可以绑定 Volume
+$ docker run -d -mount test redis
+</code></pre></div><h3 id="dockfile">Dockfile</h3>
+<p>相关指令</p>
+<table>
+<thead>
+<tr>
+<th>指令</th>
+<th>说明</th>
+<th>格式</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>ARG</td>
+<td>创建 Image 用到的变量</td>
+<td>ARG <name>[=<default value>]</td>
+</tr>
+<tr>
+<td>FROM</td>
+<td>基础 Image</td>
+<td>FROM ubuntu:latest</td>
+</tr>
+<tr>
+<td>LABEL</td>
+<td>标签信息</td>
+<td>LABEL <key>=<value></td>
+</tr>
+<tr>
+<td>EXPOSE</td>
+<td>暴露的端口</td>
+<td>EXPOSE [80, 3306]</td>
+</tr>
+<tr>
+<td>ENV</td>
+<td>环境变量</td>
+<td>ENV <key> <value></td>
+</tr>
+<tr>
+<td>ENTRYPOINT</td>
+<td>入口命令, 启动 Container 时执行</td>
+<td>ENTRYPOINT [&ldquo;echo&rdquo;, &ldquo;hi&rdquo;]</td>
+</tr>
+<tr>
+<td>VOLUME</td>
+<td>数据卷</td>
+<td>VOLUME [&quot;/db2&rdquo;]</td>
+</tr>
+<tr>
+<td>USER</td>
+<td>运行 Container 的用户</td>
+<td>USER daemon</td>
+</tr>
+<tr>
+<td>WORKDIR</td>
+<td>工作目录</td>
+<td>WORKDIR /var/docker</td>
+</tr>
+<tr>
+<td>ONBUILD</td>
+<td>生成 Image 时, 自动执行的命令</td>
+<td>ONBUILD ADD ./my.cfg</td>
+</tr>
+<tr>
+<td>STOPSIGNAL</td>
+<td>退出信号</td>
+<td>STOPSIGNAL signal</td>
+</tr>
+<tr>
+<td>HEALTHCHECK</td>
+<td>健康检测</td>
+<td>HEALTHCHECK [options] xxx</td>
+</tr>
+<tr>
+<td>SHELL</td>
+<td>shell 类型</td>
+<td>默认: [&quot;/bin/sh&rdquo;, &ldquo;-c&rdquo;]</td>
+</tr>
+<tr>
+<td>RUN</td>
+<td>允许指定命令</td>
+<td>RUN <command></td>
+</tr>
+<tr>
+<td>CMD</td>
+<td>启动 Container 默认执行的命令</td>
+<td>CMD [&ldquo;mysqld&rdquo;]</td>
+</tr>
+<tr>
+<td>ADD</td>
+<td>添加内容到 Image</td>
+<td>ADD ./my.cfg /app/</td>
+</tr>
+<tr>
+<td>COPY</td>
+<td>负责内容到 Image</td>
+<td>COPY ./my.cfg /app/</td>
+</tr>
+</tbody>
+</table>
+<h4 id="创建-image">创建 Image</h4>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">// 创建 Image
+$ docker build -t &lt;target&gt; /dockerfile-path
+</code></pre></div><h2 id="基本架构">基本架构</h2>
+<p>Docker 采用 C/S 架构</p>
+<p><img src="/images/docker-structure.png" alt=""></p>
+<ul>
+<li>dockerd: 给 Client 提供 RESTful API</li>
+<li>docker-proxy: dockerd 子进程, 网络映射</li>
+<li>containerd: dockerd 子进程, 提供 gRPC 接口响应 dockerd 请求, 管理 Image 和 Container</li>
+<li>containerd-shim: containerd 子进程, 为 Container 提供支持</li>
+</ul>
+<h3 id="命名空间-namespase">命名空间 NameSpase</h3>
+<p>Linux 提供的 NameSpase, 确保 Container 之间互不影响.</p>
+<ul>
+<li>进程命名空间: 管理进程号</li>
+<li>IPC 命名空间: 管理进程间通信</li>
+<li>网络命名空间: 为进程提供完全独立的网络视图</li>
+<li>挂载命名空间: 为进程提供完整的文件系统</li>
+<li>UTF 命名空间: 提供独立的主机名和域名</li>
+<li>用户命名空间: 提供不同用户组和ID</li>
+</ul>
+<h3 id="控制组-cgroup">控制组 CGroup</h3>
+<p>对共享资源进行隔离, 限制, 审计等, 避免多个 Container 同时允许对宿主机系统资源的竞争.</p>
+<ul>
+<li>资源限制(resource limiting): 设置一定的资源限制, 比如内存</li>
+<li>优先级(prioritization): 优先获取资源</li>
+<li>资源审计(accounting): 统计资源使用</li>
+<li>隔离(isolation): 相互独立</li>
+<li>控制(control): 执行挂起, 回复, 重启等操作</li>
+</ul>
+<h3 id="联合文件系统-unionfs">联合文件系统 UnionFS</h3>
+<p>轻量级的高性能分层文件系统</p>
+<p>总结, 初步了解了 Docker, 下一步准备看下 Kubernetes, 睡觉</p>
+        </p>
     </div>
+    
+
+    
+
+    <div class="page-footer">
         
-        <div class="paginator">
+        <hr class="footer-divider">
         
+            <a class="tag" href="/tags/docker">#Docker</a>
         
-        <p>Page 3 of 5</p>
-        <div class="paginator-group">
-            
-            <a class="color-link" href="/page/2/">
-                    <svg width="13px" height="9px" viewBox="0 0 13 9" version="1.1" xmlns="https://www.w3.org/2000/svg" xmlns:xlink="https://www.w3.org/1999/xlink">
-                        <g class="color-arrow" fill="#63BDA2" fill-rule="nonzero">
-                            <polygon id="Path" points="1.75929935 4.50000282 5.3292523 7.62371165 4.6707477 8.37628835 0.240700645 4.49999718 4.67081049 0.623709205 5.32930951 1.37629079"></polygon>
-                            <polygon id="Path" points="13 4 13 5 1 5 1 4"></polygon>
-                        </g>
-                </svg>  
-                Newer          
-            </a>
-            
-            
-                <a class="color-link older" href="/page/4/">
-                    Older
-                    <svg width="13px" height="9px" viewBox="0 0 13 9" version="1.1" xmlns="https://www.w3.org/2000/svg" xmlns:xlink="https://www.w3.org/1999/xlink">
-                            <g class="color-arrow" fill="#63BDA2" fill-rule="nonzero">
-                                <polygon points="7.6707477 1.37628835 8.3292523 0.623711653 12.7592994 4.50000282 8.32918951 8.37629079 7.67069049 7.62370921 11.2407006 4.49999718"></polygon>
-                                <polygon id="Path" points="0 5 0 4 12 4 12 5"></polygon>
-                            </g>
-                    </svg>
-                        
-                </a>
-            
-        </div>
-        
+      
     </div>
+
 
         
 

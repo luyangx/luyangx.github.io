@@ -148,7 +148,7 @@
     
     <div>
         <p>
-        <p>记录一下学习 <a href="https://legacy.gitbook.com/book/chai2010/advanced-go-programming-book">《Go语言高级编程》</a> 中的函数、方法和接口</p>
+        <p>记录一下学习 <a href="https://legacy.gitbook.com/book/chai2010/advanced-go-programming-book">《Go语言高级编程》</a> 中的面向并发的内存模型</p>
 <p>常见的并行编程有多种模型，主要有多线程、消息传递等. 主流编程语言基本都是多线程, 较少支持基于消息的并发, Erlang 是支持基于消息传递并发编程模型的代表, 对 Erlang 感兴趣可以看一下 <a href="https://learnyousomeerlang.com/">《Learn You Some Erlang for Great Good》</a>, Erlang 的并发之间不共享内存. Go是基于消息并发模型的集大成者, 基于 <a href="https://en.wikipedia.org/wiki/Communicating_sequential_processes">CSP模型</a> 的并发编程内置到了语言中, 通过一个 go 关键字, 可以轻易地启动一个 Goroutine, 与 Erlang 不同的是, Go 的 Goroutine 之间是共享内存的.</p>
 <h2 id="goroutine-和-系统线程">Goroutine 和 系统线程</h2>
 <p>Goroutine 是 Go 的并发体, 是一种轻量级的线程, 由 go 关键字启动. 与系统线程不等价.  一个用户态, 一个在内核. 首先系统级线程都会有一个固定大小的栈(一般默认2MB), 固定栈大小可能会面临空间浪费或栈溢出. 相反 Goroutine 是可以动态调整栈大小的.</p>

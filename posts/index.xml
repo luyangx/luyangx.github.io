@@ -35,7 +35,7 @@
       <pubDate>Sat, 28 Apr 2018 22:15:41 +0800</pubDate>
       
       <guid>https://www.luyang.ink/posts/go-concurrent/</guid>
-      <description>&lt;p&gt;记录一下学习 &lt;a href=&#34;https://legacy.gitbook.com/book/chai2010/advanced-go-programming-book&#34;&gt;《Go语言高级编程》&lt;/a&gt; 中的函数、方法和接口&lt;/p&gt;</description>
+      <description>&lt;p&gt;记录一下学习 &lt;a href=&#34;https://legacy.gitbook.com/book/chai2010/advanced-go-programming-book&#34;&gt;《Go语言高级编程》&lt;/a&gt; 中的面向并发的内存模型&lt;/p&gt;</description>
     </item>
     
     <item>
@@ -66,21 +66,66 @@
     </item>
     
     <item>
+      <title>Docker 之 Dockerfile 定制镜像</title>
+      <link>https://www.luyang.ink/posts/docker-mysql-sshd/</link>
+      <pubDate>Wed, 07 Dec 2016 21:07:41 +0800</pubDate>
+      
+      <guid>https://www.luyang.ink/posts/docker-mysql-sshd/</guid>
+      <description>&lt;p&gt;通过 Dockerfile 定制一个基于 ubuntu, 包含 sshd, mysqld 服务的 image, 记录一下, 后面可能会用到, 例如搭建 &lt;a href=&#34;https://code.google.com/archive/p/mysql-master-ha/&#34;&gt;mha&lt;/a&gt; 环境, 可以不需要安装虚拟机了.&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>Docker 学习记录</title>
+      <link>https://www.luyang.ink/posts/docker/</link>
+      <pubDate>Sat, 03 Dec 2016 19:55:39 +0800</pubDate>
+      
+      <guid>https://www.luyang.ink/posts/docker/</guid>
+      <description>&lt;p&gt;Docker 给人很爽的地方就是一次创建或配置, 之后就可以在任何地方, 任何时间让应用正常运行. 不用再按照任何 VM 或 PD 虚拟机了, 绝对轻量.&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>Elasticsearch 学习记录</title>
+      <link>https://www.luyang.ink/posts/elasticsearch/</link>
+      <pubDate>Mon, 28 Nov 2016 21:38:13 +0800</pubDate>
+      
+      <guid>https://www.luyang.ink/posts/elasticsearch/</guid>
+      <description>&lt;p&gt;公司最近在做一个政府用车的项目, 其中订单搜索这块用到了 Elasticsearch, 同时公司里的把脉平台也使用了 Elasticsearch, 学习记录一下.&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>Kafka 学习记录</title>
+      <link>https://www.luyang.ink/posts/kafka/</link>
+      <pubDate>Sat, 19 Nov 2016 21:38:13 +0800</pubDate>
+      
+      <guid>https://www.luyang.ink/posts/kafka/</guid>
+      <description>&lt;p&gt;Kafka 已经被定义为一个分布式流式处理平台, 它有高吞吐, 可持久化, 可水平扩展, 支持流数据处理等特性, 学习记录一下.&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>分布式系统中的一些一致性协议和算法</title>
+      <link>https://www.luyang.ink/posts/distributed-system-algorithm/</link>
+      <pubDate>Tue, 15 Nov 2016 21:23:12 +0800</pubDate>
+      
+      <guid>https://www.luyang.ink/posts/distributed-system-algorithm/</guid>
+      <description>&lt;p&gt;分布式系统中涉及到的一些一致性的协议和算法, 简单记录下.&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>ZooKeeper 学习记录</title>
+      <link>https://www.luyang.ink/posts/zookeeper/</link>
+      <pubDate>Sun, 13 Nov 2016 23:02:46 +0800</pubDate>
+      
+      <guid>https://www.luyang.ink/posts/zookeeper/</guid>
+      <description>&lt;p&gt;公司内部有使用 ZooKeeper, 学习记录下 ZooKeeper 相关内容.&lt;/p&gt;</description>
+    </item>
+    
+    <item>
       <title>MySQL Server调优</title>
       <link>https://www.luyang.ink/posts/mysql-server-turning/</link>
       <pubDate>Fri, 04 Nov 2016 23:04:23 +0800</pubDate>
       
       <guid>https://www.luyang.ink/posts/mysql-server-turning/</guid>
       <description>&lt;p&gt;衡量数据库性能的指标, 一般有2个指标: 响应时间和吞吐率. 响应时间又包括等待时间和执行时间. 调优的目的是降低响应时间, 提高吞吐率.&lt;/p&gt;</description>
-    </item>
-    
-    <item>
-      <title>Docker 之 Dockerfile 定制镜像</title>
-      <link>https://www.luyang.ink/posts/docker-mysql-sshd/</link>
-      <pubDate>Tue, 25 Oct 2016 21:07:41 +0800</pubDate>
-      
-      <guid>https://www.luyang.ink/posts/docker-mysql-sshd/</guid>
-      <description>&lt;p&gt;通过 Dockerfile 定制一个基于 ubuntu, 包含 sshd, mysqld 服务的 image, 记录一下, 后面可能会用到, 例如搭建 &lt;a href=&#34;https://code.google.com/archive/p/mysql-master-ha/&#34;&gt;mha&lt;/a&gt; 环境, 可以不需要安装虚拟机了.&lt;/p&gt;</description>
     </item>
     
     <item>

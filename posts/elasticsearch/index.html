@@ -2,13 +2,12 @@
 
 <html lang="zh-cn">
     <head>
-	<meta name="generator" content="Hugo 0.69.0" />
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="format-detection" content="telephone=no"/>
 
-    <title>扬</title>
+    <title>Elasticsearch 学习记录 | 扬</title>
     
     <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
     <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
@@ -29,8 +28,6 @@
     
     
  
-    
-    <link rel="alternate" type="application/rss+xml" href="https://www.luyang.ink/index.xml" title="扬" />
     </head>
 
     <body>
@@ -144,251 +141,232 @@
 
         <div id="content" class="content-container">
         
-<div class = "article-content">
-        
-        <div class="description">
-            <p>Stay Young :)</p>
-        </div>
-        
-        
-        
-        
-        <article>
-            <h2>
-                <a href="https://www.luyang.ink/posts/mysql-innodb-lock/">
-                    MySQL 之 InnoDB . 锁
-                </a>
-            </h2>
-            <div>
-                <p><p>学习记录 InnoDB 锁相关内容</p></p>
-                
-            </div>
-            <div class="post-footer">
-            <time>October 5, 2016</time>
 
-            
-            
-                
-                    <a class="tag" href="/tags/mysql">#MySQL</a>
-                
-                    <a class="tag" href="/tags/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0">#学习笔记</a>
-                
-            
-            </div> 
-           
-        </article>
-        
-        <article>
-            <h2>
-                <a href="https://www.luyang.ink/posts/mysql-innodb-index/">
-                    MySQL 之 InnoDB . 索引
-                </a>
-            </h2>
-            <div>
-                <p><p>学习记录 InnoDB 索引相关内容</p></p>
-                
-            </div>
-            <div class="post-footer">
-            <time>September 30, 2016</time>
+<h1 class="post-title">Elasticsearch 学习记录</h1>
+    
+    <time>November 28, 2016</time>
+    
+    <div>
+        <p>
+        <p>公司最近在做一个政府用车的项目, 其中订单搜索这块用到了 Elasticsearch, 同时公司里的把脉平台也使用了 Elasticsearch, 学习记录一下.</p>
+<p>Elasticsearch 已经是全球首选的全文搜索引擎了, 它可以快速的存储, 搜索和分析海量数据. 其底层是开源库 Lucene, Elasticsearch 对其进行了封装, 提供了 RESTful API 的操作接口.</p>
+<h2 id="基本概念">基本概念</h2>
+<h3 id="index-索引">Index 索引</h3>
+<p>Elasticsearch 把数据存放在索引中, 相当于关系型数据库中的 database</p>
+<p>创建索引 &ldquo;website&rdquo;, 类型&quot;blog&rdquo;, ID&quot;123&rdquo; 的内容, 如下:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">PUT /website/blog/123
+<span style="color:#f92672">{</span>
+  <span style="color:#e6db74">&#34;title&#34;</span>: <span style="color:#e6db74">&#34;My first blog entry&#34;</span>,
+  <span style="color:#e6db74">&#34;text&#34;</span>:  <span style="color:#e6db74">&#34;Just trying this out...&#34;</span>,
+  <span style="color:#e6db74">&#34;date&#34;</span>:  <span style="color:#e6db74">&#34;2014/01/01&#34;</span>
+<span style="color:#f92672">}</span>
+</code></pre></div><p>Elasticsearch 响应:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-json" data-lang="json">{
+   <span style="color:#f92672">&#34;_index&#34;</span>:    <span style="color:#e6db74">&#34;website&#34;</span>,
+   <span style="color:#f92672">&#34;_type&#34;</span>:     <span style="color:#e6db74">&#34;blog&#34;</span>,
+   <span style="color:#f92672">&#34;_id&#34;</span>:       <span style="color:#e6db74">&#34;123&#34;</span>,
+   <span style="color:#f92672">&#34;_version&#34;</span>:  <span style="color:#ae81ff">1</span>,
+   <span style="color:#f92672">&#34;created&#34;</span>:   <span style="color:#66d9ef">true</span>
+}
+</code></pre></div><p>每个文档中都有一个版本号, 每当文档变化时(包括删除)都会使 <code>_version</code> 自增.</p>
+<p>如果新增时没有指定ID, Elasticsearch 可以自动生成.</p>
+<h3 id="document-文档">Document 文档</h3>
+<p>Index 中单条的记录, 使用 JSON 表示</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-json" data-lang="json">{
+    <span style="color:#f92672">&#34;name&#34;</span>:         <span style="color:#e6db74">&#34;John Smith&#34;</span>,
+    <span style="color:#f92672">&#34;age&#34;</span>:          <span style="color:#ae81ff">42</span>,
+    <span style="color:#f92672">&#34;confirmed&#34;</span>:    <span style="color:#66d9ef">true</span>,
+    <span style="color:#f92672">&#34;join_date&#34;</span>:    <span style="color:#e6db74">&#34;2014-06-01&#34;</span>,
+    <span style="color:#f92672">&#34;home&#34;</span>: {
+        <span style="color:#f92672">&#34;lat&#34;</span>:      <span style="color:#ae81ff">51.5</span>,
+        <span style="color:#f92672">&#34;lon&#34;</span>:      <span style="color:#ae81ff">0.1</span>
+    },
+    <span style="color:#f92672">&#34;accounts&#34;</span>: [
+        {
+            <span style="color:#f92672">&#34;type&#34;</span>: <span style="color:#e6db74">&#34;facebook&#34;</span>,
+            <span style="color:#f92672">&#34;id&#34;</span>:   <span style="color:#e6db74">&#34;johnsmith&#34;</span>
+        },
+        {
+            <span style="color:#f92672">&#34;type&#34;</span>: <span style="color:#e6db74">&#34;twitter&#34;</span>,
+            <span style="color:#f92672">&#34;id&#34;</span>:   <span style="color:#e6db74">&#34;johnsmith&#34;</span>
+        }
+    ]
+}
+</code></pre></div><h4 id="文档元数据">文档元数据</h4>
+<table>
+<thead>
+<tr>
+<th>字段</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>_index</td>
+<td>文档存放的 index</td>
+</tr>
+<tr>
+<td>_type</td>
+<td>文档代表的类型 type</td>
+</tr>
+<tr>
+<td>_id</td>
+<td>文档唯一标识</td>
+</tr>
+</tbody>
+</table>
+<p>文档通过 <code>_index, _type, _id</code> 确定唯一性</p>
+<h3 id="type-文档类型">Type 文档类型</h3>
+<p>根据数据的不同, 对 Document 分组, 这种分组叫做 Type, 相当于关系数据库中的 table</p>
+<h3 id="node-节点-cluster-集群">Node 节点, Cluster 集群</h3>
+<p>单个 Elasticsearch 实例成为1个节点, 一组节点构成一个集群.</p>
+<h2 id="副本分片">副本分片</h2>
+<p>副本分片的目的就是为了故障转移, 通过增加副本分片可以横向扩展, 也可以负载均衡.</p>
+<h2 id="本地操作">本地操作</h2>
+<h3 id="创建">创建</h3>
+<p><code>_index, _type, _id</code> 三者唯一确定一个文档, 创建时可以指定ID或是让 Elasticsearch 自动生成, 如果文档已经存在, 将响应 409 Conflict</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">// 创建 Index
+$ curl -X POST <span style="color:#e6db74">&#39;localhost:9200/cms&#39;</span>
+<span style="color:#f92672">{</span>
+  <span style="color:#e6db74">&#34;acknowledged&#34;</span>: true,
+  <span style="color:#e6db74">&#34;shards_acknowledged&#34;</span>: true,
+  <span style="color:#e6db74">&#34;index&#34;</span>: <span style="color:#e6db74">&#34;cms&#34;</span>
+<span style="color:#f92672">}</span>
 
-            
-            
-                
-                    <a class="tag" href="/tags/mysql">#MySQL</a>
-                
-                    <a class="tag" href="/tags/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0">#学习笔记</a>
-                
-            
-            </div> 
-           
-        </article>
-        
-        <article>
-            <h2>
-                <a href="https://www.luyang.ink/posts/mysql-innodb-table/">
-                    MySQL 之 InnoDB . 表
-                </a>
-            </h2>
-            <div>
-                <p><p>学习记录 InnoDB 表相关内容</p></p>
-                
-            </div>
-            <div class="post-footer">
-            <time>September 7, 2016</time>
-
-            
-            
-                
-                    <a class="tag" href="/tags/mysql">#MySQL</a>
-                
-                    <a class="tag" href="/tags/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0">#学习笔记</a>
-                
-            
-            </div> 
-           
-        </article>
-        
-        <article>
-            <h2>
-                <a href="https://www.luyang.ink/posts/mysql-innodb/">
-                    MySQL 之 InnoDB . 初见
-                </a>
-            </h2>
-            <div>
-                <p><p>InnoDB 存储引擎支持事务, 其设计目的主要面向在线事务处理(OLTP)的应用. 其特点是行锁, 外键, 非锁定读等, MySQL在5.5.8版本后将其设为默认存储引擎.</p></p>
-                
-            </div>
-            <div class="post-footer">
-            <time>August 24, 2016</time>
-
-            
-            
-                
-                    <a class="tag" href="/tags/mysql">#MySQL</a>
-                
-                    <a class="tag" href="/tags/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0">#学习笔记</a>
-                
-            
-            </div> 
-           
-        </article>
-        
-        <article>
-            <h2>
-                <a href="https://www.luyang.ink/posts/drivie-license/">
-                    热乎的驾照
-                </a>
-            </h2>
-            <div>
-                <p><p>从今年4月份报名开始, 经历了整个夏天, 久违的驾照终于到手了. 科目1到科目4竟然都是一把过, 这你能受的了吗, 😄~~</p></p>
-                
-            </div>
-            <div class="post-footer">
-            <time>August 14, 2016</time>
-
-            
-            
-                
-                    <a class="tag" href="/tags/%E7%94%9F%E6%B4%BB">#生活</a>
-                
-                    <a class="tag" href="/tags/%E9%A9%BE%E7%85%A7">#驾照</a>
-                
-            
-            </div> 
-           
-        </article>
-        
-        <article>
-            <h2>
-                <a href="https://www.luyang.ink/posts/homebrew-proxy/">
-                    Homebrew 设置代理
-                </a>
-            </h2>
-            <div>
-                <p><p>由于国情, <code>homebrew update/install</code> 非常缓慢, 还是不是遇到链接超时问题. 虽然可以缓存国内的源, 更新是快了,
-不过下载还是鸟样, 治标不治本</p></p>
-                
-            </div>
-            <div class="post-footer">
-            <time>July 19, 2016</time>
-
-            
-            
-                
-                    <a class="tag" href="/tags/homebrew">#Homebrew</a>
-                
-                    <a class="tag" href="/tags/%E5%B7%A5%E5%85%B7">#工具</a>
-                
-                    <a class="tag" href="/tags/mac">#Mac</a>
-                
-            
-            </div> 
-           
-        </article>
-        
-        <article>
-            <h2>
-                <a href="https://www.luyang.ink/posts/dynamic-memory-management/">
-                    Dynamic Memory Management
-                </a>
-            </h2>
-            <div>
-                <p><p>&laquo;C in a Nutshell&raquo;笔记 - 内存管理</p></p>
-                
-            </div>
-            <div class="post-footer">
-            <time>April 18, 2016</time>
-
-            
-            
-                
-                    <a class="tag" href="/tags/c">#C</a>
-                
-                    <a class="tag" href="/tags/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0">#学习笔记</a>
-                
-            
-            </div> 
-           
-        </article>
-        
-        <article>
-            <h2>
-                <a href="https://www.luyang.ink/posts/input-and-output/">
-                    Input and Output
-                </a>
-            </h2>
-            <div>
-                <p><p>&laquo;C in a Nutshell&raquo;笔记 - 输入输出</p></p>
-                
-            </div>
-            <div class="post-footer">
-            <time>April 16, 2016</time>
-
-            
-            
-                
-                    <a class="tag" href="/tags/c">#C</a>
-                
-                    <a class="tag" href="/tags/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0">#学习笔记</a>
-                
-            
-            </div> 
-           
-        </article>
-        
+// 创建 Document
+$ curl -X POST <span style="color:#e6db74">&#39;localhost:9200/cms/user/1&#39;</span> -H <span style="color:#e6db74">&#34;Content-Type: application/json&#34;</span> -d <span style="color:#e6db74">&#39;{&#34;name&#34;:&#34;张三&#34;,&#34;age&#34;:23,&#34;gender&#34;:&#34;男&#34;}&#39;</span>
+<span style="color:#f92672">{</span>
+  <span style="color:#e6db74">&#34;_index&#34;</span>: <span style="color:#e6db74">&#34;cms&#34;</span>,
+  <span style="color:#e6db74">&#34;_type&#34;</span>: <span style="color:#e6db74">&#34;user&#34;</span>,
+  <span style="color:#e6db74">&#34;_id&#34;</span>: <span style="color:#e6db74">&#34;1&#34;</span>,
+  <span style="color:#e6db74">&#34;_version&#34;</span>: 1,
+  <span style="color:#e6db74">&#34;result&#34;</span>: <span style="color:#e6db74">&#34;created&#34;</span>,
+  <span style="color:#e6db74">&#34;_shards&#34;</span>: <span style="color:#f92672">{</span>
+    <span style="color:#e6db74">&#34;total&#34;</span>: 2,
+    <span style="color:#e6db74">&#34;successful&#34;</span>: 1,
+    <span style="color:#e6db74">&#34;failed&#34;</span>: <span style="color:#ae81ff">0</span>
+  <span style="color:#f92672">}</span>,
+  <span style="color:#e6db74">&#34;_seq_no&#34;</span>: 0,
+  <span style="color:#e6db74">&#34;_primary_term&#34;</span>: <span style="color:#ae81ff">1</span>
+<span style="color:#f92672">}</span>
+</code></pre></div><h3 id="更新">更新</h3>
+<p>文档在 Elasticsearch 是不可修改的, 这里说的修改其实是重建索引(reindex)或替换掉它</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">// 更新 user/1 的 age
+$ curl -X PUT <span style="color:#e6db74">&#39;localhost:9200/cms/user/1&#39;</span> -H <span style="color:#e6db74">&#34;Content-Type: application/json&#34;</span> -d <span style="color:#e6db74">&#39;{&#34;name&#34;:&#34;张三&#34;,&#34;age&#34;:25,&#34;gender&#34;:&#34;男&#34;}&#39;</span>
+<span style="color:#f92672">{</span>
+  <span style="color:#e6db74">&#34;_index&#34;</span>: <span style="color:#e6db74">&#34;cms&#34;</span>,
+  <span style="color:#e6db74">&#34;_type&#34;</span>: <span style="color:#e6db74">&#34;user&#34;</span>,
+  <span style="color:#e6db74">&#34;_id&#34;</span>: <span style="color:#e6db74">&#34;1&#34;</span>,
+  <span style="color:#e6db74">&#34;_version&#34;</span>: 2,
+  <span style="color:#e6db74">&#34;result&#34;</span>: <span style="color:#e6db74">&#34;updated&#34;</span>,
+  <span style="color:#e6db74">&#34;_shards&#34;</span>: <span style="color:#f92672">{</span>
+    <span style="color:#e6db74">&#34;total&#34;</span>: 2,
+    <span style="color:#e6db74">&#34;successful&#34;</span>: 1,
+    <span style="color:#e6db74">&#34;failed&#34;</span>: <span style="color:#ae81ff">0</span>
+  <span style="color:#f92672">}</span>,
+  <span style="color:#e6db74">&#34;_seq_no&#34;</span>: 1,
+  <span style="color:#e6db74">&#34;_primary_term&#34;</span>: <span style="color:#ae81ff">1</span>
+<span style="color:#f92672">}</span>
+</code></pre></div><p>Elasticsearch 内部会将旧的文档标记为删除, 并添加一个完整的新文档.</p>
+<h3 id="删除">删除</h3>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">$ curl -X DELETE <span style="color:#e6db74">&#39;localhost:9200/cms/user/1&#39;</span>
+<span style="color:#f92672">{</span>
+  <span style="color:#e6db74">&#34;_index&#34;</span>: <span style="color:#e6db74">&#34;cms&#34;</span>,
+  <span style="color:#e6db74">&#34;_type&#34;</span>: <span style="color:#e6db74">&#34;user&#34;</span>,
+  <span style="color:#e6db74">&#34;_id&#34;</span>: <span style="color:#e6db74">&#34;1&#34;</span>,
+  <span style="color:#e6db74">&#34;_version&#34;</span>: 3,
+  <span style="color:#e6db74">&#34;result&#34;</span>: <span style="color:#e6db74">&#34;deleted&#34;</span>,
+  <span style="color:#e6db74">&#34;_shards&#34;</span>: <span style="color:#f92672">{</span>
+    <span style="color:#e6db74">&#34;total&#34;</span>: 2,
+    <span style="color:#e6db74">&#34;successful&#34;</span>: 1,
+    <span style="color:#e6db74">&#34;failed&#34;</span>: <span style="color:#ae81ff">0</span>
+  <span style="color:#f92672">}</span>,
+  <span style="color:#e6db74">&#34;_seq_no&#34;</span>: 2,
+  <span style="color:#e6db74">&#34;_primary_term&#34;</span>: <span style="color:#ae81ff">1</span>
+<span style="color:#f92672">}</span>
+</code></pre></div><h2 id="集群">集群</h2>
+<p>索引一个文档, Elasticsearch 会用下面的公式计算出分片</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">shard <span style="color:#f92672">=</span> hash<span style="color:#f92672">(</span>routing<span style="color:#f92672">)</span> &amp; number_of_primary_shards
+</code></pre></div><ul>
+<li>routing: 任意字符串, 默认 <code>_id</code>, 也可自定义</li>
+<li>number_of_primary_shards: 主分片数量</li>
+<li>shard: 分片, 范围 0 到 number_of_primary_shards - 1</li>
+</ul>
+<h2 id="集群数据操作">集群数据操作</h2>
+<p>有3个节点的集群, 有2个主分片, 每个主分片各有2各复制分片:</p>
+<p><img src="/images/es-cluster.png" alt=""></p>
+<p>相同的分片不会出现在同1个节点上, 集群中任意节点都可以处理请求, 每个节点都知道任意文档所在节点.</p>
+<h3 id="新建索引删除">新建/索引/删除</h3>
+<p>新建/索引/删除请求都是写操作, 必须在主分片上成功完成才能复制到相关的复制分片上.</p>
+<p><img src="/images/es-cluster-write.png" alt=""></p>
+<ol>
+<li>Client 发给 NODE1 新建/索引/删除请求</li>
+<li>节点使用文档的 <code>_id</code> 确定文档属于分片0, 将请求转发到分片0所在的 NODE3 节点上</li>
+<li>NODE3 在主分片上执行写请求, 如果成功, 转发写请求到位于 NODE1 和 NODE2 的复制节点上, 所有复制分片所在节点回复成功, NODE3 反馈 Client 写请求成功.</li>
+</ol>
+<p>复制默认的值是同步的(sync), 主分片需要等待所有复制分片的成功响应后才返回.</p>
+<h3 id="检索">检索</h3>
+<p>文档可以从主分片或复制分片中被检索</p>
+<p><img src="/images/es-cluster-query.png" alt=""></p>
+<ol>
+<li>Client 向 NODE1 发送 get 请求</li>
+<li>节点使用文档的 <code>_id</code> 确定文档属于分片0, 分片0对应复制分片在3个节点上都存在. 将请求转发给 NODE2</li>
+<li>NODE2 将文档返回给 NODE1, NODE1 将文档返回给 Client</li>
+</ol>
+<h2 id="倒排索引-inverted-index">倒排索引 inverted index</h2>
+<p>Elasticsearch 用倒排索引(inverted index)来做全文搜索, 将文档分词后, 记录词出现的文档.</p>
+<h2 id="数据搜索">数据搜索</h2>
+<h3 id="返回所有记录">返回所有记录</h3>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">$ curl <span style="color:#960050;background-color:#1e0010">&#39;</span>localhost:9200/accounts/person/
+<span style="color:#f92672">{</span>
+  <span style="color:#e6db74">&#34;took&#34;</span>: 227, // 耗时
+  <span style="color:#e6db74">&#34;timed_out&#34;</span>: false, // 是否超时
+  <span style="color:#e6db74">&#34;_shards&#34;</span>: <span style="color:#f92672">{</span>
+    <span style="color:#e6db74">&#34;total&#34;</span>: 1,
+    <span style="color:#e6db74">&#34;successful&#34;</span>: 1,
+    <span style="color:#e6db74">&#34;skipped&#34;</span>: 0,
+    <span style="color:#e6db74">&#34;failed&#34;</span>: <span style="color:#ae81ff">0</span>
+  <span style="color:#f92672">}</span>,
+  <span style="color:#e6db74">&#34;hits&#34;</span>: <span style="color:#f92672">{</span> // 命中记录
+    <span style="color:#e6db74">&#34;total&#34;</span>: <span style="color:#f92672">{</span>
+      <span style="color:#e6db74">&#34;value&#34;</span>: 3, // 总数
+      <span style="color:#e6db74">&#34;relation&#34;</span>: <span style="color:#e6db74">&#34;eq&#34;</span>
+    <span style="color:#f92672">}</span>,
+    <span style="color:#e6db74">&#34;max_score&#34;</span>: 1.0, // 最高匹配成都
+    <span style="color:#e6db74">&#34;hits&#34;</span>: <span style="color:#f92672">[</span>
+      <span style="color:#f92672">{</span>
+        <span style="color:#e6db74">&#34;_index&#34;</span>: <span style="color:#e6db74">&#34;cms&#34;</span>,
+        <span style="color:#e6db74">&#34;_type&#34;</span>: <span style="color:#e6db74">&#34;user&#34;</span>,
+        <span style="color:#e6db74">&#34;_id&#34;</span>: <span style="color:#e6db74">&#34;1&#34;</span>,
+        <span style="color:#e6db74">&#34;_score&#34;</span>: 1.0,
+        <span style="color:#e6db74">&#34;_source&#34;</span>: <span style="color:#f92672">{</span>
+          <span style="color:#e6db74">&#34;name&#34;</span>: <span style="color:#e6db74">&#34;张燕&#34;</span>,
+          <span style="color:#e6db74">&#34;age&#34;</span>: 21,
+          <span style="color:#e6db74">&#34;gender&#34;</span>: <span style="color:#e6db74">&#34;女&#34;</span>
+        <span style="color:#f92672">}</span>
+      <span style="color:#f92672">}</span>,
+      ...
+    <span style="color:#f92672">]</span>
+  <span style="color:#f92672">}</span>
+<span style="color:#f92672">}</span>
+</code></pre></div>
+        </p>
     </div>
+    
+
+    
+
+    <div class="page-footer">
         
-        <div class="paginator">
+        <hr class="footer-divider">
         
+            <a class="tag" href="/tags/kafka">#Kafka</a>
         
-        <p>Page 3 of 5</p>
-        <div class="paginator-group">
-            
-            <a class="color-link" href="/page/2/">
-                    <svg width="13px" height="9px" viewBox="0 0 13 9" version="1.1" xmlns="https://www.w3.org/2000/svg" xmlns:xlink="https://www.w3.org/1999/xlink">
-                        <g class="color-arrow" fill="#63BDA2" fill-rule="nonzero">
-                            <polygon id="Path" points="1.75929935 4.50000282 5.3292523 7.62371165 4.6707477 8.37628835 0.240700645 4.49999718 4.67081049 0.623709205 5.32930951 1.37629079"></polygon>
-                            <polygon id="Path" points="13 4 13 5 1 5 1 4"></polygon>
-                        </g>
-                </svg>  
-                Newer          
-            </a>
-            
-            
-                <a class="color-link older" href="/page/4/">
-                    Older
-                    <svg width="13px" height="9px" viewBox="0 0 13 9" version="1.1" xmlns="https://www.w3.org/2000/svg" xmlns:xlink="https://www.w3.org/1999/xlink">
-                            <g class="color-arrow" fill="#63BDA2" fill-rule="nonzero">
-                                <polygon points="7.6707477 1.37628835 8.3292523 0.623711653 12.7592994 4.50000282 8.32918951 8.37629079 7.67069049 7.62370921 11.2407006 4.49999718"></polygon>
-                                <polygon id="Path" points="0 5 0 4 12 4 12 5"></polygon>
-                            </g>
-                    </svg>
-                        
-                </a>
-            
-        </div>
+            <a class="tag" href="/tags/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0">#学习笔记</a>
         
+      
     </div>
+
 
         
 
