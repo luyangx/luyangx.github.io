@@ -6,17 +6,26 @@
     <description>Recent content in 网络 on 扬</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>zh-cn</language>
-    <lastBuildDate>Fri, 02 May 2014 10:13:25 +0800</lastBuildDate>
+    <lastBuildDate>Fri, 27 May 2016 20:32:12 +0800</lastBuildDate>
     
 	<atom:link href="https://www.luyang.ink/tags/%E7%BD%91%E7%BB%9C/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
+      <title>HTTP/2</title>
+      <link>https://www.luyang.ink/posts/http2/</link>
+      <pubDate>Fri, 27 May 2016 20:32:12 +0800</pubDate>
+      
+      <guid>https://www.luyang.ink/posts/http2/</guid>
+      <description>&lt;p&gt;HTTP2 已经发布已久, 性能较 HTTP/1.1 有了很多提升, 并且完全兼容 HTTP/1.1 语义, 又进一步减少了网络延迟.&lt;/p&gt;</description>
+    </item>
+    
+    <item>
       <title>HTTP/1.1 . 连接/缓存/安全</title>
-      <link>https://www.luyang.ink/posts/http-1x/</link>
+      <link>https://www.luyang.ink/posts/http1/</link>
       <pubDate>Fri, 02 May 2014 10:13:25 +0800</pubDate>
       
-      <guid>https://www.luyang.ink/posts/http-1x/</guid>
+      <guid>https://www.luyang.ink/posts/http1/</guid>
       <description>&lt;p&gt;HTTP/1.1 目前在互联网上被广泛使用, 记录一下 HTTP1.1 重要的几块内容, 包括连接, 缓存控制等.&lt;/p&gt;</description>
     </item>
     

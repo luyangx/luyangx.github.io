@@ -3,32 +3,47 @@
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   
   <url>
+    <loc>https://www.luyang.ink/about/</loc>
+    <lastmod>2019-05-28T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://www.luyang.ink/</loc>
+    <lastmod>2019-05-28T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://www.luyang.ink/tags/kubernetes/</loc>
+    <lastmod>2019-02-09T09:46:29+08:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://www.luyang.ink/posts/kubernetes/</loc>
+    <lastmod>2019-02-09T09:46:29+08:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://www.luyang.ink/posts/</loc>
+    <lastmod>2019-02-09T09:46:29+08:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://www.luyang.ink/tags/</loc>
+    <lastmod>2019-02-09T09:46:29+08:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://www.luyang.ink/tags/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/</loc>
+    <lastmod>2019-02-09T09:46:29+08:00</lastmod>
+  </url>
+  
+  <url>
     <loc>https://www.luyang.ink/tags/go/</loc>
     <lastmod>2018-05-05T19:54:42+08:00</lastmod>
   </url>
   
   <url>
     <loc>https://www.luyang.ink/posts/go-error-exception/</loc>
-    <lastmod>2018-05-05T19:54:42+08:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>https://www.luyang.ink/posts/</loc>
-    <lastmod>2018-05-05T19:54:42+08:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>https://www.luyang.ink/tags/</loc>
-    <lastmod>2018-05-05T19:54:42+08:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>https://www.luyang.ink/tags/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/</loc>
-    <lastmod>2018-05-05T19:54:42+08:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>https://www.luyang.ink/</loc>
     <lastmod>2018-05-05T19:54:42+08:00</lastmod>
   </url>
   
@@ -60,6 +75,26 @@
   <url>
     <loc>https://www.luyang.ink/posts/php7-vs-php5-zval/</loc>
     <lastmod>2018-04-13T19:58:16+08:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://www.luyang.ink/tags/redis/</loc>
+    <lastmod>2017-10-12T23:02:12+08:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://www.luyang.ink/posts/redis-internal-2/</loc>
+    <lastmod>2017-10-12T23:02:12+08:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://www.luyang.ink/posts/redis-internal-1/</loc>
+    <lastmod>2017-10-09T22:51:43+08:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://www.luyang.ink/posts/redis/</loc>
+    <lastmod>2017-10-05T21:38:13+08:00</lastmod>
   </url>
   
   <url>
@@ -203,6 +238,21 @@
   </url>
   
   <url>
+    <loc>https://www.luyang.ink/tags/http/</loc>
+    <lastmod>2016-05-27T20:32:12+08:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://www.luyang.ink/posts/http2/</loc>
+    <lastmod>2016-05-27T20:32:12+08:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://www.luyang.ink/tags/%E7%BD%91%E7%BB%9C/</loc>
+    <lastmod>2016-05-27T20:32:12+08:00</lastmod>
+  </url>
+  
+  <url>
     <loc>https://www.luyang.ink/tags/c/</loc>
     <lastmod>2016-04-18T20:24:24+08:00</lastmod>
   </url>
@@ -243,17 +293,7 @@
   </url>
   
   <url>
-    <loc>https://www.luyang.ink/tags/http/</loc>
-    <lastmod>2014-05-02T10:13:25+08:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>https://www.luyang.ink/posts/http-1x/</loc>
-    <lastmod>2014-05-02T10:13:25+08:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>https://www.luyang.ink/tags/%E7%BD%91%E7%BB%9C/</loc>
+    <loc>https://www.luyang.ink/posts/http1/</loc>
     <lastmod>2014-05-02T10:13:25+08:00</lastmod>
   </url>
   
@@ -270,6 +310,16 @@
   <url>
     <loc>https://www.luyang.ink/posts/tcp-connection/</loc>
     <lastmod>2014-04-19T19:21:34+08:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://www.luyang.ink/tags/linux/</loc>
+    <lastmod>2014-04-06T20:02:45+08:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://www.luyang.ink/posts/linux-command/</loc>
+    <lastmod>2014-04-06T20:02:45+08:00</lastmod>
   </url>
   
   <url>

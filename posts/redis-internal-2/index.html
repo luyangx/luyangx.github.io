@@ -1,0 +1,520 @@
+<!DOCTYPE html>
+
+<html lang="zh-cn">
+    <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="format-detection" content="telephone=no"/>
+
+    <title>Redis Internal . Part 2 | 扬</title>
+    
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+    <link rel="manifest" href="/manifest.json">
+    <link rel="mask-icon" href="/safari-pinned-tab.svg" color="#FF3DB4">
+    <meta name="theme-color" content="#ffffff">
+
+    
+    
+    
+    <link rel="stylesheet" href="https://www.luyang.ink/css/main.min.15431d6c334f65809fe2bc329da3f2c81c6e3027ab1e25b56afb2bb85fa7fd64.css"/>
+
+    
+    
+    
+
+    
+    
+ 
+    </head>
+
+    <body>
+        
+<nav>
+  <header>
+    <div class="site-title">
+        <a href="/">扬</a>
+    </div>  
+</header>
+
+  <div class="nav-menu">
+  
+    <a class="color-link nav-link" href="/about/">About</a>
+  
+    <a class="color-link nav-link" href="/tags/">Tags</a>
+  
+  <a class="color-link nav-link" href="https://www.luyang.ink/index.xml" target="_blank" rel="noopener" type="application/rss+xml">RSS</a>
+</div>
+<footer class="footer">
+	<div class="social-icons">
+        
+    <a class="social-icon" href="0xd1ef@gmail.com" target="_blank" rel="noopener" title="Email">
+        <svg width="28px" height="28px" viewBox="0 0 28 28" version="1.1" fill="#ABABAB" xmlns="https://www.w3.org/2000/svg" xmlns:xlink="https://www.w3.org/1999/xlink">
+            <path d="M25.2794292,5.59128519 L14,16.8707144 L2.72057081,5.59128519 C3.06733103,5.30237414 3.51336915,5.12857603 4,5.12857603 L24,5.12857603 C24.4866308,5.12857603 24.932669,5.30237414 25.2794292,5.59128519 Z M25.9956978,6.99633695 C25.998551,7.04004843 26,7.08414302 26,7.12857603 L26,20.871424 C26,21.0798433 25.9681197,21.2808166 25.9089697,21.4697335 L18.7156355,14.2763993 L25.9956978,6.99633695 Z M24.9498374,22.6319215 C24.6672737,22.7846939 24.3437653,22.871424 24,22.871424 L4,22.871424 C3.5268522,22.871424 3.09207889,22.7071233 2.74962118,22.432463 L10.0950247,15.0870594 L13.9848068,18.9768415 L14.1878486,18.7737996 L14.2030419,18.7889929 L17.6549753,15.3370594 L24.9498374,22.6319215 Z M2.00810114,21.0526627 C2.00273908,20.9929669 2,20.9325153 2,20.871424 L2,7.12857603 C2,7.08414302 2.00144896,7.04004843 2.00430222,6.99633695 L9.03436454,14.0263993 L2.00810114,21.0526627 Z"></path>
+        </svg>
+    </a>
+    
+
+    
+
+    
+    <a class="social-icon" href="https://twitter.com/luyangx" target="_blank" rel="noopener" title="Twitter">
+        <svg width="28px" height="28px" viewBox="0 0 28 28" version="1.1" fill="#ABABAB" xmlns="https://www.w3.org/2000/svg" xmlns:xlink="https://www.w3.org/1999/xlink">
+            <path d="M8.991284,24.971612 C19.180436,24.971612 24.752372,16.530224 24.752372,9.210524 C24.752372,8.970656 24.747512,8.731868 24.736496,8.494376 C25.818008,7.712564 26.758256,6.737 27.5,5.62622 C26.507372,6.067076 25.439252,6.364292 24.318752,6.498212 C25.462472,5.812628 26.340512,4.727444 26.754584,3.434036 C25.684088,4.068536 24.499004,4.53002 23.23724,4.778528 C22.226468,3.701876 20.786828,3.028388 19.193828,3.028388 C16.134404,3.028388 13.653536,5.509256 13.653536,8.567492 C13.653536,9.0023 13.702244,9.424904 13.797176,9.830552 C9.19346,9.599108 5.11106,7.39472 2.3792,4.04294 C1.903028,4.861364 1.629032,5.812628 1.629032,6.827072 C1.629032,8.74904 2.606972,10.445612 4.094024,11.438132 C3.185528,11.41016 2.331788,11.160464 1.585184,10.745096 C1.583888,10.768208 1.583888,10.791428 1.583888,10.815728 C1.583888,13.49888 3.493652,15.738584 6.028088,16.246508 C5.562932,16.373084 5.07326,16.44134 4.56782,16.44134 C4.210988,16.44134 3.863876,16.406024 3.526484,16.34144 C4.231724,18.542264 6.276596,20.143796 8.701412,20.18894 C6.805148,21.674696 4.416836,22.56008 1.821488,22.56008 C1.374476,22.56008 0.93362,22.534592 0.5,22.4834 C2.951708,24.054476 5.862524,24.971612 8.991284,24.971612"></path>
+        </svg>
+    </a>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <a class="social-icon" href="https://weibo.com/0xd1ef" target="_blank" rel="noopener" title="Weibo">
+        <svg width="28px" height="28px" viewBox="0 0 28 28" version="1.1" fill="#ABABAB" xmlns="https://www.w3.org/2000/svg" xmlns:xlink="https://www.w3.org/1999/xlink">
+            <path d="M11.7643305,23.68043 C16.3966564,23.2245381 19.9124334,20.3848721 19.6072176,17.3404411 C19.3097287,14.2998735 15.3071519,12.2019978 10.6709625,12.6617533 C6.03863666,13.1215087 2.52285972,15.9573112 2.82421203,19.0017422 C3.12556434,22.0423098 7.12814116,24.1401855 11.7643305,23.68043 Z M21.0328458,13.5774007 C22.6400581,14.075791 24.4288545,15.2812003 24.424991,17.4061204 C24.424991,20.9180339 19.3599541,25.3417312 11.7450131,25.3417312 C5.93818589,25.3417312 -2.23820962e-13,22.5252462 -2.23820962e-13,17.8967838 C-2.23820962e-13,15.4743748 1.53380598,12.6733438 4.17257044,10.0345793 C7.69993785,6.50721189 11.8145559,4.89999957 13.3599524,6.44925952 C14.0399268,7.13309745 14.1056062,8.31146225 13.6690317,9.72163652 C13.4372222,10.4286554 14.3335521,10.0384428 14.3335521,10.0384428 C17.1848086,8.84462403 19.6728969,8.77508119 20.5808173,10.0732142 C21.0676172,10.7686426 21.0212553,11.7383789 20.5730903,12.8626548 C20.3683253,13.3803626 20.6387697,13.4576325 21.0328458,13.5774007 Z M26.0901557,5.1047646 C27.9291775,7.14082443 28.4275678,9.91867457 27.6394156,12.3488105 C27.6394156,12.3488105 27.6394156,12.352674 27.6394156,12.352674 C27.4578316,12.9128802 26.8551269,13.2219595 26.2910572,13.0403754 C25.7269875,12.8587913 25.4179082,12.2560867 25.5994923,11.692017 C26.1596985,9.96117297 25.8042573,7.98692899 24.4983973,6.53811982 C23.1925373,5.08931064 21.2646553,4.5368314 19.4835858,4.91545354 C18.9040622,5.03908525 18.336129,4.67205359 18.2124973,4.09252992 C18.0888655,3.51686974 18.4558972,2.94507305 19.0354209,2.82144134 C21.5389631,2.28827956 24.2511339,3.06484128 26.0901557,5.1047646 Z M23.2659437,7.65466876 C24.1622736,8.64758598 24.4018101,9.99980788 24.0193244,11.1858997 C23.8609213,11.6726995 23.3432135,11.9354169 22.8564136,11.7808773 C22.3696137,11.6224742 22.1068963,11.1009029 22.261436,10.6179665 C22.450747,10.0384428 22.3309788,9.37778581 21.8944043,8.89098592 C21.4578298,8.40804953 20.8087633,8.22260195 20.2137857,8.35009716 C19.7192588,8.45827491 19.2285954,8.14146864 19.1204177,7.64307828 C19.0161034,7.14468793 19.3329097,6.65016106 19.8313,6.5458468 C21.0482998,6.2831294 22.3696137,6.66175153 23.2659437,7.65466876 Z M12.0193209,18.1710916 C12.1738606,17.8890568 12.0734098,17.576114 11.7952385,17.4756632 C11.5209306,17.3674855 11.1770799,17.4988442 11.0148133,17.7692886 C10.8564101,18.039733 10.9414069,18.3526757 11.2195783,18.464717 C11.4977496,18.5806217 11.8570543,18.449263 12.0193209,18.1710916 Z M10.5396038,20.0642023 C10.9800418,19.3417295 10.7482324,18.5188059 10.021896,18.2058631 C9.30328667,17.9045108 8.3760488,18.2135901 7.93174732,18.9090185 C7.48358235,19.6083104 7.69607436,20.438961 8.40695673,20.7634942 C9.12942957,21.091891 10.0914389,20.7789482 10.5396038,20.0642023 Z M12.224086,15.0030289 C14.5074092,15.5941431 15.6741836,17.7461076 14.7392187,19.8401198 C13.7926634,21.9766304 11.0727656,23.1202238 8.76239791,22.37457 C6.53702702,21.6559607 5.59047169,19.4537707 6.56793494,17.4717998 C7.52608075,15.5284637 10.0180325,14.4273687 12.224086,15.0030289 Z"></path>
+        </svg>
+    </a>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    
+    
+
+    
+    
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+</div>
+
+
+
+
+	<p><a href="https://github.com/kimcc/hugo-theme-noteworthy" target="_blank" rel="noopener">Noteworthy theme</a></p>
+	<p><a href="https://gohugo.io" target="_blank" rel="noopener">Built with Hugo</a></p>
+
+	<script src="https://www.luyang.ink/js/main.min.fa5c2b23e07b5d9bfad267a52b4b24fdb053e6fb7524993383594926a3ac270c.js" integrity="sha256-+lwrI+B7XZv60melK0sk/bBT5vt1JJkzg1lJJqOsJww=" crossorigin="anonymous"></script>
+</footer>
+</nav>
+
+        <div id="content" class="content-container">
+        
+
+<h1 class="post-title">Redis Internal . Part 2</h1>
+    
+    <time>October 12, 2017</time>
+    
+    <div>
+        <p>
+        <p>继续了解 Redis 内部. 记录一下 ziplist, quicklist</p>
+<h3 id="压缩列表-ziplist">压缩列表 ziplist</h3>
+<blockquote>
+<p>文件 src/ziplist.c</p>
+</blockquote>
+<p>ziplist 是特殊编码的双向链表, 节省内存, 它存储少量的字符串和整形值, 支持在列表任意一侧的 push 和 pop 操作, 时间复杂度 O(1), 由于每一个操作可能导致 ziplist 内存重新分配, 最坏复杂度会是 O(n)</p>
+<p>ziplist 的典型分布结构：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">|&lt;---- ziplist header ----&gt;|&lt;----------- entries -------------&gt;|&lt;-end-&gt;|
+
+  <span style="color:#ae81ff">4</span> bytes  <span style="color:#ae81ff">4</span> bytes  <span style="color:#ae81ff">2</span> bytes    ?        ?        ?        ?     <span style="color:#ae81ff">1</span> byte
++---------+--------+-------+--------+--------+--------+--------+-------+
+| zlbytes | zltail | zllen | entry1 | entry2 |  ...   | entryN | zlend |
++---------+--------+-------+--------+--------+--------+--------+-------+
+                           ^                          ^        ^
+                           |                          |        |
+                    ZIPLIST_ENTRY_HEAD                |   ZIPLIST_ENTRY_END
+                                                      |
+                                              ZIPLIST_ENTRY_TAIL
+</code></pre></div><ul>
+<li>zlbytes: ziplist 总占用的大小, ziplist 内存重分配会用的; 计算 zlend 的位置时也会使用</li>
+<li>zltail: ziplist 末尾与 ziplist 起始位置的偏移量, 通过这个偏移量, 可以快速确定末尾节点的地址</li>
+<li>zllen: ziplist 包含的节点数量</li>
+<li>entryX: ziplist 包含的各个节点</li>
+<li>zlend: 用于标记 ziplist 的末尾, 固定值 255(0xff)</li>
+</ul>
+<p>看1个包含3个节点的 ziplist 存储结构:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">+---------+--------+-------+--------+--------+--------+--------+
+| zlbytes | zltail | zllen | entry1 | entry2 | entry3 |  zlend |
+|   0x50  |  0x3c  |  0x3  | entry1 | entry2 | entry3 |   0xff |
++---------+--------+-------+--------+--------+--------+--------+
+     ^                                            ^
+     |                                            |
+     P                                          P + <span style="color:#ae81ff">60</span>
+</code></pre></div><ul>
+<li>zlbytes: 0x50 = 5x16^1 = 80, ziplist 长度=80字节</li>
+<li>zltail: 0x3c = 3x16^1 + 12x16^0 = 60, 最有一个节点位置=P+60</li>
+<li>zllen: 0x3 = 3, 表示有3个节点</li>
+</ul>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-c" data-lang="c"><span style="color:#75715e">// 创建一个新的 ziplist
+</span><span style="color:#75715e"></span><span style="color:#66d9ef">unsigned</span> <span style="color:#66d9ef">char</span> <span style="color:#f92672">*</span><span style="color:#a6e22e">ziplistNew</span>(<span style="color:#66d9ef">void</span>) {
+    <span style="color:#66d9ef">unsigned</span> <span style="color:#66d9ef">int</span> bytes <span style="color:#f92672">=</span> ZIPLIST_HEADER_SIZE<span style="color:#f92672">+</span><span style="color:#ae81ff">1</span>; <span style="color:#75715e">// ziplist header 大小
+</span><span style="color:#75715e"></span>    <span style="color:#66d9ef">unsigned</span> <span style="color:#66d9ef">char</span> <span style="color:#f92672">*</span>zl <span style="color:#f92672">=</span> zmalloc(bytes);
+    ZIPLIST_BYTES(zl) <span style="color:#f92672">=</span> intrev32ifbe(bytes);
+    ZIPLIST_TAIL_OFFSET(zl) <span style="color:#f92672">=</span> intrev32ifbe(ZIPLIST_HEADER_SIZE);
+    ZIPLIST_LENGTH(zl) <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>;
+    zl[bytes<span style="color:#f92672">-</span><span style="color:#ae81ff">1</span>] <span style="color:#f92672">=</span> ZIP_END; <span style="color:#75715e">// ziplist 尾部
+</span><span style="color:#75715e"></span>    <span style="color:#66d9ef">return</span> zl;
+}
+</code></pre></div><h4 id="ziplist-entries">ZIPLIST ENTRIES</h4>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">+---------+----------+------------+
+| prevlen | encoding | entry-data |
++---------+----------+------------+
+</code></pre></div><ul>
+<li>prevlen: 前一个 entry 长度, 用于反向遍历</li>
+<li>encoding: 依赖 entry-data, 具体细节可以看一下源码文件 src/ziplist.c 头部注释[ZIPLIST ENTRIES]部分</li>
+<li>data: 实际保存数据</li>
+</ul>
+<h3 id="快速列表-quicklist">快速列表 quicklist</h3>
+<p>quicklist 是 Redis 对 ziplist 的封装, 结构体定义如下:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-c" data-lang="c"><span style="color:#75715e">// quicklist 节点结构体
+</span><span style="color:#75715e"></span><span style="color:#66d9ef">typedef</span> <span style="color:#66d9ef">struct</span> quicklistNode {
+    <span style="color:#66d9ef">struct</span> quicklistNode <span style="color:#f92672">*</span>prev; <span style="color:#75715e">// 前一个 node
+</span><span style="color:#75715e"></span>    <span style="color:#66d9ef">struct</span> quicklistNode <span style="color:#f92672">*</span>next; <span style="color:#75715e">// 后一个 node
+</span><span style="color:#75715e"></span>    <span style="color:#66d9ef">unsigned</span> <span style="color:#66d9ef">char</span> <span style="color:#f92672">*</span>zl; <span style="color:#75715e">// ziplist
+</span><span style="color:#75715e"></span>    <span style="color:#66d9ef">unsigned</span> <span style="color:#66d9ef">int</span> sz; <span style="color:#75715e">// ziplist size
+</span><span style="color:#75715e"></span>    <span style="color:#66d9ef">unsigned</span> <span style="color:#66d9ef">int</span> count : <span style="color:#ae81ff">16</span>;     <span style="color:#75715e">// ziplist 中 entry 个数
+</span><span style="color:#75715e"></span>    <span style="color:#66d9ef">unsigned</span> <span style="color:#66d9ef">int</span> encoding : <span style="color:#ae81ff">2</span>;   <span style="color:#75715e">// 1:ziplist 2:LZF压缩
+</span><span style="color:#75715e"></span>    <span style="color:#66d9ef">unsigned</span> <span style="color:#66d9ef">int</span> container : <span style="color:#ae81ff">2</span>;  <span style="color:#75715e">// NONE==1 or ZIPLIST==2
+</span><span style="color:#75715e"></span>    <span style="color:#66d9ef">unsigned</span> <span style="color:#66d9ef">int</span> recompress : <span style="color:#ae81ff">1</span>; <span style="color:#75715e">/// 压缩标识
+</span><span style="color:#75715e"></span>    <span style="color:#66d9ef">unsigned</span> <span style="color:#66d9ef">int</span> attempted_compress : <span style="color:#ae81ff">1</span>; 
+    <span style="color:#66d9ef">unsigned</span> <span style="color:#66d9ef">int</span> extra : <span style="color:#ae81ff">10</span>;
+} quicklistNode;
+
+<span style="color:#75715e">// quicklist 结构体
+</span><span style="color:#75715e"></span><span style="color:#66d9ef">typedef</span> <span style="color:#66d9ef">struct</span> quicklist {
+    quicklistNode <span style="color:#f92672">*</span>head; <span style="color:#75715e">// 头 node
+</span><span style="color:#75715e"></span>    quicklistNode <span style="color:#f92672">*</span>tail; <span style="color:#75715e">// 尾 node
+</span><span style="color:#75715e"></span>    <span style="color:#66d9ef">unsigned</span> <span style="color:#66d9ef">long</span> count; <span style="color:#75715e">// entries 数量
+</span><span style="color:#75715e"></span>    <span style="color:#66d9ef">unsigned</span> <span style="color:#66d9ef">long</span> len; <span style="color:#75715e">// 长度
+</span><span style="color:#75715e"></span>    <span style="color:#66d9ef">int</span> fill : <span style="color:#ae81ff">16</span>; <span style="color:#75715e">// 填充因子, 默认:-2
+</span><span style="color:#75715e"></span>    <span style="color:#66d9ef">unsigned</span> <span style="color:#66d9ef">int</span> compress : <span style="color:#ae81ff">16</span>; <span style="color:#75715e">/* depth of end nodes not to compress;0=off */</span>
+} quicklist;
+</code></pre></div><p>创建 quicklist, 并进行初始化</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-c" data-lang="c"><span style="color:#75715e">// 创建 quicklist
+</span><span style="color:#75715e"></span>quicklist <span style="color:#f92672">*</span><span style="color:#a6e22e">quicklistCreate</span>(<span style="color:#66d9ef">void</span>) {
+    <span style="color:#66d9ef">struct</span> quicklist <span style="color:#f92672">*</span>quicklist;
+
+    quicklist <span style="color:#f92672">=</span> zmalloc(<span style="color:#66d9ef">sizeof</span>(<span style="color:#f92672">*</span>quicklist));
+    quicklist<span style="color:#f92672">-&gt;</span>head <span style="color:#f92672">=</span> quicklist<span style="color:#f92672">-&gt;</span>tail <span style="color:#f92672">=</span> NULL;
+    quicklist<span style="color:#f92672">-&gt;</span>len <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>;
+    quicklist<span style="color:#f92672">-&gt;</span>count <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>;
+    quicklist<span style="color:#f92672">-&gt;</span>compress <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>;
+    quicklist<span style="color:#f92672">-&gt;</span>fill <span style="color:#f92672">=</span> <span style="color:#f92672">-</span><span style="color:#ae81ff">2</span>;
+    <span style="color:#66d9ef">return</span> quicklist;
+}
+
+<span style="color:#75715e">// 设置 quicklist 的 compress
+</span><span style="color:#75715e"></span><span style="color:#75715e">#define COMPRESS_MAX (1 &lt;&lt; 16)
+</span><span style="color:#75715e"></span><span style="color:#66d9ef">void</span> <span style="color:#a6e22e">quicklistSetCompressDepth</span>(quicklist <span style="color:#f92672">*</span>quicklist, <span style="color:#66d9ef">int</span> compress) {
+    <span style="color:#66d9ef">if</span> (compress <span style="color:#f92672">&gt;</span> COMPRESS_MAX) { <span style="color:#75715e">// 最大 1 &lt;&lt; 16
+</span><span style="color:#75715e"></span>        compress <span style="color:#f92672">=</span> COMPRESS_MAX;
+    } <span style="color:#66d9ef">else</span> <span style="color:#66d9ef">if</span> (compress <span style="color:#f92672">&lt;</span> <span style="color:#ae81ff">0</span>) { <span style="color:#75715e">// 最小 0
+</span><span style="color:#75715e"></span>        compress <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>;
+    }
+    quicklist<span style="color:#f92672">-&gt;</span>compress <span style="color:#f92672">=</span> compress;
+}
+
+<span style="color:#75715e">// 设置 quicklist 的 fill
+</span><span style="color:#75715e"></span><span style="color:#75715e">#define FILL_MAX (1 &lt;&lt; 15)
+</span><span style="color:#75715e"></span><span style="color:#66d9ef">void</span> <span style="color:#a6e22e">quicklistSetFill</span>(quicklist <span style="color:#f92672">*</span>quicklist, <span style="color:#66d9ef">int</span> fill) {
+    <span style="color:#66d9ef">if</span> (fill <span style="color:#f92672">&gt;</span> FILL_MAX) { <span style="color:#75715e">// 最大 1 &lt;&lt; 15
+</span><span style="color:#75715e"></span>        fill <span style="color:#f92672">=</span> FILL_MAX;
+    } <span style="color:#66d9ef">else</span> <span style="color:#66d9ef">if</span> (fill <span style="color:#f92672">&lt;</span> <span style="color:#f92672">-</span><span style="color:#ae81ff">5</span>) { <span style="color:#75715e">// 最小 -5
+</span><span style="color:#75715e"></span>        fill <span style="color:#f92672">=</span> <span style="color:#f92672">-</span><span style="color:#ae81ff">5</span>;
+    }
+    quicklist<span style="color:#f92672">-&gt;</span>fill <span style="color:#f92672">=</span> fill;
+}
+
+<span style="color:#75715e">// 用 fill, depth 初始化 quicklist
+</span><span style="color:#75715e"></span><span style="color:#66d9ef">void</span> <span style="color:#a6e22e">quicklistSetOptions</span>(quicklist <span style="color:#f92672">*</span>quicklist, <span style="color:#66d9ef">int</span> fill, <span style="color:#66d9ef">int</span> depth) {
+    quicklistSetFill(quicklist, fill); <span style="color:#75715e">// 设置 quicklist 的 fill
+</span><span style="color:#75715e"></span>    quicklistSetCompressDepth(quicklist, depth); <span style="color:#75715e">// 设置 quicklist 的 compress
+</span><span style="color:#75715e"></span>}
+
+<span style="color:#75715e">// 创建 quicklist 并初始化
+</span><span style="color:#75715e"></span>quicklist <span style="color:#f92672">*</span><span style="color:#a6e22e">quicklistNew</span>(<span style="color:#66d9ef">int</span> fill, <span style="color:#66d9ef">int</span> compress) {
+    quicklist <span style="color:#f92672">*</span>quicklist <span style="color:#f92672">=</span> quicklistCreate(); <span style="color:#75715e">// 创建 quicklist
+</span><span style="color:#75715e"></span>    quicklistSetOptions(quicklist, fill, compress); <span style="color:#75715e">// 用 fill, compress 初始化 quicklist
+</span><span style="color:#75715e"></span>    <span style="color:#66d9ef">return</span> quicklist;
+}
+</code></pre></div><p>quicklist 的 push 操作</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-c" data-lang="c"><span style="color:#75715e">// 在 header push 一个 node, 0:使用已存在的 head, 1:创建新的 head
+</span><span style="color:#75715e"></span><span style="color:#66d9ef">int</span> <span style="color:#a6e22e">quicklistPushHead</span>(quicklist <span style="color:#f92672">*</span>quicklist, <span style="color:#66d9ef">void</span> <span style="color:#f92672">*</span>value, size_t sz) {
+    quicklistNode <span style="color:#f92672">*</span>orig_head <span style="color:#f92672">=</span> quicklist<span style="color:#f92672">-&gt;</span>head;
+    <span style="color:#75715e">// 判断 head 是否可利用
+</span><span style="color:#75715e"></span>    <span style="color:#66d9ef">if</span> (likely(
+            _quicklistNodeAllowInsert(quicklist<span style="color:#f92672">-&gt;</span>head, quicklist<span style="color:#f92672">-&gt;</span>fill, sz))) {
+        <span style="color:#75715e">// 更新 head
+</span><span style="color:#75715e"></span>        quicklist<span style="color:#f92672">-&gt;</span>head<span style="color:#f92672">-&gt;</span>zl <span style="color:#f92672">=</span>
+            ziplistPush(quicklist<span style="color:#f92672">-&gt;</span>head<span style="color:#f92672">-&gt;</span>zl, value, sz, ZIPLIST_HEAD);
+        quicklistNodeUpdateSz(quicklist<span style="color:#f92672">-&gt;</span>head);
+    } <span style="color:#66d9ef">else</span> {
+        <span style="color:#75715e">// 创建新的 head
+</span><span style="color:#75715e"></span>        quicklistNode <span style="color:#f92672">*</span>node <span style="color:#f92672">=</span> quicklistCreateNode();
+        node<span style="color:#f92672">-&gt;</span>zl <span style="color:#f92672">=</span> ziplistPush(ziplistNew(), value, sz, ZIPLIST_HEAD);
+
+        quicklistNodeUpdateSz(node);
+        _quicklistInsertNodeBefore(quicklist, quicklist<span style="color:#f92672">-&gt;</span>head, node);
+    }
+    quicklist<span style="color:#f92672">-&gt;</span>count<span style="color:#f92672">++</span>; <span style="color:#75715e">// quicklist 数量+1
+</span><span style="color:#75715e"></span>    quicklist<span style="color:#f92672">-&gt;</span>head<span style="color:#f92672">-&gt;</span>count<span style="color:#f92672">++</span>;
+    <span style="color:#66d9ef">return</span> (orig_head <span style="color:#f92672">!=</span> quicklist<span style="color:#f92672">-&gt;</span>head);
+}
+</code></pre></div><p>quicklist pop 操作</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-c" data-lang="c"><span style="color:#75715e">// pop操作, 返回数据在 data 中, 如果 quicklist node 是 long long, 返回数据在 saver 中
+</span><span style="color:#75715e"></span><span style="color:#66d9ef">int</span> <span style="color:#a6e22e">quicklistPopCustom</span>(quicklist <span style="color:#f92672">*</span>quicklist, <span style="color:#66d9ef">int</span> where, <span style="color:#66d9ef">unsigned</span> <span style="color:#66d9ef">char</span> <span style="color:#f92672">**</span>data,
+                       <span style="color:#66d9ef">unsigned</span> <span style="color:#66d9ef">int</span> <span style="color:#f92672">*</span>sz, <span style="color:#66d9ef">long</span> <span style="color:#66d9ef">long</span> <span style="color:#f92672">*</span>sval,
+                       <span style="color:#66d9ef">void</span> <span style="color:#f92672">*</span>(<span style="color:#f92672">*</span>saver)(<span style="color:#66d9ef">unsigned</span> <span style="color:#66d9ef">char</span> <span style="color:#f92672">*</span>data, <span style="color:#66d9ef">unsigned</span> <span style="color:#66d9ef">int</span> sz)) {
+    <span style="color:#66d9ef">unsigned</span> <span style="color:#66d9ef">char</span> <span style="color:#f92672">*</span>p;
+    <span style="color:#66d9ef">unsigned</span> <span style="color:#66d9ef">char</span> <span style="color:#f92672">*</span>vstr;
+    <span style="color:#66d9ef">unsigned</span> <span style="color:#66d9ef">int</span> vlen;
+    <span style="color:#66d9ef">long</span> <span style="color:#66d9ef">long</span> vlong;
+    <span style="color:#66d9ef">int</span> pos <span style="color:#f92672">=</span> (where <span style="color:#f92672">==</span> QUICKLIST_HEAD) <span style="color:#f92672">?</span> <span style="color:#ae81ff">0</span> <span style="color:#f92672">:</span> <span style="color:#f92672">-</span><span style="color:#ae81ff">1</span>;
+
+    <span style="color:#66d9ef">if</span> (quicklist<span style="color:#f92672">-&gt;</span>count <span style="color:#f92672">==</span> <span style="color:#ae81ff">0</span>)
+        <span style="color:#66d9ef">return</span> <span style="color:#ae81ff">0</span>;
+
+    <span style="color:#66d9ef">if</span> (data)
+        <span style="color:#f92672">*</span>data <span style="color:#f92672">=</span> NULL;
+    <span style="color:#66d9ef">if</span> (sz)
+        <span style="color:#f92672">*</span>sz <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>;
+    <span style="color:#66d9ef">if</span> (sval)
+        <span style="color:#f92672">*</span>sval <span style="color:#f92672">=</span> <span style="color:#f92672">-</span><span style="color:#ae81ff">123456789</span>;
+
+    <span style="color:#75715e">// where 参数确定是从 head 还是 tail 开始遍历 quicklist
+</span><span style="color:#75715e"></span>    quicklistNode <span style="color:#f92672">*</span>node;
+    <span style="color:#66d9ef">if</span> (where <span style="color:#f92672">==</span> QUICKLIST_HEAD <span style="color:#f92672">&amp;&amp;</span> quicklist<span style="color:#f92672">-&gt;</span>head) {
+        node <span style="color:#f92672">=</span> quicklist<span style="color:#f92672">-&gt;</span>head;
+    } <span style="color:#66d9ef">else</span> <span style="color:#66d9ef">if</span> (where <span style="color:#f92672">==</span> QUICKLIST_TAIL <span style="color:#f92672">&amp;&amp;</span> quicklist<span style="color:#f92672">-&gt;</span>tail) {
+        node <span style="color:#f92672">=</span> quicklist<span style="color:#f92672">-&gt;</span>tail;
+    } <span style="color:#66d9ef">else</span> {
+        <span style="color:#66d9ef">return</span> <span style="color:#ae81ff">0</span>;
+    }
+
+    p <span style="color:#f92672">=</span> ziplistIndex(node<span style="color:#f92672">-&gt;</span>zl, pos);
+    <span style="color:#75715e">// 取出 node 数据, 如果已经是 tail, 返回 0 
+</span><span style="color:#75715e"></span>    <span style="color:#66d9ef">if</span> (ziplistGet(p, <span style="color:#f92672">&amp;</span>vstr, <span style="color:#f92672">&amp;</span>vlen, <span style="color:#f92672">&amp;</span>vlong)) {
+        <span style="color:#66d9ef">if</span> (vstr) {
+            <span style="color:#66d9ef">if</span> (data)
+                <span style="color:#f92672">*</span>data <span style="color:#f92672">=</span> saver(vstr, vlen);
+            <span style="color:#66d9ef">if</span> (sz)
+                <span style="color:#f92672">*</span>sz <span style="color:#f92672">=</span> vlen;
+        } <span style="color:#66d9ef">else</span> {
+            <span style="color:#66d9ef">if</span> (data)
+                <span style="color:#f92672">*</span>data <span style="color:#f92672">=</span> NULL;
+            <span style="color:#66d9ef">if</span> (sval)
+                <span style="color:#f92672">*</span>sval <span style="color:#f92672">=</span> vlong;
+        }
+        quicklistDelIndex(quicklist, node, <span style="color:#f92672">&amp;</span>p); <span style="color:#75715e">// 删除 node
+</span><span style="color:#75715e"></span>        <span style="color:#66d9ef">return</span> <span style="color:#ae81ff">1</span>;
+    }
+    <span style="color:#66d9ef">return</span> <span style="color:#ae81ff">0</span>;
+}
+</code></pre></div><h3 id="跳跃表-skiplist">跳跃表 skiplist</h3>
+<p>先看一下 skiplist 大概结构</p>
+<p><img src="/images/redis-skiplist.png" alt=""></p>
+<p>最底层是完整有序的链表, 在它之上的每一层都会从下一层随机挑选几个元素来搭建更高一层, 这样在查找数据时可以以&quot;跳跃&quot;的方式快速找到对应的数据.</p>
+<p>Redis 中的 zset 是用 skiplist + hashtable 表示的. hashtable 用来保存 value =&gt; score 之间的对应关系, skiplist 用来保证 score 有序性.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-c" data-lang="c"><span style="color:#75715e">#define ZSKIPLIST_MAXLEVEL 32 </span><span style="color:#75715e">// 最大层数, 2^32 个元素
+</span><span style="color:#75715e"></span><span style="color:#75715e">#define ZSKIPLIST_P 0.25 </span><span style="color:#75715e">// skiplist 中 node 跳到上层的概率 25%
+</span><span style="color:#75715e">// skiplist node 结构体
+</span><span style="color:#75715e"></span><span style="color:#66d9ef">typedef</span> <span style="color:#66d9ef">struct</span> zskiplistNode {
+    sds ele;
+    <span style="color:#66d9ef">double</span> score; <span style="color:#75715e">// 分值, 决定是否去上层
+</span><span style="color:#75715e"></span>    <span style="color:#66d9ef">struct</span> zskiplistNode <span style="color:#f92672">*</span>backward; <span style="color:#75715e">// 后继 node
+</span><span style="color:#75715e"></span>    <span style="color:#66d9ef">struct</span> zskiplistLevel {
+        <span style="color:#66d9ef">struct</span> zskiplistNode <span style="color:#f92672">*</span>forward; <span style="color:#75715e">// 前进 node
+</span><span style="color:#75715e"></span>        <span style="color:#66d9ef">unsigned</span> <span style="color:#66d9ef">int</span> span; <span style="color:#75715e">// 跨度
+</span><span style="color:#75715e"></span>    } level[]; <span style="color:#75715e">// 层级数组
+</span><span style="color:#75715e"></span>} zskiplistNode;
+
+<span style="color:#75715e">// skiplist 结构体
+</span><span style="color:#75715e"></span><span style="color:#66d9ef">typedef</span> <span style="color:#66d9ef">struct</span> zskiplist {
+    <span style="color:#66d9ef">struct</span> zskiplistNode <span style="color:#f92672">*</span>header, <span style="color:#f92672">*</span>tail; <span style="color:#75715e">// head, tauk
+</span><span style="color:#75715e"></span>    <span style="color:#66d9ef">unsigned</span> <span style="color:#66d9ef">long</span> length; <span style="color:#75715e">// 长度
+</span><span style="color:#75715e"></span>    <span style="color:#66d9ef">int</span> level; <span style="color:#75715e">// 层数
+</span><span style="color:#75715e"></span>} zskiplist;
+
+<span style="color:#75715e">// 创建指定层数的 skpilist node, 最高32层
+</span><span style="color:#75715e"></span>zskiplistNode <span style="color:#f92672">*</span><span style="color:#a6e22e">zslCreateNode</span>(<span style="color:#66d9ef">int</span> level, <span style="color:#66d9ef">double</span> score, sds ele) {
+    zskiplistNode <span style="color:#f92672">*</span>zn <span style="color:#f92672">=</span> zmalloc(<span style="color:#66d9ef">sizeof</span>(<span style="color:#f92672">*</span>zn)<span style="color:#f92672">+</span>level<span style="color:#f92672">*</span><span style="color:#66d9ef">sizeof</span>(<span style="color:#66d9ef">struct</span> zskiplistLevel));
+    zn<span style="color:#f92672">-&gt;</span>score <span style="color:#f92672">=</span> score;
+    zn<span style="color:#f92672">-&gt;</span>ele <span style="color:#f92672">=</span> ele;
+    <span style="color:#66d9ef">return</span> zn;
+}
+
+<span style="color:#75715e">// 创建 skiplist
+</span><span style="color:#75715e"></span>zskiplist <span style="color:#f92672">*</span><span style="color:#a6e22e">zslCreate</span>(<span style="color:#66d9ef">void</span>) {
+    <span style="color:#66d9ef">int</span> j;
+    zskiplist <span style="color:#f92672">*</span>zsl;
+
+    zsl <span style="color:#f92672">=</span> zmalloc(<span style="color:#66d9ef">sizeof</span>(<span style="color:#f92672">*</span>zsl));
+    zsl<span style="color:#f92672">-&gt;</span>level <span style="color:#f92672">=</span> <span style="color:#ae81ff">1</span>;
+    zsl<span style="color:#f92672">-&gt;</span>length <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>;
+    zsl<span style="color:#f92672">-&gt;</span>header <span style="color:#f92672">=</span> zslCreateNode(ZSKIPLIST_MAXLEVEL,<span style="color:#ae81ff">0</span>,NULL); <span style="color:#75715e">// 创建 head node
+</span><span style="color:#75715e"></span>    <span style="color:#66d9ef">for</span> (j <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>; j <span style="color:#f92672">&lt;</span> ZSKIPLIST_MAXLEVEL; j<span style="color:#f92672">++</span>) {
+        zsl<span style="color:#f92672">-&gt;</span>header<span style="color:#f92672">-&gt;</span>level[j].forward <span style="color:#f92672">=</span> NULL;
+        zsl<span style="color:#f92672">-&gt;</span>header<span style="color:#f92672">-&gt;</span>level[j].span <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>;
+    }
+    zsl<span style="color:#f92672">-&gt;</span>header<span style="color:#f92672">-&gt;</span>backward <span style="color:#f92672">=</span> NULL;
+    zsl<span style="color:#f92672">-&gt;</span>tail <span style="color:#f92672">=</span> NULL;
+    <span style="color:#66d9ef">return</span> zsl;
+}
+
+<span style="color:#75715e">// 获取 level 层数, 插入 node 时使用
+</span><span style="color:#75715e"></span><span style="color:#66d9ef">int</span> <span style="color:#a6e22e">zslRandomLevel</span>(<span style="color:#66d9ef">void</span>) {
+    <span style="color:#66d9ef">int</span> level <span style="color:#f92672">=</span> <span style="color:#ae81ff">1</span>;
+    <span style="color:#66d9ef">while</span> ((random()<span style="color:#f92672">&amp;</span><span style="color:#ae81ff">0xFFFF</span>) <span style="color:#f92672">&lt;</span> (ZSKIPLIST_P <span style="color:#f92672">*</span> <span style="color:#ae81ff">0xFFFF</span>))
+        level <span style="color:#f92672">+=</span> <span style="color:#ae81ff">1</span>;
+    <span style="color:#66d9ef">return</span> (level<span style="color:#f92672">&lt;</span>ZSKIPLIST_MAXLEVEL) <span style="color:#f92672">?</span> level : ZSKIPLIST_MAXLEVEL;
+}
+</code></pre></div><p>skiplist 是一种典型的用空间换时间的数据结构，平均时间复杂度 O(logN)</p>
+        </p>
+    </div>
+    
+
+    
+
+    <div class="page-footer">
+        
+        <hr class="footer-divider">
+        
+            <a class="tag" href="/tags/redis">#Redis</a>
+        
+            <a class="tag" href="/tags/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0">#学习笔记</a>
+        
+      
+    </div>
+
+
+        
+
+<link rel="stylesheet" type="text/css" href="/css/katex.min.css" crossorigin="anonymous">
+<script type="text/javascript" src="/js/katex.min.js" crossorigin="anonymous"></script>
+<script type="text/javascript" src="/js/auto-render.min.js"onload="renderMathInElement(document.body);" crossorigin="anonymous"></script>
+
+        </div>
+        <footer class="footer-mobile">
+	<div class="social-icons">
+        
+    <a class="social-icon" href="0xd1ef@gmail.com" target="_blank" rel="noopener" title="Email">
+        <svg width="28px" height="28px" viewBox="0 0 28 28" version="1.1" fill="#ABABAB" xmlns="https://www.w3.org/2000/svg" xmlns:xlink="https://www.w3.org/1999/xlink">
+            <path d="M25.2794292,5.59128519 L14,16.8707144 L2.72057081,5.59128519 C3.06733103,5.30237414 3.51336915,5.12857603 4,5.12857603 L24,5.12857603 C24.4866308,5.12857603 24.932669,5.30237414 25.2794292,5.59128519 Z M25.9956978,6.99633695 C25.998551,7.04004843 26,7.08414302 26,7.12857603 L26,20.871424 C26,21.0798433 25.9681197,21.2808166 25.9089697,21.4697335 L18.7156355,14.2763993 L25.9956978,6.99633695 Z M24.9498374,22.6319215 C24.6672737,22.7846939 24.3437653,22.871424 24,22.871424 L4,22.871424 C3.5268522,22.871424 3.09207889,22.7071233 2.74962118,22.432463 L10.0950247,15.0870594 L13.9848068,18.9768415 L14.1878486,18.7737996 L14.2030419,18.7889929 L17.6549753,15.3370594 L24.9498374,22.6319215 Z M2.00810114,21.0526627 C2.00273908,20.9929669 2,20.9325153 2,20.871424 L2,7.12857603 C2,7.08414302 2.00144896,7.04004843 2.00430222,6.99633695 L9.03436454,14.0263993 L2.00810114,21.0526627 Z"></path>
+        </svg>
+    </a>
+    
+
+    
+
+    
+    <a class="social-icon" href="https://twitter.com/luyangx" target="_blank" rel="noopener" title="Twitter">
+        <svg width="28px" height="28px" viewBox="0 0 28 28" version="1.1" fill="#ABABAB" xmlns="https://www.w3.org/2000/svg" xmlns:xlink="https://www.w3.org/1999/xlink">
+            <path d="M8.991284,24.971612 C19.180436,24.971612 24.752372,16.530224 24.752372,9.210524 C24.752372,8.970656 24.747512,8.731868 24.736496,8.494376 C25.818008,7.712564 26.758256,6.737 27.5,5.62622 C26.507372,6.067076 25.439252,6.364292 24.318752,6.498212 C25.462472,5.812628 26.340512,4.727444 26.754584,3.434036 C25.684088,4.068536 24.499004,4.53002 23.23724,4.778528 C22.226468,3.701876 20.786828,3.028388 19.193828,3.028388 C16.134404,3.028388 13.653536,5.509256 13.653536,8.567492 C13.653536,9.0023 13.702244,9.424904 13.797176,9.830552 C9.19346,9.599108 5.11106,7.39472 2.3792,4.04294 C1.903028,4.861364 1.629032,5.812628 1.629032,6.827072 C1.629032,8.74904 2.606972,10.445612 4.094024,11.438132 C3.185528,11.41016 2.331788,11.160464 1.585184,10.745096 C1.583888,10.768208 1.583888,10.791428 1.583888,10.815728 C1.583888,13.49888 3.493652,15.738584 6.028088,16.246508 C5.562932,16.373084 5.07326,16.44134 4.56782,16.44134 C4.210988,16.44134 3.863876,16.406024 3.526484,16.34144 C4.231724,18.542264 6.276596,20.143796 8.701412,20.18894 C6.805148,21.674696 4.416836,22.56008 1.821488,22.56008 C1.374476,22.56008 0.93362,22.534592 0.5,22.4834 C2.951708,24.054476 5.862524,24.971612 8.991284,24.971612"></path>
+        </svg>
+    </a>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <a class="social-icon" href="https://weibo.com/0xd1ef" target="_blank" rel="noopener" title="Weibo">
+        <svg width="28px" height="28px" viewBox="0 0 28 28" version="1.1" fill="#ABABAB" xmlns="https://www.w3.org/2000/svg" xmlns:xlink="https://www.w3.org/1999/xlink">
+            <path d="M11.7643305,23.68043 C16.3966564,23.2245381 19.9124334,20.3848721 19.6072176,17.3404411 C19.3097287,14.2998735 15.3071519,12.2019978 10.6709625,12.6617533 C6.03863666,13.1215087 2.52285972,15.9573112 2.82421203,19.0017422 C3.12556434,22.0423098 7.12814116,24.1401855 11.7643305,23.68043 Z M21.0328458,13.5774007 C22.6400581,14.075791 24.4288545,15.2812003 24.424991,17.4061204 C24.424991,20.9180339 19.3599541,25.3417312 11.7450131,25.3417312 C5.93818589,25.3417312 -2.23820962e-13,22.5252462 -2.23820962e-13,17.8967838 C-2.23820962e-13,15.4743748 1.53380598,12.6733438 4.17257044,10.0345793 C7.69993785,6.50721189 11.8145559,4.89999957 13.3599524,6.44925952 C14.0399268,7.13309745 14.1056062,8.31146225 13.6690317,9.72163652 C13.4372222,10.4286554 14.3335521,10.0384428 14.3335521,10.0384428 C17.1848086,8.84462403 19.6728969,8.77508119 20.5808173,10.0732142 C21.0676172,10.7686426 21.0212553,11.7383789 20.5730903,12.8626548 C20.3683253,13.3803626 20.6387697,13.4576325 21.0328458,13.5774007 Z M26.0901557,5.1047646 C27.9291775,7.14082443 28.4275678,9.91867457 27.6394156,12.3488105 C27.6394156,12.3488105 27.6394156,12.352674 27.6394156,12.352674 C27.4578316,12.9128802 26.8551269,13.2219595 26.2910572,13.0403754 C25.7269875,12.8587913 25.4179082,12.2560867 25.5994923,11.692017 C26.1596985,9.96117297 25.8042573,7.98692899 24.4983973,6.53811982 C23.1925373,5.08931064 21.2646553,4.5368314 19.4835858,4.91545354 C18.9040622,5.03908525 18.336129,4.67205359 18.2124973,4.09252992 C18.0888655,3.51686974 18.4558972,2.94507305 19.0354209,2.82144134 C21.5389631,2.28827956 24.2511339,3.06484128 26.0901557,5.1047646 Z M23.2659437,7.65466876 C24.1622736,8.64758598 24.4018101,9.99980788 24.0193244,11.1858997 C23.8609213,11.6726995 23.3432135,11.9354169 22.8564136,11.7808773 C22.3696137,11.6224742 22.1068963,11.1009029 22.261436,10.6179665 C22.450747,10.0384428 22.3309788,9.37778581 21.8944043,8.89098592 C21.4578298,8.40804953 20.8087633,8.22260195 20.2137857,8.35009716 C19.7192588,8.45827491 19.2285954,8.14146864 19.1204177,7.64307828 C19.0161034,7.14468793 19.3329097,6.65016106 19.8313,6.5458468 C21.0482998,6.2831294 22.3696137,6.66175153 23.2659437,7.65466876 Z M12.0193209,18.1710916 C12.1738606,17.8890568 12.0734098,17.576114 11.7952385,17.4756632 C11.5209306,17.3674855 11.1770799,17.4988442 11.0148133,17.7692886 C10.8564101,18.039733 10.9414069,18.3526757 11.2195783,18.464717 C11.4977496,18.5806217 11.8570543,18.449263 12.0193209,18.1710916 Z M10.5396038,20.0642023 C10.9800418,19.3417295 10.7482324,18.5188059 10.021896,18.2058631 C9.30328667,17.9045108 8.3760488,18.2135901 7.93174732,18.9090185 C7.48358235,19.6083104 7.69607436,20.438961 8.40695673,20.7634942 C9.12942957,21.091891 10.0914389,20.7789482 10.5396038,20.0642023 Z M12.224086,15.0030289 C14.5074092,15.5941431 15.6741836,17.7461076 14.7392187,19.8401198 C13.7926634,21.9766304 11.0727656,23.1202238 8.76239791,22.37457 C6.53702702,21.6559607 5.59047169,19.4537707 6.56793494,17.4717998 C7.52608075,15.5284637 10.0180325,14.4273687 12.224086,15.0030289 Z"></path>
+        </svg>
+    </a>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    
+    
+
+    
+    
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+</div>
+
+
+
+
+	<div class="footer-mobile-links">
+		<p><a href="https://github.com/kimcc/hugo-theme-noteworthy" target="_blank" rel="noopener">Noteworthy theme</a></p>
+		<span class="divider-bar">|</span>
+		<p><a href="https://gohugo.io" target="_blank" rel="noopener">Built with Hugo</a></p>
+	</div>
+
+	<script src="https://www.luyang.ink/js/main.min.fa5c2b23e07b5d9bfad267a52b4b24fdb053e6fb7524993383594926a3ac270c.js" integrity="sha256-+lwrI+B7XZv60melK0sk/bBT5vt1JJkzg1lJJqOsJww=" crossorigin="anonymous"></script>
+</footer>
+    </body>
+</html>

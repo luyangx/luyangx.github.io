@@ -1,0 +1,484 @@
+<!DOCTYPE html>
+
+<html lang="zh-cn">
+    <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="format-detection" content="telephone=no"/>
+
+    <title>Kubernetes | 扬</title>
+    
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+    <link rel="manifest" href="/manifest.json">
+    <link rel="mask-icon" href="/safari-pinned-tab.svg" color="#FF3DB4">
+    <meta name="theme-color" content="#ffffff">
+
+    
+    
+    
+    <link rel="stylesheet" href="https://www.luyang.ink/css/main.min.15431d6c334f65809fe2bc329da3f2c81c6e3027ab1e25b56afb2bb85fa7fd64.css"/>
+
+    
+    
+    
+
+    
+    
+ 
+    </head>
+
+    <body>
+        
+<nav>
+  <header>
+    <div class="site-title">
+        <a href="/">扬</a>
+    </div>  
+</header>
+
+  <div class="nav-menu">
+  
+    <a class="color-link nav-link" href="/about/">About</a>
+  
+    <a class="color-link nav-link" href="/tags/">Tags</a>
+  
+  <a class="color-link nav-link" href="https://www.luyang.ink/index.xml" target="_blank" rel="noopener" type="application/rss+xml">RSS</a>
+</div>
+<footer class="footer">
+	<div class="social-icons">
+        
+    <a class="social-icon" href="0xd1ef@gmail.com" target="_blank" rel="noopener" title="Email">
+        <svg width="28px" height="28px" viewBox="0 0 28 28" version="1.1" fill="#ABABAB" xmlns="https://www.w3.org/2000/svg" xmlns:xlink="https://www.w3.org/1999/xlink">
+            <path d="M25.2794292,5.59128519 L14,16.8707144 L2.72057081,5.59128519 C3.06733103,5.30237414 3.51336915,5.12857603 4,5.12857603 L24,5.12857603 C24.4866308,5.12857603 24.932669,5.30237414 25.2794292,5.59128519 Z M25.9956978,6.99633695 C25.998551,7.04004843 26,7.08414302 26,7.12857603 L26,20.871424 C26,21.0798433 25.9681197,21.2808166 25.9089697,21.4697335 L18.7156355,14.2763993 L25.9956978,6.99633695 Z M24.9498374,22.6319215 C24.6672737,22.7846939 24.3437653,22.871424 24,22.871424 L4,22.871424 C3.5268522,22.871424 3.09207889,22.7071233 2.74962118,22.432463 L10.0950247,15.0870594 L13.9848068,18.9768415 L14.1878486,18.7737996 L14.2030419,18.7889929 L17.6549753,15.3370594 L24.9498374,22.6319215 Z M2.00810114,21.0526627 C2.00273908,20.9929669 2,20.9325153 2,20.871424 L2,7.12857603 C2,7.08414302 2.00144896,7.04004843 2.00430222,6.99633695 L9.03436454,14.0263993 L2.00810114,21.0526627 Z"></path>
+        </svg>
+    </a>
+    
+
+    
+
+    
+    <a class="social-icon" href="https://twitter.com/luyangx" target="_blank" rel="noopener" title="Twitter">
+        <svg width="28px" height="28px" viewBox="0 0 28 28" version="1.1" fill="#ABABAB" xmlns="https://www.w3.org/2000/svg" xmlns:xlink="https://www.w3.org/1999/xlink">
+            <path d="M8.991284,24.971612 C19.180436,24.971612 24.752372,16.530224 24.752372,9.210524 C24.752372,8.970656 24.747512,8.731868 24.736496,8.494376 C25.818008,7.712564 26.758256,6.737 27.5,5.62622 C26.507372,6.067076 25.439252,6.364292 24.318752,6.498212 C25.462472,5.812628 26.340512,4.727444 26.754584,3.434036 C25.684088,4.068536 24.499004,4.53002 23.23724,4.778528 C22.226468,3.701876 20.786828,3.028388 19.193828,3.028388 C16.134404,3.028388 13.653536,5.509256 13.653536,8.567492 C13.653536,9.0023 13.702244,9.424904 13.797176,9.830552 C9.19346,9.599108 5.11106,7.39472 2.3792,4.04294 C1.903028,4.861364 1.629032,5.812628 1.629032,6.827072 C1.629032,8.74904 2.606972,10.445612 4.094024,11.438132 C3.185528,11.41016 2.331788,11.160464 1.585184,10.745096 C1.583888,10.768208 1.583888,10.791428 1.583888,10.815728 C1.583888,13.49888 3.493652,15.738584 6.028088,16.246508 C5.562932,16.373084 5.07326,16.44134 4.56782,16.44134 C4.210988,16.44134 3.863876,16.406024 3.526484,16.34144 C4.231724,18.542264 6.276596,20.143796 8.701412,20.18894 C6.805148,21.674696 4.416836,22.56008 1.821488,22.56008 C1.374476,22.56008 0.93362,22.534592 0.5,22.4834 C2.951708,24.054476 5.862524,24.971612 8.991284,24.971612"></path>
+        </svg>
+    </a>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <a class="social-icon" href="https://weibo.com/0xd1ef" target="_blank" rel="noopener" title="Weibo">
+        <svg width="28px" height="28px" viewBox="0 0 28 28" version="1.1" fill="#ABABAB" xmlns="https://www.w3.org/2000/svg" xmlns:xlink="https://www.w3.org/1999/xlink">
+            <path d="M11.7643305,23.68043 C16.3966564,23.2245381 19.9124334,20.3848721 19.6072176,17.3404411 C19.3097287,14.2998735 15.3071519,12.2019978 10.6709625,12.6617533 C6.03863666,13.1215087 2.52285972,15.9573112 2.82421203,19.0017422 C3.12556434,22.0423098 7.12814116,24.1401855 11.7643305,23.68043 Z M21.0328458,13.5774007 C22.6400581,14.075791 24.4288545,15.2812003 24.424991,17.4061204 C24.424991,20.9180339 19.3599541,25.3417312 11.7450131,25.3417312 C5.93818589,25.3417312 -2.23820962e-13,22.5252462 -2.23820962e-13,17.8967838 C-2.23820962e-13,15.4743748 1.53380598,12.6733438 4.17257044,10.0345793 C7.69993785,6.50721189 11.8145559,4.89999957 13.3599524,6.44925952 C14.0399268,7.13309745 14.1056062,8.31146225 13.6690317,9.72163652 C13.4372222,10.4286554 14.3335521,10.0384428 14.3335521,10.0384428 C17.1848086,8.84462403 19.6728969,8.77508119 20.5808173,10.0732142 C21.0676172,10.7686426 21.0212553,11.7383789 20.5730903,12.8626548 C20.3683253,13.3803626 20.6387697,13.4576325 21.0328458,13.5774007 Z M26.0901557,5.1047646 C27.9291775,7.14082443 28.4275678,9.91867457 27.6394156,12.3488105 C27.6394156,12.3488105 27.6394156,12.352674 27.6394156,12.352674 C27.4578316,12.9128802 26.8551269,13.2219595 26.2910572,13.0403754 C25.7269875,12.8587913 25.4179082,12.2560867 25.5994923,11.692017 C26.1596985,9.96117297 25.8042573,7.98692899 24.4983973,6.53811982 C23.1925373,5.08931064 21.2646553,4.5368314 19.4835858,4.91545354 C18.9040622,5.03908525 18.336129,4.67205359 18.2124973,4.09252992 C18.0888655,3.51686974 18.4558972,2.94507305 19.0354209,2.82144134 C21.5389631,2.28827956 24.2511339,3.06484128 26.0901557,5.1047646 Z M23.2659437,7.65466876 C24.1622736,8.64758598 24.4018101,9.99980788 24.0193244,11.1858997 C23.8609213,11.6726995 23.3432135,11.9354169 22.8564136,11.7808773 C22.3696137,11.6224742 22.1068963,11.1009029 22.261436,10.6179665 C22.450747,10.0384428 22.3309788,9.37778581 21.8944043,8.89098592 C21.4578298,8.40804953 20.8087633,8.22260195 20.2137857,8.35009716 C19.7192588,8.45827491 19.2285954,8.14146864 19.1204177,7.64307828 C19.0161034,7.14468793 19.3329097,6.65016106 19.8313,6.5458468 C21.0482998,6.2831294 22.3696137,6.66175153 23.2659437,7.65466876 Z M12.0193209,18.1710916 C12.1738606,17.8890568 12.0734098,17.576114 11.7952385,17.4756632 C11.5209306,17.3674855 11.1770799,17.4988442 11.0148133,17.7692886 C10.8564101,18.039733 10.9414069,18.3526757 11.2195783,18.464717 C11.4977496,18.5806217 11.8570543,18.449263 12.0193209,18.1710916 Z M10.5396038,20.0642023 C10.9800418,19.3417295 10.7482324,18.5188059 10.021896,18.2058631 C9.30328667,17.9045108 8.3760488,18.2135901 7.93174732,18.9090185 C7.48358235,19.6083104 7.69607436,20.438961 8.40695673,20.7634942 C9.12942957,21.091891 10.0914389,20.7789482 10.5396038,20.0642023 Z M12.224086,15.0030289 C14.5074092,15.5941431 15.6741836,17.7461076 14.7392187,19.8401198 C13.7926634,21.9766304 11.0727656,23.1202238 8.76239791,22.37457 C6.53702702,21.6559607 5.59047169,19.4537707 6.56793494,17.4717998 C7.52608075,15.5284637 10.0180325,14.4273687 12.224086,15.0030289 Z"></path>
+        </svg>
+    </a>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    
+    
+
+    
+    
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+</div>
+
+
+
+
+	<p><a href="https://github.com/kimcc/hugo-theme-noteworthy" target="_blank" rel="noopener">Noteworthy theme</a></p>
+	<p><a href="https://gohugo.io" target="_blank" rel="noopener">Built with Hugo</a></p>
+
+	<script src="https://www.luyang.ink/js/main.min.fa5c2b23e07b5d9bfad267a52b4b24fdb053e6fb7524993383594926a3ac270c.js" integrity="sha256-+lwrI+B7XZv60melK0sk/bBT5vt1JJkzg1lJJqOsJww=" crossorigin="anonymous"></script>
+</footer>
+</nav>
+
+        <div id="content" class="content-container">
+        
+
+<h1 class="post-title">Kubernetes</h1>
+    
+    <time>February 9, 2019</time>
+    
+    <div>
+        <p>
+        <p>Kubernetes 简称 K8s, 一个容器编排调度系统. 这个还是得了解下, 免得落伍.</p>
+<h2 id="基本概念和术语">基本概念和术语</h2>
+<p>K8s 中的大部分概念, 如 Node, Pod, Replication Controller, Service 都可以看成一种资源对象, 都可以通过 K8s 提供的 kubectl 工具来执行 CURD, 并将其在 etcd 中持久化保存. K8s 通过跟踪 etcd 中保存的资源状态与实际环境中的资源状态的差异来实现自动控制和纠错.</p>
+<h3 id="master">Master</h3>
+<p>集群控制节点, 接收 K8s 的控制指令, 负责执行. 运行着以下进程:</p>
+<ul>
+<li>K8s API Service(kube-apiserver): 提供 HTTP RESTful 接口, K8s 多有资源 CURD 操作入口</li>
+<li>K8s Controller Manager(kube-controller-manager): 所有资源对象自动化控制中心</li>
+<li>K8s Scheduler(kube-scheduler): 资源调度(Pod 调度)</li>
+<li>etcd: 保存资源对象数据</li>
+</ul>
+<h3 id="node">Node</h3>
+<p>工作负载节点, 会被 Master 分配一些 Docker 容器, 运行着以下进程:</p>
+<ul>
+<li>kubelet: 负责 Pod 对应的容器的创建, 启停等任务, 同时与 Master 密切协作, 实现集群管理的基本功能</li>
+<li>kube-proxy: 实现 K8s, Service的通信和负载均衡</li>
+<li>Docker Engine: Docker 引擎, 负责本地容器创建管理</li>
+</ul>
+<p>准备好的 Node 可以动态添加到 K8s 集群中, kubelet 会向 Master 注册自己, 注册成功后, kubelet 会定时向 Master 汇报自身情况</p>
+<h3 id="pod">Pod</h3>
+<p>K8s 中最重要的基本概念, Pod 中包含1个或多个紧密相关的业务容器, Pod 又被包在了1个叫 Pause 的容器中, 如下图:</p>
+<p><img src="/images/k8s-pod.png" alt=""></p>
+<p>Pause 容器将 Pod 内多个业务容器封装在了一起, 一来方便内部各业务容器通信和共享资源, 二来方便 Master 检测其状态</p>
+<h3 id="label">Label</h3>
+<p>标签, 用来识别某类资源, 通过给指定资源打上1个或多个 Label 来实现多纬度分组功能. yaml 文件中 Label Selector 类似 SQL 中的 where, 可以方便的组合各种条件</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-yaml" data-lang="yaml"><span style="color:#66d9ef">apiVersion</span>: v1
+<span style="color:#66d9ef">kind</span>: ReplicationController
+...
+  <span style="color:#66d9ef">selector</span>:
+    <span style="color:#66d9ef">tier</span>: frontend
+    ...
+...
+</code></pre></div><h3 id="replication-controller">Replication Controller</h3>
+<p>控制某种 Pod 的副本数量在任意时刻符合某个预期值, 在 yaml 文件中主要设置:</p>
+<ul>
+<li>Pod 副本数量</li>
+<li>Label Selector</li>
+<li>用于创建新 Pod 的 template</li>
+</ul>
+<p>Master 上的 Controller Manager 组件会定期检测系统中对应存活的 Pod 是否满足期望值, 如果有过多的 Pod, 系统会停掉多余的 Pod, 否则用设置的 template 创建新的 Pod 到达指定的副本数量</p>
+<p>K8s 通过 Replication Controller 可以实现集群的高可用, Pod 的滚动升级, 扩容和缩容</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-yaml" data-lang="yaml"><span style="color:#66d9ef">apiVersion</span>: v1
+<span style="color:#66d9ef">kind</span>: ReplicationController
+<span style="color:#66d9ef">metadata</span>:
+  <span style="color:#66d9ef">name</span>: nginx-repset
+<span style="color:#66d9ef">spec</span>:
+  <span style="color:#66d9ef">replicas</span>: <span style="color:#ae81ff">1</span>
+  <span style="color:#66d9ef">selector</span>:
+    <span style="color:#66d9ef">tier</span>: frontend
+    ...
+...
+</code></pre></div><h3 id="replica-set">Replica Set</h3>
+<p>Replication Controller 的升级版本, 用来替代 Replication Controller. 支持基于集合的 Label Selector(Set-based selector)</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-yaml" data-lang="yaml"><span style="color:#66d9ef">apiVersion</span>: extensions/v1beta1
+<span style="color:#66d9ef">kind</span>: ReplicaSet
+<span style="color:#66d9ef">metadata</span>:
+  <span style="color:#66d9ef">name</span>: nginx-repset
+</code></pre></div><h3 id="deployment">Deployment</h3>
+<p>更好的解决 Pod 的编排问题, 使用场景:</p>
+<ul>
+<li>创建1个 Deployment 来生成对应的 Replica Set, 并完成 Pod 副本的创建</li>
+<li>通过 Deployment 的状态确认部署是否完成</li>
+<li>更新 Deployment 创建新的 Pod</li>
+<li>回滚到上一个 Deployment 版本</li>
+<li>修改 Pod 的 template, 进行新的发布</li>
+<li>扩展 Deployment 应对高负载</li>
+<li>清理旧版 Replica Sets</li>
+</ul>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-yaml" data-lang="yaml"><span style="color:#66d9ef">apiVersion</span>: extensions/v1beta1
+<span style="color:#66d9ef">kind</span>: Deployment
+<span style="color:#66d9ef">metadata</span>:
+  <span style="color:#66d9ef">name</span>: nginx-deployment
+</code></pre></div><h3 id="horizontal-pod-autoscaler">Horizontal Pod Autoscaler</h3>
+<p>Pod 横向自动扩容, HPA. 通过跟踪分析指定 Replication Controller 控制的 Pod 的负载情况, 来确定是否需要调整 Pod 的副本数量. CPU Utilization Percentage 和程序自定义的度量指标(TPS 或 QPS)2种方式度量 Pod 负载.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-yaml" data-lang="yaml"><span style="color:#66d9ef">apiVersion</span>: autoscaling/v1
+<span style="color:#66d9ef">kind</span>: HorizontalPodAutoscaler
+<span style="color:#66d9ef">metadata</span>:
+  <span style="color:#66d9ef">name</span>: php-nginx
+<span style="color:#66d9ef">spec</span>:
+  <span style="color:#66d9ef">maxReplicas</span>: <span style="color:#ae81ff">10</span> 
+  <span style="color:#66d9ef">minReplicas</span>: <span style="color:#ae81ff">1</span>
+  <span style="color:#66d9ef">scaleTargetRef</span>:
+    <span style="color:#66d9ef">kind</span>: Deployment
+    <span style="color:#66d9ef">name</span>: php-nginx
+  <span style="color:#66d9ef">targetCPUUtilizationPercentage</span>: <span style="color:#ae81ff">90</span>
+  ...
+...
+</code></pre></div><h3 id="statefulset">StatefulSet</h3>
+<p>面向有状态的服务, 有状态服务的特点:</p>
+<ol>
+<li>每个节点有固定 ID, 集群中的成语可以互相发现并通信</li>
+<li>集群规模固定, 不能随意变动</li>
+<li>集群每个节点都有状态, 会持久化数据到磁盘</li>
+<li>磁盘损坏, 节点无法正常运行</li>
+</ol>
+<p>Replication Controller 和 Deployment 控制的 Pod, 名字都是随机的. Stateful Set 可以看做是这2个资源的变种, 特点如下:</p>
+<ul>
+<li>每个 Pod 有确定的唯一标识</li>
+<li>Pod 的启停顺序受控</li>
+<li>Pod 有稳定的持久化存储卷</li>
+</ul>
+<h3 id="service">Service</h3>
+<p>微服务, Service 定义了一个服务的访问入口地址, 背后有一组 Pod 组成的集群, 这组集群由 Replication Controller 保障正常运行</p>
+<p><img src="/images/k8s-service.jpg" alt=""></p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-yaml" data-lang="yaml"><span style="color:#66d9ef">apiVersion</span>: v1
+<span style="color:#66d9ef">kind</span>: Service
+<span style="color:#66d9ef">metadata</span>:
+  <span style="color:#66d9ef">name</span>: php-nginx
+<span style="color:#66d9ef">spac</span>:
+  <span style="color:#66d9ef">prots</span>:
+  - <span style="color:#66d9ef">port</span>: <span style="color:#ae81ff">8080</span>
+  <span style="color:#66d9ef">selector</span>:
+    <span style="color:#66d9ef">tier</span>: frontend
+  ...
+...
+</code></pre></div><h3 id="job">Job</h3>
+<p>批处理任务, Job 控制1组 Pod 并行或串行处理任务.</p>
+<ul>
+<li>Job 控制的 Pod 是短暂运行的</li>
+<li>可以多实例并行计算</li>
+</ul>
+<h3 id="volume">Volume</h3>
+<p>存储卷, 可以被 Pod 中多个容器共享访问的目录, Volume 与 Pod 生命周期相同</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-yaml" data-lang="yaml"><span style="color:#66d9ef">spec</span>:
+  <span style="color:#66d9ef">volumes</span>:
+    - <span style="color:#66d9ef">name</span>: datavol
+      <span style="color:#66d9ef">emptyDir</span>: {}
+  <span style="color:#66d9ef">containers</span>:
+  - <span style="color:#66d9ef">name</span>: php
+    <span style="color:#66d9ef">image</span>: tomcat
+    <span style="color:#66d9ef">volumeMounts</span>:
+      - <span style="color:#66d9ef">mountPath</span>: /mydata
+      <span style="color:#66d9ef">name</span>: datavol
+    ...
+...
+</code></pre></div><h3 id="persistent-volume">Persistent Volume</h3>
+<p>网络存储, 不属于任何 Node(机器), 但每个 Node 都可以访问. 独立于 Pod.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-yaml" data-lang="yaml"><span style="color:#66d9ef">apiVersion</span>: <span style="color:#ae81ff">1</span>
+<span style="color:#66d9ef">kind</span>: Persistent Volume
+<span style="color:#66d9ef">metadata</span>:
+  <span style="color:#66d9ef">name</span>: pv001
+<span style="color:#66d9ef">spec</span>:
+  <span style="color:#66d9ef">capacity</span>:
+    <span style="color:#66d9ef">storage</span>: 5Gi
+    ...
+  <span style="color:#66d9ef">nfs</span>:
+    <span style="color:#66d9ef">path</span>: /somepath
+    <span style="color:#66d9ef">server</span>: <span style="color:#ae81ff">172.18.0.2</span>
+</code></pre></div><h3 id="namespace">Namespace</h3>
+<p>实现多租户的资源隔离. 默认: default</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-yaml" data-lang="yaml"><span style="color:#66d9ef">apiVersion</span>: v1
+<span style="color:#66d9ef">kind</span>: Pod
+<span style="color:#66d9ef">metadata</span>:
+  <span style="color:#66d9ef">name</span>: busybox
+  <span style="color:#66d9ef">namespace</span>: development
+  ...
+...  
+</code></pre></div><h3 id="annotation">Annotation</h3>
+<p>注解, 与 Label 类似, 用户任意定义的附加信息, 便于外部工具查找</p>
+<h3 id="configmap">ConfigMap</h3>
+<p>配置中心, 保存配载参数, 存储在 etcd 中. 通过 Volume 自动映射为 Pod 内容器提供配置文件.</p>
+<h2 id="环境搭建">环境搭建</h2>
+<h3 id="准备">准备</h3>
+<ul>
+<li>虚拟机: windows 10 Hyper-V</li>
+<li>系统: ubuntu 18.04 server 64位</li>
+<li>配置: 2 CPU 2GB内存 20GB硬盘</li>
+</ul>
+<h4 id="禁用-swap">禁用 swap</h4>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">sudo swapoff -a
+</code></pre></div><h4 id="每台机器添加-host-信息">每台机器添加 host 信息</h4>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">192.168.201.77 k7s-master
+192.168.201.70 k7s-node1
+192.168.201.78 k7s-node2
+</code></pre></div><h4 id="配置每台机器可以-ssh-直连">配置每台机器可以 ssh 直连</h4>
+<p>执行 <code>ssh-keygen</code> 一直回车, 生成 ssh 密钥
+通过 <code>ssh-copy-id &lt;host-name&gt;</code> 将每台机器生成的 ssh 密钥, 发送到对应2台机器上</p>
+<h4 id="1-安装-docker">1. 安装 docker</h4>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">sudo apt-get install docker.io
+
+// 安装成功后开启 docker 服务
+sudo service docker start
+</code></pre></div><p>设置 docker 国内镜像</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">// 设置 docker 国内镜像
+sudo touch /etc/docker/daemon.json
+</code></pre></div><p>复制&amp;粘贴下面内容 到 <code>/etc/docker/daemon.json</code> 文件中</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-json" data-lang="json">{
+  <span style="color:#f92672">&#34;registry-mirrors&#34;</span>: [<span style="color:#e6db74">&#34;https://registry.docker-cn.com&#34;</span>]
+}
+</code></pre></div><h4 id="2-安装-k8s-相关软件">2. 安装 K8s 相关软件</h4>
+<p>由于墙的原型, 需要添加 K8s 国内的源, 这里选择使用阿里提供的 <a href="https://developer.aliyun.com/mirror/kubernetes">Kubernetes 源</a></p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">sudo apt-get update
+sudo apt-get install apt-transport-https
+
+<span style="color:#75715e"># 设置源</span>
+sudo echo <span style="color:#e6db74">&#39;deb https://mirrors.aliyun.com/kubernetes/apt/ kubernetes-xenial main&#39;</span> &gt;&gt; /etc/apt/sources.list.d/kubernetes.list
+apt-get update
+
+<span style="color:#75715e"># 安装 k8s 相关原件</span>
+sudo sudo apt-get install -y kubelet kubeadm kubectl
+</code></pre></div><p>设置源后执行 <code>sudo apt-get update</code> 时, 会提示源的公钥ID无效</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">Err:1 https://mirrors.aliyun.com/kubernetes/apt kubernetes-xenial InRelease
+  The following signatures couldn<span style="color:#960050;background-color:#1e0010">&#39;</span>t be verified because the public key is not available: NO_PUBKEY &lt;公钥ID&gt;
+</code></pre></div><p>执行以下命令后再 <code>sudo apt-get update</code> 就可以了</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">sudo apt-key adv --keyserver keyserver.ubuntu.com --recv-keys &lt;公钥ID&gt;
+</code></pre></div><h3 id="初始化-master-node">初始化 Master Node</h3>
+<p>由于墙的原因, 初始化 master 前需要人工 <code>docker pull</code> 初始化所需的镜像</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">k8s.gcr.io/kube-apiserver:&lt;tag&gt;
+k8s.gcr.io/kube-controller-manager:&lt;tag&gt;
+k8s.gcr.io/kube-scheduler:&lt;tag&gt;
+k8s.gcr.io/kube-proxy:&lt;tag&gt;
+k8s.gcr.io/pause:&lt;tag&gt;
+k8s.gcr.io/etcd:&lt;tag&gt;
+</code></pre></div><p>需要自行从 <a href="https//hub.docker.com">dockerhub</a> 上搜到对应版本(推荐<a href="https://hub.docker.com/u/imdingtalk">imdingtalk仓库</a>), 然后复制对应 <code>docker pull</code> 命令, 下载下来, 之后通过 <code>docker tag</code> 重命名为 <code>k8s.gcr.io</code> 前缀的名字, 例如:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">$ docker images
+REPOSITORY          TAG   IMAGE ID     CREATED      SIZE
+imdingtalk/pause    2.5   8abd23de21a  <span style="color:#ae81ff">2</span> weeks age  652kB
+
+$ docker tag imdingtalk/pause:2.5 k8s.gcr.io/pause:2.5
+$ docker images
+REPOSITORY              TAG   IMAGE ID     CREATED      SIZE
+imdingtalk/pause        2.5   8abd23de21a  <span style="color:#ae81ff">2</span> weeks age  652kB
+k8s.gcr.io/pause:2.5    2.5   8abd23de21a  <span style="color:#ae81ff">2</span> weeks age  652kB
+</code></pre></div><p>都下载好并且 <code>docker tag</code> 后, 可以执行初始化 Master 命令了</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">sudo kubeadm init
+</code></pre></div>
+        </p>
+    </div>
+    
+
+    
+
+    <div class="page-footer">
+        
+        <hr class="footer-divider">
+        
+            <a class="tag" href="/tags/kubernetes">#Kubernetes</a>
+        
+            <a class="tag" href="/tags/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0">#学习笔记</a>
+        
+      
+    </div>
+
+
+        
+
+<link rel="stylesheet" type="text/css" href="/css/katex.min.css" crossorigin="anonymous">
+<script type="text/javascript" src="/js/katex.min.js" crossorigin="anonymous"></script>
+<script type="text/javascript" src="/js/auto-render.min.js"onload="renderMathInElement(document.body);" crossorigin="anonymous"></script>
+
+        </div>
+        <footer class="footer-mobile">
+	<div class="social-icons">
+        
+    <a class="social-icon" href="0xd1ef@gmail.com" target="_blank" rel="noopener" title="Email">
+        <svg width="28px" height="28px" viewBox="0 0 28 28" version="1.1" fill="#ABABAB" xmlns="https://www.w3.org/2000/svg" xmlns:xlink="https://www.w3.org/1999/xlink">
+            <path d="M25.2794292,5.59128519 L14,16.8707144 L2.72057081,5.59128519 C3.06733103,5.30237414 3.51336915,5.12857603 4,5.12857603 L24,5.12857603 C24.4866308,5.12857603 24.932669,5.30237414 25.2794292,5.59128519 Z M25.9956978,6.99633695 C25.998551,7.04004843 26,7.08414302 26,7.12857603 L26,20.871424 C26,21.0798433 25.9681197,21.2808166 25.9089697,21.4697335 L18.7156355,14.2763993 L25.9956978,6.99633695 Z M24.9498374,22.6319215 C24.6672737,22.7846939 24.3437653,22.871424 24,22.871424 L4,22.871424 C3.5268522,22.871424 3.09207889,22.7071233 2.74962118,22.432463 L10.0950247,15.0870594 L13.9848068,18.9768415 L14.1878486,18.7737996 L14.2030419,18.7889929 L17.6549753,15.3370594 L24.9498374,22.6319215 Z M2.00810114,21.0526627 C2.00273908,20.9929669 2,20.9325153 2,20.871424 L2,7.12857603 C2,7.08414302 2.00144896,7.04004843 2.00430222,6.99633695 L9.03436454,14.0263993 L2.00810114,21.0526627 Z"></path>
+        </svg>
+    </a>
+    
+
+    
+
+    
+    <a class="social-icon" href="https://twitter.com/luyangx" target="_blank" rel="noopener" title="Twitter">
+        <svg width="28px" height="28px" viewBox="0 0 28 28" version="1.1" fill="#ABABAB" xmlns="https://www.w3.org/2000/svg" xmlns:xlink="https://www.w3.org/1999/xlink">
+            <path d="M8.991284,24.971612 C19.180436,24.971612 24.752372,16.530224 24.752372,9.210524 C24.752372,8.970656 24.747512,8.731868 24.736496,8.494376 C25.818008,7.712564 26.758256,6.737 27.5,5.62622 C26.507372,6.067076 25.439252,6.364292 24.318752,6.498212 C25.462472,5.812628 26.340512,4.727444 26.754584,3.434036 C25.684088,4.068536 24.499004,4.53002 23.23724,4.778528 C22.226468,3.701876 20.786828,3.028388 19.193828,3.028388 C16.134404,3.028388 13.653536,5.509256 13.653536,8.567492 C13.653536,9.0023 13.702244,9.424904 13.797176,9.830552 C9.19346,9.599108 5.11106,7.39472 2.3792,4.04294 C1.903028,4.861364 1.629032,5.812628 1.629032,6.827072 C1.629032,8.74904 2.606972,10.445612 4.094024,11.438132 C3.185528,11.41016 2.331788,11.160464 1.585184,10.745096 C1.583888,10.768208 1.583888,10.791428 1.583888,10.815728 C1.583888,13.49888 3.493652,15.738584 6.028088,16.246508 C5.562932,16.373084 5.07326,16.44134 4.56782,16.44134 C4.210988,16.44134 3.863876,16.406024 3.526484,16.34144 C4.231724,18.542264 6.276596,20.143796 8.701412,20.18894 C6.805148,21.674696 4.416836,22.56008 1.821488,22.56008 C1.374476,22.56008 0.93362,22.534592 0.5,22.4834 C2.951708,24.054476 5.862524,24.971612 8.991284,24.971612"></path>
+        </svg>
+    </a>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <a class="social-icon" href="https://weibo.com/0xd1ef" target="_blank" rel="noopener" title="Weibo">
+        <svg width="28px" height="28px" viewBox="0 0 28 28" version="1.1" fill="#ABABAB" xmlns="https://www.w3.org/2000/svg" xmlns:xlink="https://www.w3.org/1999/xlink">
+            <path d="M11.7643305,23.68043 C16.3966564,23.2245381 19.9124334,20.3848721 19.6072176,17.3404411 C19.3097287,14.2998735 15.3071519,12.2019978 10.6709625,12.6617533 C6.03863666,13.1215087 2.52285972,15.9573112 2.82421203,19.0017422 C3.12556434,22.0423098 7.12814116,24.1401855 11.7643305,23.68043 Z M21.0328458,13.5774007 C22.6400581,14.075791 24.4288545,15.2812003 24.424991,17.4061204 C24.424991,20.9180339 19.3599541,25.3417312 11.7450131,25.3417312 C5.93818589,25.3417312 -2.23820962e-13,22.5252462 -2.23820962e-13,17.8967838 C-2.23820962e-13,15.4743748 1.53380598,12.6733438 4.17257044,10.0345793 C7.69993785,6.50721189 11.8145559,4.89999957 13.3599524,6.44925952 C14.0399268,7.13309745 14.1056062,8.31146225 13.6690317,9.72163652 C13.4372222,10.4286554 14.3335521,10.0384428 14.3335521,10.0384428 C17.1848086,8.84462403 19.6728969,8.77508119 20.5808173,10.0732142 C21.0676172,10.7686426 21.0212553,11.7383789 20.5730903,12.8626548 C20.3683253,13.3803626 20.6387697,13.4576325 21.0328458,13.5774007 Z M26.0901557,5.1047646 C27.9291775,7.14082443 28.4275678,9.91867457 27.6394156,12.3488105 C27.6394156,12.3488105 27.6394156,12.352674 27.6394156,12.352674 C27.4578316,12.9128802 26.8551269,13.2219595 26.2910572,13.0403754 C25.7269875,12.8587913 25.4179082,12.2560867 25.5994923,11.692017 C26.1596985,9.96117297 25.8042573,7.98692899 24.4983973,6.53811982 C23.1925373,5.08931064 21.2646553,4.5368314 19.4835858,4.91545354 C18.9040622,5.03908525 18.336129,4.67205359 18.2124973,4.09252992 C18.0888655,3.51686974 18.4558972,2.94507305 19.0354209,2.82144134 C21.5389631,2.28827956 24.2511339,3.06484128 26.0901557,5.1047646 Z M23.2659437,7.65466876 C24.1622736,8.64758598 24.4018101,9.99980788 24.0193244,11.1858997 C23.8609213,11.6726995 23.3432135,11.9354169 22.8564136,11.7808773 C22.3696137,11.6224742 22.1068963,11.1009029 22.261436,10.6179665 C22.450747,10.0384428 22.3309788,9.37778581 21.8944043,8.89098592 C21.4578298,8.40804953 20.8087633,8.22260195 20.2137857,8.35009716 C19.7192588,8.45827491 19.2285954,8.14146864 19.1204177,7.64307828 C19.0161034,7.14468793 19.3329097,6.65016106 19.8313,6.5458468 C21.0482998,6.2831294 22.3696137,6.66175153 23.2659437,7.65466876 Z M12.0193209,18.1710916 C12.1738606,17.8890568 12.0734098,17.576114 11.7952385,17.4756632 C11.5209306,17.3674855 11.1770799,17.4988442 11.0148133,17.7692886 C10.8564101,18.039733 10.9414069,18.3526757 11.2195783,18.464717 C11.4977496,18.5806217 11.8570543,18.449263 12.0193209,18.1710916 Z M10.5396038,20.0642023 C10.9800418,19.3417295 10.7482324,18.5188059 10.021896,18.2058631 C9.30328667,17.9045108 8.3760488,18.2135901 7.93174732,18.9090185 C7.48358235,19.6083104 7.69607436,20.438961 8.40695673,20.7634942 C9.12942957,21.091891 10.0914389,20.7789482 10.5396038,20.0642023 Z M12.224086,15.0030289 C14.5074092,15.5941431 15.6741836,17.7461076 14.7392187,19.8401198 C13.7926634,21.9766304 11.0727656,23.1202238 8.76239791,22.37457 C6.53702702,21.6559607 5.59047169,19.4537707 6.56793494,17.4717998 C7.52608075,15.5284637 10.0180325,14.4273687 12.224086,15.0030289 Z"></path>
+        </svg>
+    </a>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    
+    
+
+    
+    
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+</div>
+
+
+
+
+	<div class="footer-mobile-links">
+		<p><a href="https://github.com/kimcc/hugo-theme-noteworthy" target="_blank" rel="noopener">Noteworthy theme</a></p>
+		<span class="divider-bar">|</span>
+		<p><a href="https://gohugo.io" target="_blank" rel="noopener">Built with Hugo</a></p>
+	</div>
+
+	<script src="https://www.luyang.ink/js/main.min.fa5c2b23e07b5d9bfad267a52b4b24fdb053e6fb7524993383594926a3ac270c.js" integrity="sha256-+lwrI+B7XZv60melK0sk/bBT5vt1JJkzg1lJJqOsJww=" crossorigin="anonymous"></script>
+</footer>
+    </body>
+</html>

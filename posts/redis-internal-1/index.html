@@ -1,0 +1,585 @@
+<!DOCTYPE html>
+
+<html lang="zh-cn">
+    <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="format-detection" content="telephone=no"/>
+
+    <title>Redis Internal . Part 1 | 扬</title>
+    
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+    <link rel="manifest" href="/manifest.json">
+    <link rel="mask-icon" href="/safari-pinned-tab.svg" color="#FF3DB4">
+    <meta name="theme-color" content="#ffffff">
+
+    
+    
+    
+    <link rel="stylesheet" href="https://www.luyang.ink/css/main.min.15431d6c334f65809fe2bc329da3f2c81c6e3027ab1e25b56afb2bb85fa7fd64.css"/>
+
+    
+    
+    
+
+    
+    
+ 
+    </head>
+
+    <body>
+        
+<nav>
+  <header>
+    <div class="site-title">
+        <a href="/">扬</a>
+    </div>  
+</header>
+
+  <div class="nav-menu">
+  
+    <a class="color-link nav-link" href="/about/">About</a>
+  
+    <a class="color-link nav-link" href="/tags/">Tags</a>
+  
+  <a class="color-link nav-link" href="https://www.luyang.ink/index.xml" target="_blank" rel="noopener" type="application/rss+xml">RSS</a>
+</div>
+<footer class="footer">
+	<div class="social-icons">
+        
+    <a class="social-icon" href="0xd1ef@gmail.com" target="_blank" rel="noopener" title="Email">
+        <svg width="28px" height="28px" viewBox="0 0 28 28" version="1.1" fill="#ABABAB" xmlns="https://www.w3.org/2000/svg" xmlns:xlink="https://www.w3.org/1999/xlink">
+            <path d="M25.2794292,5.59128519 L14,16.8707144 L2.72057081,5.59128519 C3.06733103,5.30237414 3.51336915,5.12857603 4,5.12857603 L24,5.12857603 C24.4866308,5.12857603 24.932669,5.30237414 25.2794292,5.59128519 Z M25.9956978,6.99633695 C25.998551,7.04004843 26,7.08414302 26,7.12857603 L26,20.871424 C26,21.0798433 25.9681197,21.2808166 25.9089697,21.4697335 L18.7156355,14.2763993 L25.9956978,6.99633695 Z M24.9498374,22.6319215 C24.6672737,22.7846939 24.3437653,22.871424 24,22.871424 L4,22.871424 C3.5268522,22.871424 3.09207889,22.7071233 2.74962118,22.432463 L10.0950247,15.0870594 L13.9848068,18.9768415 L14.1878486,18.7737996 L14.2030419,18.7889929 L17.6549753,15.3370594 L24.9498374,22.6319215 Z M2.00810114,21.0526627 C2.00273908,20.9929669 2,20.9325153 2,20.871424 L2,7.12857603 C2,7.08414302 2.00144896,7.04004843 2.00430222,6.99633695 L9.03436454,14.0263993 L2.00810114,21.0526627 Z"></path>
+        </svg>
+    </a>
+    
+
+    
+
+    
+    <a class="social-icon" href="https://twitter.com/luyangx" target="_blank" rel="noopener" title="Twitter">
+        <svg width="28px" height="28px" viewBox="0 0 28 28" version="1.1" fill="#ABABAB" xmlns="https://www.w3.org/2000/svg" xmlns:xlink="https://www.w3.org/1999/xlink">
+            <path d="M8.991284,24.971612 C19.180436,24.971612 24.752372,16.530224 24.752372,9.210524 C24.752372,8.970656 24.747512,8.731868 24.736496,8.494376 C25.818008,7.712564 26.758256,6.737 27.5,5.62622 C26.507372,6.067076 25.439252,6.364292 24.318752,6.498212 C25.462472,5.812628 26.340512,4.727444 26.754584,3.434036 C25.684088,4.068536 24.499004,4.53002 23.23724,4.778528 C22.226468,3.701876 20.786828,3.028388 19.193828,3.028388 C16.134404,3.028388 13.653536,5.509256 13.653536,8.567492 C13.653536,9.0023 13.702244,9.424904 13.797176,9.830552 C9.19346,9.599108 5.11106,7.39472 2.3792,4.04294 C1.903028,4.861364 1.629032,5.812628 1.629032,6.827072 C1.629032,8.74904 2.606972,10.445612 4.094024,11.438132 C3.185528,11.41016 2.331788,11.160464 1.585184,10.745096 C1.583888,10.768208 1.583888,10.791428 1.583888,10.815728 C1.583888,13.49888 3.493652,15.738584 6.028088,16.246508 C5.562932,16.373084 5.07326,16.44134 4.56782,16.44134 C4.210988,16.44134 3.863876,16.406024 3.526484,16.34144 C4.231724,18.542264 6.276596,20.143796 8.701412,20.18894 C6.805148,21.674696 4.416836,22.56008 1.821488,22.56008 C1.374476,22.56008 0.93362,22.534592 0.5,22.4834 C2.951708,24.054476 5.862524,24.971612 8.991284,24.971612"></path>
+        </svg>
+    </a>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <a class="social-icon" href="https://weibo.com/0xd1ef" target="_blank" rel="noopener" title="Weibo">
+        <svg width="28px" height="28px" viewBox="0 0 28 28" version="1.1" fill="#ABABAB" xmlns="https://www.w3.org/2000/svg" xmlns:xlink="https://www.w3.org/1999/xlink">
+            <path d="M11.7643305,23.68043 C16.3966564,23.2245381 19.9124334,20.3848721 19.6072176,17.3404411 C19.3097287,14.2998735 15.3071519,12.2019978 10.6709625,12.6617533 C6.03863666,13.1215087 2.52285972,15.9573112 2.82421203,19.0017422 C3.12556434,22.0423098 7.12814116,24.1401855 11.7643305,23.68043 Z M21.0328458,13.5774007 C22.6400581,14.075791 24.4288545,15.2812003 24.424991,17.4061204 C24.424991,20.9180339 19.3599541,25.3417312 11.7450131,25.3417312 C5.93818589,25.3417312 -2.23820962e-13,22.5252462 -2.23820962e-13,17.8967838 C-2.23820962e-13,15.4743748 1.53380598,12.6733438 4.17257044,10.0345793 C7.69993785,6.50721189 11.8145559,4.89999957 13.3599524,6.44925952 C14.0399268,7.13309745 14.1056062,8.31146225 13.6690317,9.72163652 C13.4372222,10.4286554 14.3335521,10.0384428 14.3335521,10.0384428 C17.1848086,8.84462403 19.6728969,8.77508119 20.5808173,10.0732142 C21.0676172,10.7686426 21.0212553,11.7383789 20.5730903,12.8626548 C20.3683253,13.3803626 20.6387697,13.4576325 21.0328458,13.5774007 Z M26.0901557,5.1047646 C27.9291775,7.14082443 28.4275678,9.91867457 27.6394156,12.3488105 C27.6394156,12.3488105 27.6394156,12.352674 27.6394156,12.352674 C27.4578316,12.9128802 26.8551269,13.2219595 26.2910572,13.0403754 C25.7269875,12.8587913 25.4179082,12.2560867 25.5994923,11.692017 C26.1596985,9.96117297 25.8042573,7.98692899 24.4983973,6.53811982 C23.1925373,5.08931064 21.2646553,4.5368314 19.4835858,4.91545354 C18.9040622,5.03908525 18.336129,4.67205359 18.2124973,4.09252992 C18.0888655,3.51686974 18.4558972,2.94507305 19.0354209,2.82144134 C21.5389631,2.28827956 24.2511339,3.06484128 26.0901557,5.1047646 Z M23.2659437,7.65466876 C24.1622736,8.64758598 24.4018101,9.99980788 24.0193244,11.1858997 C23.8609213,11.6726995 23.3432135,11.9354169 22.8564136,11.7808773 C22.3696137,11.6224742 22.1068963,11.1009029 22.261436,10.6179665 C22.450747,10.0384428 22.3309788,9.37778581 21.8944043,8.89098592 C21.4578298,8.40804953 20.8087633,8.22260195 20.2137857,8.35009716 C19.7192588,8.45827491 19.2285954,8.14146864 19.1204177,7.64307828 C19.0161034,7.14468793 19.3329097,6.65016106 19.8313,6.5458468 C21.0482998,6.2831294 22.3696137,6.66175153 23.2659437,7.65466876 Z M12.0193209,18.1710916 C12.1738606,17.8890568 12.0734098,17.576114 11.7952385,17.4756632 C11.5209306,17.3674855 11.1770799,17.4988442 11.0148133,17.7692886 C10.8564101,18.039733 10.9414069,18.3526757 11.2195783,18.464717 C11.4977496,18.5806217 11.8570543,18.449263 12.0193209,18.1710916 Z M10.5396038,20.0642023 C10.9800418,19.3417295 10.7482324,18.5188059 10.021896,18.2058631 C9.30328667,17.9045108 8.3760488,18.2135901 7.93174732,18.9090185 C7.48358235,19.6083104 7.69607436,20.438961 8.40695673,20.7634942 C9.12942957,21.091891 10.0914389,20.7789482 10.5396038,20.0642023 Z M12.224086,15.0030289 C14.5074092,15.5941431 15.6741836,17.7461076 14.7392187,19.8401198 C13.7926634,21.9766304 11.0727656,23.1202238 8.76239791,22.37457 C6.53702702,21.6559607 5.59047169,19.4537707 6.56793494,17.4717998 C7.52608075,15.5284637 10.0180325,14.4273687 12.224086,15.0030289 Z"></path>
+        </svg>
+    </a>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    
+    
+
+    
+    
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+</div>
+
+
+
+
+	<p><a href="https://github.com/kimcc/hugo-theme-noteworthy" target="_blank" rel="noopener">Noteworthy theme</a></p>
+	<p><a href="https://gohugo.io" target="_blank" rel="noopener">Built with Hugo</a></p>
+
+	<script src="https://www.luyang.ink/js/main.min.fa5c2b23e07b5d9bfad267a52b4b24fdb053e6fb7524993383594926a3ac270c.js" integrity="sha256-+lwrI+B7XZv60melK0sk/bBT5vt1JJkzg1lJJqOsJww=" crossorigin="anonymous"></script>
+</footer>
+</nav>
+
+        <div id="content" class="content-container">
+        
+
+<h1 class="post-title">Redis Internal . Part 1</h1>
+    
+    <time>October 9, 2017</time>
+    
+    <div>
+        <p>
+        <p>现在工作中已经离不开 Redis 了, 需要搞清楚它的内部原理, 知己知彼.</p>
+<h3 id="io-模型">IO 模型</h3>
+<p>Redis 是单线程的, 需要谨慎使用那些时间复杂度是 O(N) 的命令, 以防造成 Redis 卡顿.</p>
+<p>Redis 使用I/O多路复用模型来处理 Client 的请求</p>
+<h3 id="协议">协议</h3>
+<p>RESP 是 Redis 序列化协议(Redis Serialization Protocol), 文本协议, 简单, 解析性能好.</p>
+<p>RESP 中有 5 种类型, 以 <code>\r\n</code> 结束</p>
+<ul>
+<li>单行字符串以 <code>+</code> 开头</li>
+<li>多行字符串以 <code>$</code> 开头, 后跟长度</li>
+<li>整数值以 <code>:</code> 开头, 后跟整数字符串</li>
+<li>错误消息以 <code>-</code> 开头</li>
+<li>数组以 <code>*</code> 开头, 后跟长度</li>
+</ul>
+<h3 id="持久化-aofrdb">持久化 AOF/RDB</h3>
+<p>RDB 全量备份, AOF(append of file)连续增量备份</p>
+<h4 id="rdb-快照">RDB 快照</h4>
+<p>Redis 会 fork 产生一个子进程来处理快照持久化. 子进程处理过程中父进程的数据修改通过 COW(copy on write)机制, 分离被修改的内存页, 不会影响子进程快照处理.</p>
+<h4 id="aof-append-of-file">AOF append of file</h4>
+<p>AOF 日志只记录 Redis 修改数据的指令. 一个空的 Redis 实例可以通过&quot;回放&rdquo; AOF 日志来回复所有数据.</p>
+<p>可以通过 <code>bgrewriteaof</code> 命令来对 AOF 日志压缩. 也是通过 fock 一个子进程将内存中的数据转成 Redis 的指令, 再将期间修改数据的指令合并到一起, 存放到一个新的 AOF 日志中.</p>
+<p><code>appendfsync</code> 配置觉得 AOF 多长时间 fsync 到磁盘</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">appendfsync always  <span style="color:#75715e"># 每次修改数据 fsync 磁盘, 会造成性能问题</span>
+appendfsync erversec <span style="color:#75715e"># 每秒 fsync 到磁盘, 最坏丢失1s的数据</span>
+appendfsync no <span style="color:#75715e"># 从不, 只写到系统 I/O 缓冲区, 由系统来进行 fsync, 不安全</span>
+</code></pre></div><p>Redis 4.0 带来了混合持久化(Mixed RDB-AOF), AOF 不在全量记录修改操作指令, 而只需从记录 RDB 完成后的增量日志即可.</p>
+<h3 id="sdssimple-dynamic-string-字符串">SDS(Simple Dynamic String) 字符串</h3>
+<blockquote>
+<p>src/sds.h 中 sdshdr</p>
+</blockquote>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-c" data-lang="c"><span style="color:#66d9ef">struct</span> <span style="color:#a6e22e">__attribute__</span> ((__packed__)) sdshdr64 {
+    uint64_t len; <span style="color:#75715e">// 字符串长度
+</span><span style="color:#75715e"></span>    uint64_t alloc; <span style="color:#75715e">// 分配内存长度
+</span><span style="color:#75715e"></span>    <span style="color:#66d9ef">unsigned</span> <span style="color:#66d9ef">char</span> flags; <span style="color:#75715e">/* 3 lsb of type, 5 unused bits */</span>
+    <span style="color:#66d9ef">char</span> buf[]; <span style="color:#75715e">// 字节数组, 保存字符串
+</span><span style="color:#75715e"></span>};
+</code></pre></div><p><code>sdsnew(const char *init)</code> 用来创建 sds, 实际会调用 <code>sdsnewlen(const void *init, size_t initlen)</code> 方法</p>
+<p><code>sdsnewlen()</code> 方法会分配 ssd 结构体长度 + 字符串长度 + 1, 末尾需要追加 <code>\0</code> (为了兼容部分 C 字符串函数)</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-c" data-lang="c">sds <span style="color:#a6e22e">sdsnew</span>(<span style="color:#66d9ef">const</span> <span style="color:#66d9ef">char</span> <span style="color:#f92672">*</span>init) {
+    size_t initlen <span style="color:#f92672">=</span> (init <span style="color:#f92672">==</span> NULL) <span style="color:#f92672">?</span> <span style="color:#ae81ff">0</span> <span style="color:#f92672">:</span> strlen(init);
+    <span style="color:#66d9ef">return</span> sdsnewlen(init, initlen);
+}
+sds <span style="color:#a6e22e">sdsnewlen</span>(<span style="color:#66d9ef">const</span> <span style="color:#66d9ef">void</span> <span style="color:#f92672">*</span>init, size_t initlen) {
+    <span style="color:#66d9ef">void</span> <span style="color:#f92672">*</span>sh;
+    sds s;
+    <span style="color:#66d9ef">char</span> type <span style="color:#f92672">=</span> sdsReqType(initlen); <span style="color:#75715e">// 确定 sds flage
+</span><span style="color:#75715e"></span>    <span style="color:#66d9ef">if</span> (type <span style="color:#f92672">==</span> SDS_TYPE_5 <span style="color:#f92672">&amp;&amp;</span> initlen <span style="color:#f92672">==</span> <span style="color:#ae81ff">0</span>) type <span style="color:#f92672">=</span> SDS_TYPE_8;
+    <span style="color:#66d9ef">int</span> hdrlen <span style="color:#f92672">=</span> sdsHdrSize(type); <span style="color:#75715e">// sds 结构长度
+</span><span style="color:#75715e"></span>    <span style="color:#66d9ef">unsigned</span> <span style="color:#66d9ef">char</span> <span style="color:#f92672">*</span>fp; <span style="color:#75715e">/* flags pointer. */</span>
+
+    sh <span style="color:#f92672">=</span> s_malloc(hdrlen<span style="color:#f92672">+</span>initlen<span style="color:#f92672">+</span><span style="color:#ae81ff">1</span>); <span style="color:#75715e">// 分配空间 结构体长度+字符串长度+1
+</span><span style="color:#75715e"></span>    <span style="color:#66d9ef">if</span> (<span style="color:#f92672">!</span>init)
+        memset(sh, <span style="color:#ae81ff">0</span>, hdrlen<span style="color:#f92672">+</span>initlen<span style="color:#f92672">+</span><span style="color:#ae81ff">1</span>);
+    <span style="color:#66d9ef">if</span> (sh <span style="color:#f92672">==</span> NULL) <span style="color:#66d9ef">return</span> NULL;
+    s <span style="color:#f92672">=</span> (<span style="color:#66d9ef">char</span><span style="color:#f92672">*</span>)sh<span style="color:#f92672">+</span>hdrlen;
+    fp <span style="color:#f92672">=</span> ((<span style="color:#66d9ef">unsigned</span> <span style="color:#66d9ef">char</span><span style="color:#f92672">*</span>)s)<span style="color:#f92672">-</span><span style="color:#ae81ff">1</span>;
+    <span style="color:#66d9ef">switch</span>(type) {
+        <span style="color:#75715e">// 省略部分代码
+</span><span style="color:#75715e"></span>        <span style="color:#66d9ef">case</span> SDS_TYPE_32: {
+            SDS_HDR_VAR(<span style="color:#ae81ff">32</span>,s);
+            sh<span style="color:#f92672">-&gt;</span>len <span style="color:#f92672">=</span> initlen;
+            sh<span style="color:#f92672">-&gt;</span>alloc <span style="color:#f92672">=</span> initlen;
+            <span style="color:#f92672">*</span>fp <span style="color:#f92672">=</span> type;
+            <span style="color:#66d9ef">break</span>;
+        }
+        <span style="color:#75715e">// 省略部分代码
+</span><span style="color:#75715e"></span>    }
+    <span style="color:#66d9ef">if</span> (initlen <span style="color:#f92672">&amp;&amp;</span> init)
+        memcpy(s, init, initlen); <span style="color:#75715e">// 复制字符串
+</span><span style="color:#75715e"></span>    s[initlen] <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;\0&#39;</span>;
+    <span style="color:#66d9ef">return</span> s;
+}
+</code></pre></div><p>sds 在 Redis Object 中有2种方式存储 <code>embstr</code> 和 <code>raw</code></p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">&gt; set name yang
+&gt; debug object name
+Value at:0x7f9691c09020 refcount:1 encoding:embstr serializedlength:15 lru:11890777 lru_seconds_idle:1
+&gt; set name yangaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+Value at:0x7f9691d047a0 refcount:1 encoding:raw serializedlength:15 lru:11890781 lru_seconds_idle:2
+</code></pre></div><p>如果 sds 长度超过了 <code>OBJ_ENCODING_EMBSTR_SIZE_LIMIT</code> 就会用 <code>raw</code> 方式存储. <code>embstr</code> 会跟 Redis Object 结构体一次性分配内存, 而 <code>raw</code> 需要分配2次内存, 1次是 Redis Object 结构体, 1次是 sds.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-c" data-lang="c"><span style="color:#75715e">// 文件 src/object.c:116
+</span><span style="color:#75715e"></span><span style="color:#75715e">#define OBJ_ENCODING_EMBSTR_SIZE_LIMIT 44
+</span></code></pre></div><h3 id="dict-字典">Dict 字典</h3>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-c" data-lang="c"><span style="color:#66d9ef">typedef</span> <span style="color:#66d9ef">struct</span> dictEntry {
+    <span style="color:#66d9ef">void</span> <span style="color:#f92672">*</span>key; <span style="color:#75715e">// 键
+</span><span style="color:#75715e"></span>    <span style="color:#66d9ef">union</span> {
+        <span style="color:#66d9ef">void</span> <span style="color:#f92672">*</span>val;
+        uint64_t u64;
+        int64_t s64;
+        <span style="color:#66d9ef">double</span> d;
+    } v; <span style="color:#75715e">// 值
+</span><span style="color:#75715e"></span>    <span style="color:#66d9ef">struct</span> dictEntry <span style="color:#f92672">*</span>next; <span style="color:#75715e">// 下一个 dictEntry, 拉链解决hash冲突
+</span><span style="color:#75715e"></span>} dictEntry;
+
+<span style="color:#66d9ef">typedef</span> <span style="color:#66d9ef">struct</span> dictType {
+    uint64_t (<span style="color:#f92672">*</span>hashFunction)(<span style="color:#66d9ef">const</span> <span style="color:#66d9ef">void</span> <span style="color:#f92672">*</span>key); <span style="color:#75715e">// 计算hash值函数
+</span><span style="color:#75715e"></span>    <span style="color:#66d9ef">void</span> <span style="color:#f92672">*</span>(<span style="color:#f92672">*</span>keyDup)(<span style="color:#66d9ef">void</span> <span style="color:#f92672">*</span>privdata, <span style="color:#66d9ef">const</span> <span style="color:#66d9ef">void</span> <span style="color:#f92672">*</span>key); <span style="color:#75715e">// 键复制函数
+</span><span style="color:#75715e"></span>    <span style="color:#66d9ef">void</span> <span style="color:#f92672">*</span>(<span style="color:#f92672">*</span>valDup)(<span style="color:#66d9ef">void</span> <span style="color:#f92672">*</span>privdata, <span style="color:#66d9ef">const</span> <span style="color:#66d9ef">void</span> <span style="color:#f92672">*</span>obj); <span style="color:#75715e">// 值复制函数
+</span><span style="color:#75715e"></span>    <span style="color:#66d9ef">int</span> (<span style="color:#f92672">*</span>keyCompare)(<span style="color:#66d9ef">void</span> <span style="color:#f92672">*</span>privdata, <span style="color:#66d9ef">const</span> <span style="color:#66d9ef">void</span> <span style="color:#f92672">*</span>key1, <span style="color:#66d9ef">const</span> <span style="color:#66d9ef">void</span> <span style="color:#f92672">*</span>key2); <span style="color:#75715e">// 键比较函数
+</span><span style="color:#75715e"></span>    <span style="color:#66d9ef">void</span> (<span style="color:#f92672">*</span>keyDestructor)(<span style="color:#66d9ef">void</span> <span style="color:#f92672">*</span>privdata, <span style="color:#66d9ef">void</span> <span style="color:#f92672">*</span>key); <span style="color:#75715e">// 键销毁函数
+</span><span style="color:#75715e"></span>    <span style="color:#66d9ef">void</span> (<span style="color:#f92672">*</span>valDestructor)(<span style="color:#66d9ef">void</span> <span style="color:#f92672">*</span>privdata, <span style="color:#66d9ef">void</span> <span style="color:#f92672">*</span>obj); <span style="color:#75715e">// 值销毁行数
+</span><span style="color:#75715e"></span>} dictType;
+
+<span style="color:#75715e">// HashTable
+</span><span style="color:#75715e"></span><span style="color:#66d9ef">typedef</span> <span style="color:#66d9ef">struct</span> dictht {
+    dictEntry <span style="color:#f92672">**</span>table; <span style="color:#75715e">// 二维数组
+</span><span style="color:#75715e"></span>    <span style="color:#66d9ef">unsigned</span> <span style="color:#66d9ef">long</span> size; <span style="color:#75715e">// 数组长度
+</span><span style="color:#75715e"></span>    <span style="color:#66d9ef">unsigned</span> <span style="color:#66d9ef">long</span> sizemask; <span style="color:#75715e">// 掩码, 计算索引值
+</span><span style="color:#75715e"></span>    <span style="color:#66d9ef">unsigned</span> <span style="color:#66d9ef">long</span> used; <span style="color:#75715e">// 元素个数
+</span><span style="color:#75715e"></span>} dictht;
+
+<span style="color:#66d9ef">typedef</span> <span style="color:#66d9ef">struct</span> dict {
+    dictType <span style="color:#f92672">*</span>type; <span style="color:#75715e">// dict 相关操作函数
+</span><span style="color:#75715e"></span>    <span style="color:#66d9ef">void</span> <span style="color:#f92672">*</span>privdata; <span style="color:#75715e">// 私有数据, 传给操作函数
+</span><span style="color:#75715e"></span>    dictht ht[<span style="color:#ae81ff">2</span>]; <span style="color:#75715e">// 2个HashTable, 1个用来存储当前数据, 1个用来 rehash
+</span><span style="color:#75715e"></span>    <span style="color:#66d9ef">long</span> rehashidx; <span style="color:#75715e">// = -1 rehash 不进行 
+</span><span style="color:#75715e"></span>    <span style="color:#66d9ef">unsigned</span> <span style="color:#66d9ef">long</span> iterators; <span style="color:#75715e">// 当前迭代器运行的数量
+</span><span style="color:#75715e"></span>} dict;
+</code></pre></div><h4 id="dict-初始化">Dict 初始化</h4>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-c" data-lang="c">dict <span style="color:#f92672">*</span><span style="color:#a6e22e">dictCreate</span>(dictType <span style="color:#f92672">*</span>type, <span style="color:#66d9ef">void</span> <span style="color:#f92672">*</span>privDataPtr)
+{
+    dict <span style="color:#f92672">*</span>d <span style="color:#f92672">=</span> zmalloc(<span style="color:#66d9ef">sizeof</span>(<span style="color:#f92672">*</span>d));
+    _dictInit(d,type,privDataPtr);
+    <span style="color:#66d9ef">return</span> d;
+}
+<span style="color:#75715e">// 重置 Dict
+</span><span style="color:#75715e"></span><span style="color:#66d9ef">static</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">_dictReset</span>(dictht <span style="color:#f92672">*</span>ht)
+{
+    ht<span style="color:#f92672">-&gt;</span>table <span style="color:#f92672">=</span> NULL;
+    ht<span style="color:#f92672">-&gt;</span>size <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>;
+    ht<span style="color:#f92672">-&gt;</span>sizemask <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>;
+    ht<span style="color:#f92672">-&gt;</span>used <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>;
+}
+<span style="color:#75715e">// 初始化 Dict
+</span><span style="color:#75715e"></span><span style="color:#66d9ef">int</span> <span style="color:#a6e22e">_dictInit</span>(dict <span style="color:#f92672">*</span>d, dictType <span style="color:#f92672">*</span>type, <span style="color:#66d9ef">void</span> <span style="color:#f92672">*</span>privDataPtr)
+{
+    _dictReset(<span style="color:#f92672">&amp;</span>d<span style="color:#f92672">-&gt;</span>ht[<span style="color:#ae81ff">0</span>]); <span style="color:#75715e">// 重置第一个 ht
+</span><span style="color:#75715e"></span>    _dictReset(<span style="color:#f92672">&amp;</span>d<span style="color:#f92672">-&gt;</span>ht[<span style="color:#ae81ff">1</span>]); <span style="color:#75715e">// 重置第二个 ht
+</span><span style="color:#75715e"></span>    d<span style="color:#f92672">-&gt;</span>type <span style="color:#f92672">=</span> type; <span style="color:#75715e">// ht 操作函数
+</span><span style="color:#75715e"></span>    d<span style="color:#f92672">-&gt;</span>privdata <span style="color:#f92672">=</span> privDataPtr; <span style="color:#75715e">// ht 操作函数参数
+</span><span style="color:#75715e"></span>    d<span style="color:#f92672">-&gt;</span>rehashidx <span style="color:#f92672">=</span> <span style="color:#f92672">-</span><span style="color:#ae81ff">1</span>; <span style="color:#75715e">// rehash = -1
+</span><span style="color:#75715e"></span>    d<span style="color:#f92672">-&gt;</span>iterators <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>; <span style="color:#75715e">// 迭代器的运行数量=0
+</span><span style="color:#75715e"></span>    <span style="color:#66d9ef">return</span> DICT_OK;
+}
+</code></pre></div><p>初始化完成, 就有了一个空的 Dict 的指针, 可以往该 Dict 中插入键值对了</p>
+<h4 id="新增键值对">新增键值对</h4>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-c" data-lang="c"><span style="color:#75715e">// 新增键值对
+</span><span style="color:#75715e"></span><span style="color:#66d9ef">int</span> <span style="color:#a6e22e">dictAdd</span>(dict <span style="color:#f92672">*</span>d, <span style="color:#66d9ef">void</span> <span style="color:#f92672">*</span>key, <span style="color:#66d9ef">void</span> <span style="color:#f92672">*</span>val)
+{
+    dictEntry <span style="color:#f92672">*</span>entry <span style="color:#f92672">=</span> dictAddRaw(d,key,NULL); <span style="color:#75715e">// 添加 dictEntry
+</span><span style="color:#75715e"></span>
+    <span style="color:#66d9ef">if</span> (<span style="color:#f92672">!</span>entry) <span style="color:#66d9ef">return</span> DICT_ERR; <span style="color:#75715e">// 如果存在返回 error
+</span><span style="color:#75715e"></span>    dictSetVal(d, entry, val); <span style="color:#75715e">// 不存在, 设置 dictEntry
+</span><span style="color:#75715e"></span>    <span style="color:#66d9ef">return</span> DICT_OK; <span style="color:#75715e">// 返回 OK
+</span><span style="color:#75715e"></span>}
+<span style="color:#75715e">// 创建 dictEntry
+</span><span style="color:#75715e"></span>dictEntry <span style="color:#f92672">*</span><span style="color:#a6e22e">dictAddRaw</span>(dict <span style="color:#f92672">*</span>d, <span style="color:#66d9ef">void</span> <span style="color:#f92672">*</span>key, dictEntry <span style="color:#f92672">**</span>existing)
+{
+    <span style="color:#66d9ef">long</span> index;
+    dictEntry <span style="color:#f92672">*</span>entry;
+    dictht <span style="color:#f92672">*</span>ht;
+
+    <span style="color:#66d9ef">if</span> (dictIsRehashing(d)) _dictRehashStep(d); <span style="color:#75715e">// rehash 相关
+</span><span style="color:#75715e"></span>
+    <span style="color:#75715e">// key 是否存在, 存在返回 NULL
+</span><span style="color:#75715e"></span>    <span style="color:#66d9ef">if</span> ((index <span style="color:#f92672">=</span> _dictKeyIndex(d, key, dictHashKey(d,key), existing)) <span style="color:#f92672">==</span> <span style="color:#f92672">-</span><span style="color:#ae81ff">1</span>)
+        <span style="color:#66d9ef">return</span> NULL;
+
+    <span style="color:#75715e">// 根据 rehash 状态, 选择对应的 ht, 将新的 dictEntry 插入
+</span><span style="color:#75715e"></span>    ht <span style="color:#f92672">=</span> dictIsRehashing(d) <span style="color:#f92672">?</span> <span style="color:#f92672">&amp;</span>d<span style="color:#f92672">-&gt;</span>ht[<span style="color:#ae81ff">1</span>] <span style="color:#f92672">:</span> <span style="color:#f92672">&amp;</span>d<span style="color:#f92672">-&gt;</span>ht[<span style="color:#ae81ff">0</span>];
+    entry <span style="color:#f92672">=</span> zmalloc(<span style="color:#66d9ef">sizeof</span>(<span style="color:#f92672">*</span>entry));
+    entry<span style="color:#f92672">-&gt;</span>next <span style="color:#f92672">=</span> ht<span style="color:#f92672">-&gt;</span>table[index];
+    ht<span style="color:#f92672">-&gt;</span>table[index] <span style="color:#f92672">=</span> entry; <span style="color:#75715e">// 头部插入, 后面可能会马上进行访问
+</span><span style="color:#75715e"></span>    ht<span style="color:#f92672">-&gt;</span>used<span style="color:#f92672">++</span>; <span style="color:#75715e">// ht 元素个数+1
+</span><span style="color:#75715e"></span>    dictSetKey(d, entry, key); <span style="color:#75715e">// 设置key
+</span><span style="color:#75715e"></span>    <span style="color:#66d9ef">return</span> entry;
+}
+<span style="color:#75715e">// key 是否存在
+</span><span style="color:#75715e"></span><span style="color:#66d9ef">static</span> <span style="color:#66d9ef">long</span> <span style="color:#a6e22e">_dictKeyIndex</span>(dict <span style="color:#f92672">*</span>d, <span style="color:#66d9ef">const</span> <span style="color:#66d9ef">void</span> <span style="color:#f92672">*</span>key, uint64_t hash, dictEntry <span style="color:#f92672">**</span>existing)
+{
+    <span style="color:#66d9ef">unsigned</span> <span style="color:#66d9ef">long</span> idx, table;
+    dictEntry <span style="color:#f92672">*</span>he;
+    <span style="color:#66d9ef">if</span> (existing) <span style="color:#f92672">*</span>existing <span style="color:#f92672">=</span> NULL;
+
+    <span style="color:#75715e">// 扩容 dict ?
+</span><span style="color:#75715e"></span>    <span style="color:#66d9ef">if</span> (_dictExpandIfNeeded(d) <span style="color:#f92672">==</span> DICT_ERR)
+        <span style="color:#66d9ef">return</span> <span style="color:#f92672">-</span><span style="color:#ae81ff">1</span>;
+    <span style="color:#75715e">// 从 2 个 ht 中查找 key
+</span><span style="color:#75715e"></span>    <span style="color:#66d9ef">for</span> (table <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>; table <span style="color:#f92672">&lt;=</span> <span style="color:#ae81ff">1</span>; table<span style="color:#f92672">++</span>) {
+        idx <span style="color:#f92672">=</span> hash <span style="color:#f92672">&amp;</span> d<span style="color:#f92672">-&gt;</span>ht[table].sizemask; <span style="color:#75715e">// 计算 index
+</span><span style="color:#75715e"></span>        <span style="color:#75715e">// 根据 hashEntity.next 确定对应 key
+</span><span style="color:#75715e"></span>        he <span style="color:#f92672">=</span> d<span style="color:#f92672">-&gt;</span>ht[table].table[idx];
+        <span style="color:#66d9ef">while</span>(he) {
+            <span style="color:#66d9ef">if</span> (key<span style="color:#f92672">==</span>he<span style="color:#f92672">-&gt;</span>key <span style="color:#f92672">||</span> dictCompareKeys(d, key, he<span style="color:#f92672">-&gt;</span>key)) {
+                <span style="color:#66d9ef">if</span> (existing) <span style="color:#f92672">*</span>existing <span style="color:#f92672">=</span> he;
+                <span style="color:#66d9ef">return</span> <span style="color:#f92672">-</span><span style="color:#ae81ff">1</span>;
+            }
+            he <span style="color:#f92672">=</span> he<span style="color:#f92672">-&gt;</span>next;
+        }
+        <span style="color:#75715e">// 没有 rehash break
+</span><span style="color:#75715e"></span>        <span style="color:#66d9ef">if</span> (<span style="color:#f92672">!</span>dictIsRehashing(d)) <span style="color:#66d9ef">break</span>;
+    }
+    <span style="color:#75715e">// 返回 index
+</span><span style="color:#75715e"></span>    <span style="color:#66d9ef">return</span> idx;
+}
+<span style="color:#75715e">// hash table 扩容
+</span><span style="color:#75715e"></span><span style="color:#66d9ef">static</span> <span style="color:#66d9ef">int</span> <span style="color:#a6e22e">_dictExpandIfNeeded</span>(dict <span style="color:#f92672">*</span>d)
+{
+    <span style="color:#75715e">// 正在 rehashing 返回
+</span><span style="color:#75715e"></span>    <span style="color:#66d9ef">if</span> (dictIsRehashing(d)) <span style="color:#66d9ef">return</span> DICT_OK;
+
+    <span style="color:#75715e">// 如果 ht 大小=0, 初始化 ht 大小=4, dictht-&gt;size=4
+</span><span style="color:#75715e"></span>    <span style="color:#66d9ef">if</span> (d<span style="color:#f92672">-&gt;</span>ht[<span style="color:#ae81ff">0</span>].size <span style="color:#f92672">==</span> <span style="color:#ae81ff">0</span>) <span style="color:#66d9ef">return</span> dictExpand(d, DICT_HT_INITIAL_SIZE);
+
+    <span style="color:#75715e">// 到达一定条件, 2倍扩容
+</span><span style="color:#75715e"></span>    <span style="color:#66d9ef">if</span> (d<span style="color:#f92672">-&gt;</span>ht[<span style="color:#ae81ff">0</span>].used <span style="color:#f92672">&gt;=</span> d<span style="color:#f92672">-&gt;</span>ht[<span style="color:#ae81ff">0</span>].size <span style="color:#f92672">&amp;&amp;</span>
+        (dict_can_resize <span style="color:#f92672">||</span>
+         d<span style="color:#f92672">-&gt;</span>ht[<span style="color:#ae81ff">0</span>].used<span style="color:#f92672">/</span>d<span style="color:#f92672">-&gt;</span>ht[<span style="color:#ae81ff">0</span>].size <span style="color:#f92672">&gt;</span> dict_force_resize_ratio))
+    {
+        <span style="color:#66d9ef">return</span> dictExpand(d, d<span style="color:#f92672">-&gt;</span>ht[<span style="color:#ae81ff">0</span>].used<span style="color:#f92672">*</span><span style="color:#ae81ff">2</span>);
+    }
+    <span style="color:#66d9ef">return</span> DICT_OK;
+}
+</code></pre></div><p>在设置键值对时, 可能会对 hash table 扩容, 2倍的扩容</p>
+<h4 id="rehash">Rehash</h4>
+<p>Hash Table 随着操作不断进行, 其中保存的键值对会增多或减少, 为了让 Hash Table 的负载因子维持在一个合理的范围内, Redis 会对 Hash Table 渐进式的调整大小</p>
+<p>在 <code>_dictExpandIfNeeded(dict *d)</code> 函数中, 有一块判断是否需要扩容的代码</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-c" data-lang="c"><span style="color:#66d9ef">static</span> <span style="color:#66d9ef">int</span> dict_can_resize <span style="color:#f92672">=</span> <span style="color:#ae81ff">1</span>; <span style="color:#75715e">// 是否可以扩容, BGSAVE或者BGREWRITEAOF时
+</span><span style="color:#75715e"></span><span style="color:#66d9ef">static</span> <span style="color:#66d9ef">unsigned</span> <span style="color:#66d9ef">int</span> dict_force_resize_ratio <span style="color:#f92672">=</span> <span style="color:#ae81ff">5</span>;
+    
+<span style="color:#66d9ef">if</span> (d<span style="color:#f92672">-&gt;</span>ht[<span style="color:#ae81ff">0</span>].used <span style="color:#f92672">&gt;=</span> d<span style="color:#f92672">-&gt;</span>ht[<span style="color:#ae81ff">0</span>].size <span style="color:#f92672">&amp;&amp;</span>
+    (dict_can_resize <span style="color:#f92672">||</span>
+     d<span style="color:#f92672">-&gt;</span>ht[<span style="color:#ae81ff">0</span>].used<span style="color:#f92672">/</span>d<span style="color:#f92672">-&gt;</span>ht[<span style="color:#ae81ff">0</span>].size <span style="color:#f92672">&gt;</span> dict_force_resize_ratio))
+{
+    <span style="color:#66d9ef">return</span> dictExpand(d, d<span style="color:#f92672">-&gt;</span>ht[<span style="color:#ae81ff">0</span>].used<span style="color:#f92672">*</span><span style="color:#ae81ff">2</span>); <span style="color:#75715e">// 扩容2倍
+</span><span style="color:#75715e"></span>}
+</code></pre></div><ul>
+<li>dict_can_resize: 默认:1, 是否可以扩容, <code>bgsave</code> 或者 <code>bgwriteaof</code> 时, 该值=0</li>
+<li>dict_force_resize_ratio: 默认:5, ht.used/ht.size 到达设置值时调整大小</li>
+</ul>
+<p>每次扩容都是在 ht 现有大小 * 2</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-c" data-lang="c"><span style="color:#66d9ef">static</span> <span style="color:#66d9ef">unsigned</span> <span style="color:#66d9ef">long</span> <span style="color:#a6e22e">_dictNextPower</span>(<span style="color:#66d9ef">unsigned</span> <span style="color:#66d9ef">long</span> size)
+{
+    <span style="color:#66d9ef">unsigned</span> <span style="color:#66d9ef">long</span> i <span style="color:#f92672">=</span> DICT_HT_INITIAL_SIZE; <span style="color:#75715e">// ht 初识大小 4
+</span><span style="color:#75715e"></span>
+    <span style="color:#66d9ef">if</span> (size <span style="color:#f92672">&gt;=</span> LONG_MAX) <span style="color:#66d9ef">return</span> LONG_MAX <span style="color:#f92672">+</span> <span style="color:#ae81ff">1LU</span>;
+    <span style="color:#66d9ef">while</span>(<span style="color:#ae81ff">1</span>) {
+        <span style="color:#66d9ef">if</span> (i <span style="color:#f92672">&gt;=</span> size)
+            <span style="color:#66d9ef">return</span> i;
+        i <span style="color:#f92672">*=</span> <span style="color:#ae81ff">2</span>;
+    }
+}
+</code></pre></div><p>如果 <code>ht.size &gt; DICT_HT_INITIAL_SIZE</code> 并且 <code>used*100/size &lt; HASHTABLE_MIN_FILL</code> 时, 进行收缩.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-c" data-lang="c"><span style="color:#66d9ef">int</span> <span style="color:#a6e22e">htNeedsResize</span>(dict <span style="color:#f92672">*</span>dict) {
+    <span style="color:#66d9ef">long</span> <span style="color:#66d9ef">long</span> size, used;
+
+    size <span style="color:#f92672">=</span> dictSlots(dict);
+    used <span style="color:#f92672">=</span> dictSize(dict);
+    <span style="color:#66d9ef">return</span> (size <span style="color:#f92672">&gt;</span> DICT_HT_INITIAL_SIZE <span style="color:#f92672">&amp;&amp;</span>
+            (used<span style="color:#f92672">*</span><span style="color:#ae81ff">100</span><span style="color:#f92672">/</span>size <span style="color:#f92672">&lt;</span> HASHTABLE_MIN_FILL));
+}
+</code></pre></div><ul>
+<li>DICT_HT_INITIAL_SIZE: 默认:4</li>
+<li>HASHTABLE_MIN_FILL: 默认: 10, ht 使用个数百分比, 默认: 10%</li>
+</ul>
+<p>Redis 的 rehash 是渐进式的, 每次一点一点的把老的 ht 中的数据迁移到新的 ht 中, 有2种方式进行渐进式操作:</p>
+<ul>
+<li><code>dictRehashMilliseconds(dict *d, int ms)</code> 毫秒计时 rehash, 默认 1ms/次</li>
+</ul>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-c" data-lang="c"><span style="color:#66d9ef">int</span> <span style="color:#a6e22e">dictRehashMilliseconds</span>(dict <span style="color:#f92672">*</span>d, <span style="color:#66d9ef">int</span> ms) {
+    <span style="color:#66d9ef">long</span> <span style="color:#66d9ef">long</span> start <span style="color:#f92672">=</span> timeInMilliseconds();
+    <span style="color:#66d9ef">int</span> rehashes <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>;
+
+    <span style="color:#66d9ef">while</span>(dictRehash(d,<span style="color:#ae81ff">100</span>)) { <span style="color:#75715e">// 每次 rehash 100个 hash值
+</span><span style="color:#75715e"></span>        rehashes <span style="color:#f92672">+=</span> <span style="color:#ae81ff">100</span>;
+        <span style="color:#66d9ef">if</span> (timeInMilliseconds()<span style="color:#f92672">-</span>start <span style="color:#f92672">&gt;</span> ms) <span style="color:#66d9ef">break</span>;
+    }
+    <span style="color:#66d9ef">return</span> rehashes;
+}
+</code></pre></div><ul>
+<li><code>_dictRehashStep(dict *d)</code> 查找或更新时手动调用执行一步 rehash 操作</li>
+</ul>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-c" data-lang="c"><span style="color:#66d9ef">static</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">_dictRehashStep</span>(dict <span style="color:#f92672">*</span>d) {
+    <span style="color:#66d9ef">if</span> (d<span style="color:#f92672">-&gt;</span>iterators <span style="color:#f92672">==</span> <span style="color:#ae81ff">0</span>) dictRehash(d,<span style="color:#ae81ff">1</span>);
+}
+</code></pre></div><p>上述2中渐进式 rehash 方式都是调用 <code>dictRehash(dict *d, int n)</code> 函数</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-c" data-lang="c"><span style="color:#66d9ef">int</span> <span style="color:#a6e22e">dictRehash</span>(dict <span style="color:#f92672">*</span>d, <span style="color:#66d9ef">int</span> n) {
+    <span style="color:#66d9ef">int</span> empty_visits <span style="color:#f92672">=</span> n<span style="color:#f92672">*</span><span style="color:#ae81ff">10</span>; <span style="color:#75715e">/* Max number of empty buckets to visit. */</span>
+    <span style="color:#66d9ef">if</span> (<span style="color:#f92672">!</span>dictIsRehashing(d)) <span style="color:#66d9ef">return</span> <span style="color:#ae81ff">0</span>; <span style="color:#75715e">// 正在执行 rehash 返回0
+</span><span style="color:#75715e"></span>
+    <span style="color:#66d9ef">while</span>(n<span style="color:#f92672">--</span> <span style="color:#f92672">&amp;&amp;</span> d<span style="color:#f92672">-&gt;</span>ht[<span style="color:#ae81ff">0</span>].used <span style="color:#f92672">!=</span> <span style="color:#ae81ff">0</span>) {
+        dictEntry <span style="color:#f92672">*</span>de, <span style="color:#f92672">*</span>nextde;
+
+        <span style="color:#75715e">// 确保rehashidx没有超过ht.size
+</span><span style="color:#75715e"></span>        assert(d<span style="color:#f92672">-&gt;</span>ht[<span style="color:#ae81ff">0</span>].size <span style="color:#f92672">&gt;</span> (<span style="color:#66d9ef">unsigned</span> <span style="color:#66d9ef">long</span>)d<span style="color:#f92672">-&gt;</span>rehashidx);
+        <span style="color:#66d9ef">while</span>(d<span style="color:#f92672">-&gt;</span>ht[<span style="color:#ae81ff">0</span>].table[d<span style="color:#f92672">-&gt;</span>rehashidx] <span style="color:#f92672">==</span> NULL) {
+            d<span style="color:#f92672">-&gt;</span>rehashidx<span style="color:#f92672">++</span>;
+            <span style="color:#66d9ef">if</span> (<span style="color:#f92672">--</span>empty_visits <span style="color:#f92672">==</span> <span style="color:#ae81ff">0</span>) <span style="color:#66d9ef">return</span> <span style="color:#ae81ff">1</span>;
+        }
+        de <span style="color:#f92672">=</span> d<span style="color:#f92672">-&gt;</span>ht[<span style="color:#ae81ff">0</span>].table[d<span style="color:#f92672">-&gt;</span>rehashidx];
+        <span style="color:#75715e">/* Move all the keys in this bucket from the old to the new hash HT */</span>
+        <span style="color:#66d9ef">while</span>(de) {
+            uint64_t h;
+
+            nextde <span style="color:#f92672">=</span> de<span style="color:#f92672">-&gt;</span>next;
+            h <span style="color:#f92672">=</span> dictHashKey(d, de<span style="color:#f92672">-&gt;</span>key) <span style="color:#f92672">&amp;</span> d<span style="color:#f92672">-&gt;</span>ht[<span style="color:#ae81ff">1</span>].sizemask; <span style="color:#75715e">// 计算新 ht 中 hash 值
+</span><span style="color:#75715e"></span>            de<span style="color:#f92672">-&gt;</span>next <span style="color:#f92672">=</span> d<span style="color:#f92672">-&gt;</span>ht[<span style="color:#ae81ff">1</span>].table[h]; 
+            d<span style="color:#f92672">-&gt;</span>ht[<span style="color:#ae81ff">1</span>].table[h] <span style="color:#f92672">=</span> de; <span style="color:#75715e">// 插入到新 ht 中
+</span><span style="color:#75715e"></span>            d<span style="color:#f92672">-&gt;</span>ht[<span style="color:#ae81ff">0</span>].used<span style="color:#f92672">--</span>; <span style="color:#75715e">// 老 ht 使用个数-1
+</span><span style="color:#75715e"></span>            d<span style="color:#f92672">-&gt;</span>ht[<span style="color:#ae81ff">1</span>].used<span style="color:#f92672">++</span>; <span style="color:#75715e">// 新 ht 使用个数+1
+</span><span style="color:#75715e"></span>            de <span style="color:#f92672">=</span> nextde; <span style="color:#75715e">// 继续 rehash 下一个
+</span><span style="color:#75715e"></span>        }
+        d<span style="color:#f92672">-&gt;</span>ht[<span style="color:#ae81ff">0</span>].table[d<span style="color:#f92672">-&gt;</span>rehashidx] <span style="color:#f92672">=</span> NULL;
+        d<span style="color:#f92672">-&gt;</span>rehashidx<span style="color:#f92672">++</span>;
+    }
+
+    <span style="color:#75715e">// 是否已将老 ht rehash 完
+</span><span style="color:#75715e"></span>    <span style="color:#66d9ef">if</span> (d<span style="color:#f92672">-&gt;</span>ht[<span style="color:#ae81ff">0</span>].used <span style="color:#f92672">==</span> <span style="color:#ae81ff">0</span>) {
+        zfree(d<span style="color:#f92672">-&gt;</span>ht[<span style="color:#ae81ff">0</span>].table); <span style="color:#75715e">// 是否老 ht 空间
+</span><span style="color:#75715e"></span>        d<span style="color:#f92672">-&gt;</span>ht[<span style="color:#ae81ff">0</span>] <span style="color:#f92672">=</span> d<span style="color:#f92672">-&gt;</span>ht[<span style="color:#ae81ff">1</span>]; <span style="color:#75715e">// 将 rehash 后的新 ht 赋值给 ht[0]
+</span><span style="color:#75715e"></span>        _dictReset(<span style="color:#f92672">&amp;</span>d<span style="color:#f92672">-&gt;</span>ht[<span style="color:#ae81ff">1</span>]); <span style="color:#75715e">// 重置 ht[1]
+</span><span style="color:#75715e"></span>        d<span style="color:#f92672">-&gt;</span>rehashidx <span style="color:#f92672">=</span> <span style="color:#f92672">-</span><span style="color:#ae81ff">1</span>; <span style="color:#75715e">// 未进行 rehash
+</span><span style="color:#75715e"></span>        <span style="color:#66d9ef">return</span> <span style="color:#ae81ff">0</span>;
+    }
+
+    <span style="color:#66d9ef">return</span> <span style="color:#ae81ff">1</span>;
+}
+</code></pre></div><p><code>ht[1]</code> 只有在 rehash 时使用, 全部 rehash 完成后 <code>ht[0]</code> 会重置</p>
+        </p>
+    </div>
+    
+
+    
+
+    <div class="page-footer">
+        
+        <hr class="footer-divider">
+        
+            <a class="tag" href="/tags/redis">#Redis</a>
+        
+            <a class="tag" href="/tags/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0">#学习笔记</a>
+        
+      
+    </div>
+
+
+        
+
+<link rel="stylesheet" type="text/css" href="/css/katex.min.css" crossorigin="anonymous">
+<script type="text/javascript" src="/js/katex.min.js" crossorigin="anonymous"></script>
+<script type="text/javascript" src="/js/auto-render.min.js"onload="renderMathInElement(document.body);" crossorigin="anonymous"></script>
+
+        </div>
+        <footer class="footer-mobile">
+	<div class="social-icons">
+        
+    <a class="social-icon" href="0xd1ef@gmail.com" target="_blank" rel="noopener" title="Email">
+        <svg width="28px" height="28px" viewBox="0 0 28 28" version="1.1" fill="#ABABAB" xmlns="https://www.w3.org/2000/svg" xmlns:xlink="https://www.w3.org/1999/xlink">
+            <path d="M25.2794292,5.59128519 L14,16.8707144 L2.72057081,5.59128519 C3.06733103,5.30237414 3.51336915,5.12857603 4,5.12857603 L24,5.12857603 C24.4866308,5.12857603 24.932669,5.30237414 25.2794292,5.59128519 Z M25.9956978,6.99633695 C25.998551,7.04004843 26,7.08414302 26,7.12857603 L26,20.871424 C26,21.0798433 25.9681197,21.2808166 25.9089697,21.4697335 L18.7156355,14.2763993 L25.9956978,6.99633695 Z M24.9498374,22.6319215 C24.6672737,22.7846939 24.3437653,22.871424 24,22.871424 L4,22.871424 C3.5268522,22.871424 3.09207889,22.7071233 2.74962118,22.432463 L10.0950247,15.0870594 L13.9848068,18.9768415 L14.1878486,18.7737996 L14.2030419,18.7889929 L17.6549753,15.3370594 L24.9498374,22.6319215 Z M2.00810114,21.0526627 C2.00273908,20.9929669 2,20.9325153 2,20.871424 L2,7.12857603 C2,7.08414302 2.00144896,7.04004843 2.00430222,6.99633695 L9.03436454,14.0263993 L2.00810114,21.0526627 Z"></path>
+        </svg>
+    </a>
+    
+
+    
+
+    
+    <a class="social-icon" href="https://twitter.com/luyangx" target="_blank" rel="noopener" title="Twitter">
+        <svg width="28px" height="28px" viewBox="0 0 28 28" version="1.1" fill="#ABABAB" xmlns="https://www.w3.org/2000/svg" xmlns:xlink="https://www.w3.org/1999/xlink">
+            <path d="M8.991284,24.971612 C19.180436,24.971612 24.752372,16.530224 24.752372,9.210524 C24.752372,8.970656 24.747512,8.731868 24.736496,8.494376 C25.818008,7.712564 26.758256,6.737 27.5,5.62622 C26.507372,6.067076 25.439252,6.364292 24.318752,6.498212 C25.462472,5.812628 26.340512,4.727444 26.754584,3.434036 C25.684088,4.068536 24.499004,4.53002 23.23724,4.778528 C22.226468,3.701876 20.786828,3.028388 19.193828,3.028388 C16.134404,3.028388 13.653536,5.509256 13.653536,8.567492 C13.653536,9.0023 13.702244,9.424904 13.797176,9.830552 C9.19346,9.599108 5.11106,7.39472 2.3792,4.04294 C1.903028,4.861364 1.629032,5.812628 1.629032,6.827072 C1.629032,8.74904 2.606972,10.445612 4.094024,11.438132 C3.185528,11.41016 2.331788,11.160464 1.585184,10.745096 C1.583888,10.768208 1.583888,10.791428 1.583888,10.815728 C1.583888,13.49888 3.493652,15.738584 6.028088,16.246508 C5.562932,16.373084 5.07326,16.44134 4.56782,16.44134 C4.210988,16.44134 3.863876,16.406024 3.526484,16.34144 C4.231724,18.542264 6.276596,20.143796 8.701412,20.18894 C6.805148,21.674696 4.416836,22.56008 1.821488,22.56008 C1.374476,22.56008 0.93362,22.534592 0.5,22.4834 C2.951708,24.054476 5.862524,24.971612 8.991284,24.971612"></path>
+        </svg>
+    </a>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <a class="social-icon" href="https://weibo.com/0xd1ef" target="_blank" rel="noopener" title="Weibo">
+        <svg width="28px" height="28px" viewBox="0 0 28 28" version="1.1" fill="#ABABAB" xmlns="https://www.w3.org/2000/svg" xmlns:xlink="https://www.w3.org/1999/xlink">
+            <path d="M11.7643305,23.68043 C16.3966564,23.2245381 19.9124334,20.3848721 19.6072176,17.3404411 C19.3097287,14.2998735 15.3071519,12.2019978 10.6709625,12.6617533 C6.03863666,13.1215087 2.52285972,15.9573112 2.82421203,19.0017422 C3.12556434,22.0423098 7.12814116,24.1401855 11.7643305,23.68043 Z M21.0328458,13.5774007 C22.6400581,14.075791 24.4288545,15.2812003 24.424991,17.4061204 C24.424991,20.9180339 19.3599541,25.3417312 11.7450131,25.3417312 C5.93818589,25.3417312 -2.23820962e-13,22.5252462 -2.23820962e-13,17.8967838 C-2.23820962e-13,15.4743748 1.53380598,12.6733438 4.17257044,10.0345793 C7.69993785,6.50721189 11.8145559,4.89999957 13.3599524,6.44925952 C14.0399268,7.13309745 14.1056062,8.31146225 13.6690317,9.72163652 C13.4372222,10.4286554 14.3335521,10.0384428 14.3335521,10.0384428 C17.1848086,8.84462403 19.6728969,8.77508119 20.5808173,10.0732142 C21.0676172,10.7686426 21.0212553,11.7383789 20.5730903,12.8626548 C20.3683253,13.3803626 20.6387697,13.4576325 21.0328458,13.5774007 Z M26.0901557,5.1047646 C27.9291775,7.14082443 28.4275678,9.91867457 27.6394156,12.3488105 C27.6394156,12.3488105 27.6394156,12.352674 27.6394156,12.352674 C27.4578316,12.9128802 26.8551269,13.2219595 26.2910572,13.0403754 C25.7269875,12.8587913 25.4179082,12.2560867 25.5994923,11.692017 C26.1596985,9.96117297 25.8042573,7.98692899 24.4983973,6.53811982 C23.1925373,5.08931064 21.2646553,4.5368314 19.4835858,4.91545354 C18.9040622,5.03908525 18.336129,4.67205359 18.2124973,4.09252992 C18.0888655,3.51686974 18.4558972,2.94507305 19.0354209,2.82144134 C21.5389631,2.28827956 24.2511339,3.06484128 26.0901557,5.1047646 Z M23.2659437,7.65466876 C24.1622736,8.64758598 24.4018101,9.99980788 24.0193244,11.1858997 C23.8609213,11.6726995 23.3432135,11.9354169 22.8564136,11.7808773 C22.3696137,11.6224742 22.1068963,11.1009029 22.261436,10.6179665 C22.450747,10.0384428 22.3309788,9.37778581 21.8944043,8.89098592 C21.4578298,8.40804953 20.8087633,8.22260195 20.2137857,8.35009716 C19.7192588,8.45827491 19.2285954,8.14146864 19.1204177,7.64307828 C19.0161034,7.14468793 19.3329097,6.65016106 19.8313,6.5458468 C21.0482998,6.2831294 22.3696137,6.66175153 23.2659437,7.65466876 Z M12.0193209,18.1710916 C12.1738606,17.8890568 12.0734098,17.576114 11.7952385,17.4756632 C11.5209306,17.3674855 11.1770799,17.4988442 11.0148133,17.7692886 C10.8564101,18.039733 10.9414069,18.3526757 11.2195783,18.464717 C11.4977496,18.5806217 11.8570543,18.449263 12.0193209,18.1710916 Z M10.5396038,20.0642023 C10.9800418,19.3417295 10.7482324,18.5188059 10.021896,18.2058631 C9.30328667,17.9045108 8.3760488,18.2135901 7.93174732,18.9090185 C7.48358235,19.6083104 7.69607436,20.438961 8.40695673,20.7634942 C9.12942957,21.091891 10.0914389,20.7789482 10.5396038,20.0642023 Z M12.224086,15.0030289 C14.5074092,15.5941431 15.6741836,17.7461076 14.7392187,19.8401198 C13.7926634,21.9766304 11.0727656,23.1202238 8.76239791,22.37457 C6.53702702,21.6559607 5.59047169,19.4537707 6.56793494,17.4717998 C7.52608075,15.5284637 10.0180325,14.4273687 12.224086,15.0030289 Z"></path>
+        </svg>
+    </a>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    
+    
+
+    
+    
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+</div>
+
+
+
+
+	<div class="footer-mobile-links">
+		<p><a href="https://github.com/kimcc/hugo-theme-noteworthy" target="_blank" rel="noopener">Noteworthy theme</a></p>
+		<span class="divider-bar">|</span>
+		<p><a href="https://gohugo.io" target="_blank" rel="noopener">Built with Hugo</a></p>
+	</div>
+
+	<script src="https://www.luyang.ink/js/main.min.fa5c2b23e07b5d9bfad267a52b4b24fdb053e6fb7524993383594926a3ac270c.js" integrity="sha256-+lwrI+B7XZv60melK0sk/bBT5vt1JJkzg1lJJqOsJww=" crossorigin="anonymous"></script>
+</footer>
+    </body>
+</html>
