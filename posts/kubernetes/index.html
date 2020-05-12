@@ -145,6 +145,8 @@
         <p>Kubernetes 简称 K8s, 一个生成级别的容器编排系统. 这个还是得了解下, 免得落伍.</p>
 <h2 id="基本概念和术语">基本概念和术语</h2>
 <p>K8s 中的大部分概念, 如 Node, Pod, Replication Controller, Service 都可以看成一种资源对象, 都可以通过 K8s 提供的 kubectl 工具来执行 CURD, 并将其在 etcd 中持久化保存. K8s 通过跟踪 etcd 中保存的资源状态与实际环境中的资源状态的差异来实现自动控制和纠错.</p>
+<p>先看下 Kubernetes 架构图, 方便理解</p>
+<p><img src="/images/k8s-architecture.png" alt=""></p>
 <h3 id="master">Master</h3>
 <p>集群控制节点, 接收 K8s 的控制指令, 负责执行. 运行着以下进程:</p>
 <ul>
