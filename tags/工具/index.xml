@@ -2,31 +2,31 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>工具 on 扬</title>
-    <link>https://www.luyang.ink/tags/%E5%B7%A5%E5%85%B7/</link>
+    <link>https://luyang87.gitee.io/tags/%E5%B7%A5%E5%85%B7/</link>
     <description>Recent content in 工具 on 扬</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>zh-cn</language>
     <lastBuildDate>Tue, 19 Jul 2016 22:51:41 +0800</lastBuildDate>
     
-	<atom:link href="https://www.luyang.ink/tags/%E5%B7%A5%E5%85%B7/index.xml" rel="self" type="application/rss+xml" />
+	<atom:link href="https://luyang87.gitee.io/tags/%E5%B7%A5%E5%85%B7/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
       <title>Homebrew 设置代理</title>
-      <link>https://www.luyang.ink/posts/homebrew-proxy/</link>
+      <link>https://luyang87.gitee.io/posts/homebrew-proxy/</link>
       <pubDate>Tue, 19 Jul 2016 22:51:41 +0800</pubDate>
       
-      <guid>https://www.luyang.ink/posts/homebrew-proxy/</guid>
+      <guid>https://luyang87.gitee.io/posts/homebrew-proxy/</guid>
       <description>&lt;p&gt;由于国情, &lt;code&gt;homebrew update/install&lt;/code&gt; 非常缓慢, 还是不是遇到链接超时问题. 虽然可以缓存国内的源, 更新是快了,
 不过下载还是鸟样, 治标不治本&lt;/p&gt;</description>
     </item>
     
     <item>
       <title>vim</title>
-      <link>https://www.luyang.ink/posts/vim/</link>
+      <link>https://luyang87.gitee.io/posts/vim/</link>
       <pubDate>Wed, 12 Mar 2014 15:42:13 +0800</pubDate>
       
-      <guid>https://www.luyang.ink/posts/vim/</guid>
+      <guid>https://luyang87.gitee.io/posts/vim/</guid>
       <description>&lt;p&gt;最近把 NetBeans IDE 换成了 vim, 自己鼓捣了下设置, 通过 Vundle 管理插件. 配置好后, 瞬间小清新.&lt;/p&gt;</description>
     </item>
     
