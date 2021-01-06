@@ -2,44 +2,44 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>网络 on 扬</title>
-    <link>https://luyang87.gitee.io/tags/%E7%BD%91%E7%BB%9C/</link>
+    <link>https://www.luyang.ink/tags/%E7%BD%91%E7%BB%9C/</link>
     <description>Recent content in 网络 on 扬</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>zh-cn</language>
-    <lastBuildDate>Fri, 27 May 2016 20:32:12 +0800</lastBuildDate><atom:link href="https://luyang87.gitee.io/tags/%E7%BD%91%E7%BB%9C/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Fri, 27 May 2016 20:32:12 +0800</lastBuildDate><atom:link href="https://www.luyang.ink/tags/%E7%BD%91%E7%BB%9C/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>HTTP/2</title>
-      <link>https://luyang87.gitee.io/posts/http2/</link>
+      <link>https://www.luyang.ink/posts/http2/</link>
       <pubDate>Fri, 27 May 2016 20:32:12 +0800</pubDate>
       
-      <guid>https://luyang87.gitee.io/posts/http2/</guid>
+      <guid>https://www.luyang.ink/posts/http2/</guid>
       <description>&lt;p&gt;HTTP2 已经发布已久, 性能较 HTTP/1.1 有了很多提升, 并且完全兼容 HTTP/1.1 语义, 又进一步减少了网络延迟.&lt;/p&gt;</description>
     </item>
     
     <item>
       <title>HTTP/1.1 . 连接/缓存/安全</title>
-      <link>https://luyang87.gitee.io/posts/http1/</link>
+      <link>https://www.luyang.ink/posts/http1/</link>
       <pubDate>Fri, 02 May 2014 10:13:25 +0800</pubDate>
       
-      <guid>https://luyang87.gitee.io/posts/http1/</guid>
+      <guid>https://www.luyang.ink/posts/http1/</guid>
       <description>&lt;p&gt;HTTP/1.1 目前在互联网上被广泛使用, 记录一下 HTTP1.1 重要的几块内容, 包括连接, 缓存控制等.&lt;/p&gt;</description>
     </item>
     
     <item>
       <title>TCP . 重传机制/滑动窗口/拥塞处理</title>
-      <link>https://luyang87.gitee.io/posts/tcp-key-points/</link>
+      <link>https://www.luyang.ink/posts/tcp-key-points/</link>
       <pubDate>Wed, 23 Apr 2014 20:13:54 +0800</pubDate>
       
-      <guid>https://luyang87.gitee.io/posts/tcp-key-points/</guid>
+      <guid>https://www.luyang.ink/posts/tcp-key-points/</guid>
       <description>&lt;p&gt;本文记录一下 TCP 的重传机制和拥塞处理.&lt;/p&gt;</description>
     </item>
     
     <item>
       <title>TCP . 连接过程</title>
-      <link>https://luyang87.gitee.io/posts/tcp-connection/</link>
+      <link>https://www.luyang.ink/posts/tcp-connection/</link>
       <pubDate>Sat, 19 Apr 2014 19:21:34 +0800</pubDate>
       
-      <guid>https://luyang87.gitee.io/posts/tcp-connection/</guid>
+      <guid>https://www.luyang.ink/posts/tcp-connection/</guid>
       <description>&lt;p&gt;传输控制协议(TCP, Transmission Control Protocol)是一种面向连接的/可靠的/基于字节流的传输层通信协议, 由IETF的&lt;a href=&#34;https://tools.ietf.org/html/rfc793&#34;&gt;RFC 793&lt;/a&gt;定义&lt;/p&gt;</description>
     </item>
     

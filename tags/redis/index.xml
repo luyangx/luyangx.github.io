@@ -2,35 +2,35 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Redis on 扬</title>
-    <link>https://luyang87.gitee.io/tags/redis/</link>
+    <link>https://www.luyang.ink/tags/redis/</link>
     <description>Recent content in Redis on 扬</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>zh-cn</language>
-    <lastBuildDate>Thu, 12 Oct 2017 23:02:12 +0800</lastBuildDate><atom:link href="https://luyang87.gitee.io/tags/redis/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Thu, 12 Oct 2017 23:02:12 +0800</lastBuildDate><atom:link href="https://www.luyang.ink/tags/redis/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Redis Internal . Part 2</title>
-      <link>https://luyang87.gitee.io/posts/redis-internal-2/</link>
+      <link>https://www.luyang.ink/posts/redis-internal-2/</link>
       <pubDate>Thu, 12 Oct 2017 23:02:12 +0800</pubDate>
       
-      <guid>https://luyang87.gitee.io/posts/redis-internal-2/</guid>
+      <guid>https://www.luyang.ink/posts/redis-internal-2/</guid>
       <description>&lt;p&gt;继续了解 Redis 内部. 记录一下 ziplist, quicklist&lt;/p&gt;</description>
     </item>
     
     <item>
       <title>Redis Internal . Part 1</title>
-      <link>https://luyang87.gitee.io/posts/redis-internal-1/</link>
+      <link>https://www.luyang.ink/posts/redis-internal-1/</link>
       <pubDate>Mon, 09 Oct 2017 22:51:43 +0800</pubDate>
       
-      <guid>https://luyang87.gitee.io/posts/redis-internal-1/</guid>
+      <guid>https://www.luyang.ink/posts/redis-internal-1/</guid>
       <description>&lt;p&gt;现在工作中已经离不开 Redis 了, 需要搞清楚它的内部原理, 知己知彼.&lt;/p&gt;</description>
     </item>
     
     <item>
       <title>Redis 学习记录</title>
-      <link>https://luyang87.gitee.io/posts/redis/</link>
+      <link>https://www.luyang.ink/posts/redis/</link>
       <pubDate>Thu, 05 Oct 2017 21:38:13 +0800</pubDate>
       
-      <guid>https://luyang87.gitee.io/posts/redis/</guid>
+      <guid>https://www.luyang.ink/posts/redis/</guid>
       <description>&lt;p&gt;平时工作中用 Redis 基本就是各种 Cache, 偶尔会当锁用解决下并发操作的问题, 这里记录一下其他使用场景.&lt;/p&gt;</description>
     </item>
     

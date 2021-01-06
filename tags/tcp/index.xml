@@ -2,26 +2,26 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>TCP on 扬</title>
-    <link>https://luyang87.gitee.io/tags/tcp/</link>
+    <link>https://www.luyang.ink/tags/tcp/</link>
     <description>Recent content in TCP on 扬</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>zh-cn</language>
-    <lastBuildDate>Wed, 23 Apr 2014 20:13:54 +0800</lastBuildDate><atom:link href="https://luyang87.gitee.io/tags/tcp/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Wed, 23 Apr 2014 20:13:54 +0800</lastBuildDate><atom:link href="https://www.luyang.ink/tags/tcp/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>TCP . 重传机制/滑动窗口/拥塞处理</title>
-      <link>https://luyang87.gitee.io/posts/tcp-key-points/</link>
+      <link>https://www.luyang.ink/posts/tcp-key-points/</link>
       <pubDate>Wed, 23 Apr 2014 20:13:54 +0800</pubDate>
       
-      <guid>https://luyang87.gitee.io/posts/tcp-key-points/</guid>
+      <guid>https://www.luyang.ink/posts/tcp-key-points/</guid>
       <description>&lt;p&gt;本文记录一下 TCP 的重传机制和拥塞处理.&lt;/p&gt;</description>
     </item>
     
     <item>
       <title>TCP . 连接过程</title>
-      <link>https://luyang87.gitee.io/posts/tcp-connection/</link>
+      <link>https://www.luyang.ink/posts/tcp-connection/</link>
       <pubDate>Sat, 19 Apr 2014 19:21:34 +0800</pubDate>
       
-      <guid>https://luyang87.gitee.io/posts/tcp-connection/</guid>
+      <guid>https://www.luyang.ink/posts/tcp-connection/</guid>
       <description>&lt;p&gt;传输控制协议(TCP, Transmission Control Protocol)是一种面向连接的/可靠的/基于字节流的传输层通信协议, 由IETF的&lt;a href=&#34;https://tools.ietf.org/html/rfc793&#34;&gt;RFC 793&lt;/a&gt;定义&lt;/p&gt;</description>
     </item>
     

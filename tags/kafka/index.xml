@@ -2,26 +2,26 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Kafka on 扬</title>
-    <link>https://luyang87.gitee.io/tags/kafka/</link>
+    <link>https://www.luyang.ink/tags/kafka/</link>
     <description>Recent content in Kafka on 扬</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>zh-cn</language>
-    <lastBuildDate>Mon, 28 Nov 2016 21:38:13 +0800</lastBuildDate><atom:link href="https://luyang87.gitee.io/tags/kafka/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Mon, 28 Nov 2016 21:38:13 +0800</lastBuildDate><atom:link href="https://www.luyang.ink/tags/kafka/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Elasticsearch 学习记录</title>
-      <link>https://luyang87.gitee.io/posts/elasticsearch/</link>
+      <link>https://www.luyang.ink/posts/elasticsearch/</link>
       <pubDate>Mon, 28 Nov 2016 21:38:13 +0800</pubDate>
       
-      <guid>https://luyang87.gitee.io/posts/elasticsearch/</guid>
+      <guid>https://www.luyang.ink/posts/elasticsearch/</guid>
       <description>&lt;p&gt;公司最近在做一个政府用车的项目, 其中订单搜索这块用到了 Elasticsearch, 同时公司里的把脉平台也使用了 Elasticsearch, 学习记录一下.&lt;/p&gt;</description>
     </item>
     
     <item>
       <title>Kafka 学习记录</title>
-      <link>https://luyang87.gitee.io/posts/kafka/</link>
+      <link>https://www.luyang.ink/posts/kafka/</link>
       <pubDate>Sat, 19 Nov 2016 21:38:13 +0800</pubDate>
       
-      <guid>https://luyang87.gitee.io/posts/kafka/</guid>
+      <guid>https://www.luyang.ink/posts/kafka/</guid>
       <description>&lt;p&gt;Kafka 已经被定义为一个分布式流式处理平台, 它有高吞吐, 可持久化, 可水平扩展, 支持流数据处理等特性, 学习记录一下.&lt;/p&gt;</description>
     </item>
     
