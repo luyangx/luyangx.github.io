@@ -149,35 +149,35 @@
 ├── start.sh // 用于 CMD 启动服务
 └── xmy.cnf // mysql 配置文件
 </code></pre></div><p>Dockfile 文件内容:</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-dockerfile" data-lang="dockerfile"><span style="color:#66d9ef">FROM</span><span style="color:#e6db74"> ubuntu:16.04 as mysql</span><span style="color:#960050;background-color:#1e0010">
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-dockerfile" data-lang="dockerfile"><span style="color:#66d9ef">FROM</span><span style="color:#e6db74"> ubuntu:16.04 as mysql</span><span style="color:#960050;background-color:#1e0010">
 </span><span style="color:#960050;background-color:#1e0010">
-</span><span style="color:#960050;background-color:#1e0010"></span><span style="color:#75715e"># apt-get install mysql 前指定 root 密码</span><span style="color:#960050;background-color:#1e0010">
-</span><span style="color:#960050;background-color:#1e0010"></span><span style="color:#66d9ef">RUN</span> echo <span style="color:#e6db74">&#34;mysql-server mysql-server/root_password password root&#34;</span> | debconf-set-selections <span style="color:#ae81ff">\</span><span style="color:#960050;background-color:#1e0010">
-</span><span style="color:#960050;background-color:#1e0010"></span> <span style="color:#f92672">&amp;&amp;</span> echo <span style="color:#e6db74">&#34;mysql-server mysql-server/root_password_again password root&#34;</span> | debconf-set-selections <span style="color:#ae81ff">\</span><span style="color:#960050;background-color:#1e0010">
-</span><span style="color:#960050;background-color:#1e0010"></span> <span style="color:#f92672">&amp;&amp;</span> apt-get update <span style="color:#ae81ff">\
-</span><span style="color:#ae81ff"></span> <span style="color:#75715e"># apt-get install 无交互, 全部 Yes 安装</span><span style="color:#960050;background-color:#1e0010">
+</span><span style="color:#960050;background-color:#1e0010"></span><span style="color:#75715e"># apt-get install mysql 前指定 root 密码</span><span style="color:#960050;background-color:#1e0010">
+</span><span style="color:#960050;background-color:#1e0010"></span><span style="color:#66d9ef">RUN</span> echo <span style="color:#e6db74">&#34;mysql-server mysql-server/root_password password root&#34;</span> | debconf-set-selections <span style="color:#ae81ff">\
+</span><span style="color:#ae81ff"></span> <span style="color:#f92672">&amp;&amp;</span> echo <span style="color:#e6db74">&#34;mysql-server mysql-server/root_password_again password root&#34;</span> | debconf-set-selections <span style="color:#ae81ff">\
+</span><span style="color:#ae81ff"></span> <span style="color:#f92672">&amp;&amp;</span> apt-get update <span style="color:#ae81ff">\
+</span><span style="color:#ae81ff"></span> <span style="color:#75715e"># apt-get install 无交互, 全部 Yes 安装</span><span style="color:#960050;background-color:#1e0010">
 </span><span style="color:#960050;background-color:#1e0010"></span> <span style="color:#f92672">&amp;&amp;</span> DEBIAN_FRONTEND<span style="color:#f92672">=</span>noninteractive apt-get install -y mysql-server openssh-server<span style="color:#ae81ff">\
-</span><span style="color:#ae81ff"></span> <span style="color:#75715e"># mysql 相关目录及权限</span><span style="color:#960050;background-color:#1e0010">
-</span><span style="color:#960050;background-color:#1e0010"></span> <span style="color:#f92672">&amp;&amp;</span> mkdir /var/run/mysqld <span style="color:#ae81ff">\</span><span style="color:#960050;background-color:#1e0010">
-</span><span style="color:#960050;background-color:#1e0010"></span> <span style="color:#f92672">&amp;&amp;</span> chown -R mysql:mysql /var/run/mysqld <span style="color:#ae81ff">\</span><span style="color:#960050;background-color:#1e0010">
-</span><span style="color:#960050;background-color:#1e0010"></span> <span style="color:#f92672">&amp;&amp;</span> mkdir /var/run/sshd <span style="color:#ae81ff">\
-</span><span style="color:#ae81ff"></span> <span style="color:#75715e"># sshd root账号相关设置</span><span style="color:#960050;background-color:#1e0010">
-</span><span style="color:#960050;background-color:#1e0010"></span> <span style="color:#f92672">&amp;&amp;</span> echo <span style="color:#e6db74">&#39;root:root&#39;</span> | chpasswd <span style="color:#ae81ff">\</span><span style="color:#960050;background-color:#1e0010">
-</span><span style="color:#960050;background-color:#1e0010"></span> <span style="color:#f92672">&amp;&amp;</span> sed -i <span style="color:#e6db74">&#39;s/PermitRootLogin prohibit-password/PermitRootLogin yes/&#39;</span> /etc/ssh/sshd_config <span style="color:#ae81ff">\</span><span style="color:#960050;background-color:#1e0010">
-</span><span style="color:#960050;background-color:#1e0010"></span> <span style="color:#f92672">&amp;&amp;</span> sed <span style="color:#e6db74">&#39;s@session\s*required\s*pam_loginuid.so@session optional pam_loginuid.so@g&#39;</span> -i /etc/pam.d/sshd <span style="color:#ae81ff">\</span><span style="color:#960050;background-color:#1e0010">
-</span><span style="color:#960050;background-color:#1e0010"></span> <span style="color:#f92672">&amp;&amp;</span> echo <span style="color:#e6db74">&#34;export VISIBLE=now&#34;</span> &gt;&gt; /etc/profile<span style="color:#960050;background-color:#1e0010">
-</span><span style="color:#960050;background-color:#1e0010"></span> <span style="color:#960050;background-color:#1e0010">
+</span><span style="color:#ae81ff"></span> <span style="color:#75715e"># mysql 相关目录及权限</span><span style="color:#960050;background-color:#1e0010">
+</span><span style="color:#960050;background-color:#1e0010"></span> <span style="color:#f92672">&amp;&amp;</span> mkdir /var/run/mysqld <span style="color:#ae81ff">\
+</span><span style="color:#ae81ff"></span> <span style="color:#f92672">&amp;&amp;</span> chown -R mysql:mysql /var/run/mysqld <span style="color:#ae81ff">\
+</span><span style="color:#ae81ff"></span> <span style="color:#f92672">&amp;&amp;</span> mkdir /var/run/sshd <span style="color:#ae81ff">\
+</span><span style="color:#ae81ff"></span> <span style="color:#75715e"># sshd root账号相关设置</span><span style="color:#960050;background-color:#1e0010">
+</span><span style="color:#960050;background-color:#1e0010"></span> <span style="color:#f92672">&amp;&amp;</span> echo <span style="color:#e6db74">&#39;root:root&#39;</span> | chpasswd <span style="color:#ae81ff">\
+</span><span style="color:#ae81ff"></span> <span style="color:#f92672">&amp;&amp;</span> sed -i <span style="color:#e6db74">&#39;s/PermitRootLogin prohibit-password/PermitRootLogin yes/&#39;</span> /etc/ssh/sshd_config <span style="color:#ae81ff">\
+</span><span style="color:#ae81ff"></span> <span style="color:#f92672">&amp;&amp;</span> sed <span style="color:#e6db74">&#39;s@session\s*required\s*pam_loginuid.so@session optional pam_loginuid.so@g&#39;</span> -i /etc/pam.d/sshd <span style="color:#ae81ff">\
+</span><span style="color:#ae81ff"></span> <span style="color:#f92672">&amp;&amp;</span> echo <span style="color:#e6db74">&#34;export VISIBLE=now&#34;</span> &gt;&gt; /etc/profile<span style="color:#960050;background-color:#1e0010">
+</span><span style="color:#960050;background-color:#1e0010"></span> <span style="color:#960050;background-color:#1e0010">
 </span><span style="color:#960050;background-color:#1e0010"></span><span style="color:#66d9ef">COPY</span> xmy.cnf /etc/mysql/conf.d/ <span style="color:#75715e"># mysql 配置文件</span><span style="color:#960050;background-color:#1e0010">
-</span><span style="color:#960050;background-color:#1e0010"></span><span style="color:#960050;background-color:#1e0010">
+</span><span style="color:#960050;background-color:#1e0010">
 </span><span style="color:#960050;background-color:#1e0010"></span><span style="color:#66d9ef">ENV</span> NOTVISIBLE <span style="color:#e6db74">&#34;in users profile&#34;</span><span style="color:#960050;background-color:#1e0010">
-</span><span style="color:#960050;background-color:#1e0010"></span><span style="color:#960050;background-color:#1e0010">
+</span><span style="color:#960050;background-color:#1e0010">
 </span><span style="color:#960050;background-color:#1e0010"></span><span style="color:#66d9ef">VOLUME</span> [<span style="color:#e6db74">&#34;/var/lib/mysql&#34;</span>]<span style="color:#960050;background-color:#1e0010">
-</span><span style="color:#960050;background-color:#1e0010"></span><span style="color:#960050;background-color:#1e0010">
-</span><span style="color:#960050;background-color:#1e0010"></span><span style="color:#66d9ef">ADD</span> start.sh / <span style="color:#75715e"># 启动服务shell脚本</span><span style="color:#960050;background-color:#1e0010">
+</span><span style="color:#960050;background-color:#1e0010">
+</span><span style="color:#960050;background-color:#1e0010"></span><span style="color:#66d9ef">ADD</span> start.sh / <span style="color:#75715e"># 启动服务shell脚本</span><span style="color:#960050;background-color:#1e0010">
 </span><span style="color:#960050;background-color:#1e0010"></span><span style="color:#66d9ef">RUN</span> chmod +x /start.sh<span style="color:#960050;background-color:#1e0010">
-</span><span style="color:#960050;background-color:#1e0010"></span><span style="color:#960050;background-color:#1e0010">
+</span><span style="color:#960050;background-color:#1e0010">
 </span><span style="color:#960050;background-color:#1e0010"></span><span style="color:#66d9ef">EXPOSE</span><span style="color:#e6db74"> 3306 22 # 对外暴露服务接口</span><span style="color:#960050;background-color:#1e0010">
-</span><span style="color:#960050;background-color:#1e0010"></span><span style="color:#960050;background-color:#1e0010">
+</span><span style="color:#960050;background-color:#1e0010">
 </span><span style="color:#960050;background-color:#1e0010"></span><span style="color:#66d9ef">CMD</span> [<span style="color:#e6db74">&#34;/start.sh&#34;</span>]<span style="color:#960050;background-color:#1e0010">
 </span></code></pre></div><p>start.sh 启动服务脚本内容:</p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell"><span style="color:#75715e">#!/bin/bash
@@ -219,7 +219,7 @@ affiliates. Other names may be trademarks of their respective
 owners.
 
 Server version          5.7.29-0ubuntu0.16.04.1-log
-Protocol version        10
+Protocol version        <span style="color:#ae81ff">10</span>
 Connection              Localhost via UNIX socket
 UNIX socket             /var/run/mysqld/mysqld.sock
 Uptime:                 <span style="color:#ae81ff">6</span> min <span style="color:#ae81ff">42</span> sec

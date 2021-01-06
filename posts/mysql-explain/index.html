@@ -166,7 +166,7 @@
 <tr>
 <td>1</td>
 <td>SIMPLE</td>
-<td>station_gas</td>
+<td>t1</td>
 <td>NULL</td>
 <td>ref</td>
 <td>sid_num</td>
@@ -185,7 +185,7 @@
 <p>查询中每个 SELETC 字句的类型(简单或复杂)</p>
 <ul>
 <li>SIMPLE: 查询中不包含子查询或 UNION</li>
-<li>查询中若包含热河负责的子部分, 最外层查询标记为 PRIMARY</li>
+<li>查询中若包含任何复杂的子部分, 最外层查询标记为 PRIMARY</li>
 <li>在 SELECT 或 WHERE 列表中包含子查询, 该子查询标记为 SUBQUERY</li>
 <li>在 FROM 列表中包含的子查询标记为 DERIVED(衍生)</li>
 <li>SELECT 出现在 UNION 之后, 标记为 UNION, UNION 出现在 FROM 字句的子查询中, 外层 SELECT 标记为 DERIVED</li>
@@ -193,7 +193,7 @@
 <li>DERIVED 衍生表</li>
 </ul>
 <h3 id="type">type</h3>
-<p>MySQL 在表中以什么样的方式找到所需数据, 又称&quot;访问类型&rdquo;, 常见访问类型如下: (由最差到最好)</p>
+<p>MySQL 在表中以什么样的方式找到所需数据, 又称&quot;访问类型&quot;, 常见访问类型如下: (由最差到最好)</p>
 <ul>
 <li>ALL: full table scan, 全表扫描</li>
 <li>index: full index scan, 扫描索引</li>
@@ -263,7 +263,7 @@
 <h3 id="key_len">key_len</h3>
 <p>索引所使用的字节数</p>
 <h3 id="ref">ref</h3>
-<p>表连接匹配条件, 即哪些列或常量被用于查找索引列上的值, WHERE 中 col1='abc&rsquo;</p>
+<p>表连接匹配条件, 即哪些列或常量被用于查找索引列上的值, WHERE 中 col1=&lsquo;abc&rsquo;</p>
 <h3 id="rows">rows</h3>
 <p>MySQL 根据表统计信息和索引选用信息, 估算出所需读取的行数</p>
 <h3 id="extra">Extra</h3>

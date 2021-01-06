@@ -192,7 +192,7 @@ RTO(Retransmission TimeOut): 重传超时</p>
 <li>连接建好, 先初始化 cwnd = 1, 表明可以传一个 MSS 大小的数据。</li>
 <li>每当收到一个 ACK, cwnd++, 线性上升</li>
 <li>每当过了一个 RTT, cwnd = cwnd * 2, 指数让升</li>
-<li>还有一个 ssthresh(slow start threshold)是一个上限，当 cwnd &gt;= ssthresh 时, 就会进入&quot;拥塞避免算法&rdquo;</li>
+<li>还有一个 ssthresh(slow start threshold)是一个上限，当 cwnd &gt;= ssthresh 时, 就会进入&quot;拥塞避免算法&quot;</li>
 </ol>
 <h3 id="拥塞避免算法--congestion-avoidance">拥塞避免算法 – Congestion Avoidance</h3>
 <p>一般 ssthresh 的值是 65535 字节, 当 cwnd 达到这个值时后, 算法如下:</p>

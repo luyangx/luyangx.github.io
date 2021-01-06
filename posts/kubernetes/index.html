@@ -169,12 +169,12 @@
 <p>Pause 容器将 Pod 内多个业务容器封装在了一起, 一来方便内部各业务容器通信和共享资源, 二来方便 Master 检测其状态</p>
 <h3 id="label">Label</h3>
 <p>标签, 用来识别某类资源, 通过给指定资源打上1个或多个 Label 来实现多纬度分组功能. yaml 文件中 Label Selector 类似 SQL 中的 where, 可以方便的组合各种条件</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-yaml" data-lang="yaml"><span style="color:#66d9ef">apiVersion</span>: v1
-<span style="color:#66d9ef">kind</span>: ReplicationController
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-yaml" data-lang="yaml"><span style="color:#f92672">apiVersion</span>: <span style="color:#ae81ff">v1</span>
+<span style="color:#f92672">kind</span>: <span style="color:#ae81ff">ReplicationController</span>
 ...
-  <span style="color:#66d9ef">selector</span>:
-    <span style="color:#66d9ef">tier</span>: frontend
-    ...
+  <span style="color:#f92672">selector</span>:
+    <span style="color:#f92672">tier</span>: <span style="color:#ae81ff">frontend</span>
+    <span style="color:#ae81ff">...</span>
 ...
 </code></pre></div><h3 id="replication-controller">Replication Controller</h3>
 <p>控制某种 Pod 的副本数量在任意时刻符合某个预期值, 在 yaml 文件中主要设置:</p>
@@ -185,22 +185,22 @@
 </ul>
 <p>Master 上的 Controller Manager 组件会定期检测系统中对应存活的 Pod 是否满足期望值, 如果有过多的 Pod, 系统会停掉多余的 Pod, 否则用设置的 template 创建新的 Pod 到达指定的副本数量</p>
 <p>K8s 通过 Replication Controller 可以实现集群的高可用, Pod 的滚动升级, 扩容和缩容</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-yaml" data-lang="yaml"><span style="color:#66d9ef">apiVersion</span>: v1
-<span style="color:#66d9ef">kind</span>: ReplicationController
-<span style="color:#66d9ef">metadata</span>:
-  <span style="color:#66d9ef">name</span>: nginx-repset
-<span style="color:#66d9ef">spec</span>:
-  <span style="color:#66d9ef">replicas</span>: <span style="color:#ae81ff">1</span>
-  <span style="color:#66d9ef">selector</span>:
-    <span style="color:#66d9ef">tier</span>: frontend
-    ...
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-yaml" data-lang="yaml"><span style="color:#f92672">apiVersion</span>: <span style="color:#ae81ff">v1</span>
+<span style="color:#f92672">kind</span>: <span style="color:#ae81ff">ReplicationController</span>
+<span style="color:#f92672">metadata</span>:
+  <span style="color:#f92672">name</span>: <span style="color:#ae81ff">nginx-repset</span>
+<span style="color:#f92672">spec</span>:
+  <span style="color:#f92672">replicas</span>: <span style="color:#ae81ff">1</span>
+  <span style="color:#f92672">selector</span>:
+    <span style="color:#f92672">tier</span>: <span style="color:#ae81ff">frontend</span>
+    <span style="color:#ae81ff">...</span>
 ...
 </code></pre></div><h3 id="replica-set">Replica Set</h3>
 <p>Replication Controller 的升级版本, 用来替代 Replication Controller. 支持基于集合的 Label Selector(Set-based selector)</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-yaml" data-lang="yaml"><span style="color:#66d9ef">apiVersion</span>: extensions/v1beta1
-<span style="color:#66d9ef">kind</span>: ReplicaSet
-<span style="color:#66d9ef">metadata</span>:
-  <span style="color:#66d9ef">name</span>: nginx-repset
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-yaml" data-lang="yaml"><span style="color:#f92672">apiVersion</span>: <span style="color:#ae81ff">extensions/v1beta1</span>
+<span style="color:#f92672">kind</span>: <span style="color:#ae81ff">ReplicaSet</span>
+<span style="color:#f92672">metadata</span>:
+  <span style="color:#f92672">name</span>: <span style="color:#ae81ff">nginx-repset</span>
 </code></pre></div><h3 id="deployment">Deployment</h3>
 <p>更好的解决 Pod 的编排问题, 使用场景:</p>
 <ul>
@@ -212,24 +212,24 @@
 <li>扩展 Deployment 应对高负载</li>
 <li>清理旧版 Replica Sets</li>
 </ul>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-yaml" data-lang="yaml"><span style="color:#66d9ef">apiVersion</span>: extensions/v1beta1
-<span style="color:#66d9ef">kind</span>: Deployment
-<span style="color:#66d9ef">metadata</span>:
-  <span style="color:#66d9ef">name</span>: nginx-deployment
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-yaml" data-lang="yaml"><span style="color:#f92672">apiVersion</span>: <span style="color:#ae81ff">extensions/v1beta1</span>
+<span style="color:#f92672">kind</span>: <span style="color:#ae81ff">Deployment</span>
+<span style="color:#f92672">metadata</span>:
+  <span style="color:#f92672">name</span>: <span style="color:#ae81ff">nginx-deployment</span>
 </code></pre></div><h3 id="horizontal-pod-autoscaler">Horizontal Pod Autoscaler</h3>
 <p>Pod 横向自动扩容, HPA. 通过跟踪分析指定 Replication Controller 控制的 Pod 的负载情况, 来确定是否需要调整 Pod 的副本数量. CPU Utilization Percentage 和程序自定义的度量指标(TPS 或 QPS)2种方式度量 Pod 负载.</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-yaml" data-lang="yaml"><span style="color:#66d9ef">apiVersion</span>: autoscaling/v1
-<span style="color:#66d9ef">kind</span>: HorizontalPodAutoscaler
-<span style="color:#66d9ef">metadata</span>:
-  <span style="color:#66d9ef">name</span>: php-nginx
-<span style="color:#66d9ef">spec</span>:
-  <span style="color:#66d9ef">maxReplicas</span>: <span style="color:#ae81ff">10</span> 
-  <span style="color:#66d9ef">minReplicas</span>: <span style="color:#ae81ff">1</span>
-  <span style="color:#66d9ef">scaleTargetRef</span>:
-    <span style="color:#66d9ef">kind</span>: Deployment
-    <span style="color:#66d9ef">name</span>: php-nginx
-  <span style="color:#66d9ef">targetCPUUtilizationPercentage</span>: <span style="color:#ae81ff">90</span>
-  ...
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-yaml" data-lang="yaml"><span style="color:#f92672">apiVersion</span>: <span style="color:#ae81ff">autoscaling/v1</span>
+<span style="color:#f92672">kind</span>: <span style="color:#ae81ff">HorizontalPodAutoscaler</span>
+<span style="color:#f92672">metadata</span>:
+  <span style="color:#f92672">name</span>: <span style="color:#ae81ff">php-nginx</span>
+<span style="color:#f92672">spec</span>:
+  <span style="color:#f92672">maxReplicas</span>: <span style="color:#ae81ff">10</span> 
+  <span style="color:#f92672">minReplicas</span>: <span style="color:#ae81ff">1</span>
+  <span style="color:#f92672">scaleTargetRef</span>:
+    <span style="color:#f92672">kind</span>: <span style="color:#ae81ff">Deployment</span>
+    <span style="color:#f92672">name</span>: <span style="color:#ae81ff">php-nginx</span>
+  <span style="color:#f92672">targetCPUUtilizationPercentage</span>: <span style="color:#ae81ff">90</span>
+  <span style="color:#ae81ff">...</span>
 ...
 </code></pre></div><h3 id="statefulset">StatefulSet</h3>
 <p>面向有状态的服务, 有状态服务的特点:</p>
@@ -248,16 +248,16 @@
 <h3 id="service">Service</h3>
 <p>微服务, Service 定义了一个服务的访问入口地址, 背后有一组 Pod 组成的集群, 这组集群由 Replication Controller 保障正常运行</p>
 <p><img src="/images/k8s-service.jpg" alt=""></p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-yaml" data-lang="yaml"><span style="color:#66d9ef">apiVersion</span>: v1
-<span style="color:#66d9ef">kind</span>: Service
-<span style="color:#66d9ef">metadata</span>:
-  <span style="color:#66d9ef">name</span>: php-nginx
-<span style="color:#66d9ef">spac</span>:
-  <span style="color:#66d9ef">prots</span>:
-  - <span style="color:#66d9ef">port</span>: <span style="color:#ae81ff">8080</span>
-  <span style="color:#66d9ef">selector</span>:
-    <span style="color:#66d9ef">tier</span>: frontend
-  ...
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-yaml" data-lang="yaml"><span style="color:#f92672">apiVersion</span>: <span style="color:#ae81ff">v1</span>
+<span style="color:#f92672">kind</span>: <span style="color:#ae81ff">Service</span>
+<span style="color:#f92672">metadata</span>:
+  <span style="color:#f92672">name</span>: <span style="color:#ae81ff">php-nginx</span>
+<span style="color:#f92672">spac</span>:
+  <span style="color:#f92672">prots</span>:
+  - <span style="color:#f92672">port</span>: <span style="color:#ae81ff">8080</span>
+  <span style="color:#f92672">selector</span>:
+    <span style="color:#f92672">tier</span>: <span style="color:#ae81ff">frontend</span>
+  <span style="color:#ae81ff">...</span>
 ...
 </code></pre></div><h3 id="job">Job</h3>
 <p>批处理任务, Job 控制1组 Pod 并行或串行处理任务.</p>
@@ -267,39 +267,39 @@
 </ul>
 <h3 id="volume">Volume</h3>
 <p>存储卷, 可以被 Pod 中多个容器共享访问的目录, Volume 与 Pod 生命周期相同</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-yaml" data-lang="yaml"><span style="color:#66d9ef">spec</span>:
-  <span style="color:#66d9ef">volumes</span>:
-    - <span style="color:#66d9ef">name</span>: datavol
-      <span style="color:#66d9ef">emptyDir</span>: {}
-  <span style="color:#66d9ef">containers</span>:
-  - <span style="color:#66d9ef">name</span>: php
-    <span style="color:#66d9ef">image</span>: tomcat
-    <span style="color:#66d9ef">volumeMounts</span>:
-      - <span style="color:#66d9ef">mountPath</span>: /mydata
-      <span style="color:#66d9ef">name</span>: datavol
-    ...
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-yaml" data-lang="yaml"><span style="color:#f92672">spec</span>:
+  <span style="color:#f92672">volumes</span>:
+    - <span style="color:#f92672">name</span>: <span style="color:#ae81ff">datavol</span>
+      <span style="color:#f92672">emptyDir</span>: {}
+  <span style="color:#f92672">containers</span>:
+  - <span style="color:#f92672">name</span>: <span style="color:#ae81ff">php</span>
+    <span style="color:#f92672">image</span>: <span style="color:#ae81ff">tomcat</span>
+    <span style="color:#f92672">volumeMounts</span>:
+      - <span style="color:#f92672">mountPath</span>: <span style="color:#ae81ff">/mydata</span>
+      <span style="color:#f92672">name</span>: <span style="color:#ae81ff">datavol</span>
+    <span style="color:#ae81ff">...</span>
 ...
 </code></pre></div><h3 id="persistent-volume">Persistent Volume</h3>
 <p>网络存储, 不属于任何 Node(机器), 但每个 Node 都可以访问. 独立于 Pod.</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-yaml" data-lang="yaml"><span style="color:#66d9ef">apiVersion</span>: <span style="color:#ae81ff">1</span>
-<span style="color:#66d9ef">kind</span>: Persistent Volume
-<span style="color:#66d9ef">metadata</span>:
-  <span style="color:#66d9ef">name</span>: pv001
-<span style="color:#66d9ef">spec</span>:
-  <span style="color:#66d9ef">capacity</span>:
-    <span style="color:#66d9ef">storage</span>: 5Gi
-    ...
-  <span style="color:#66d9ef">nfs</span>:
-    <span style="color:#66d9ef">path</span>: /somepath
-    <span style="color:#66d9ef">server</span>: <span style="color:#ae81ff">172.18.0.2</span>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-yaml" data-lang="yaml"><span style="color:#f92672">apiVersion</span>: <span style="color:#ae81ff">1</span>
+<span style="color:#f92672">kind</span>: <span style="color:#ae81ff">Persistent Volume</span>
+<span style="color:#f92672">metadata</span>:
+  <span style="color:#f92672">name</span>: <span style="color:#ae81ff">pv001</span>
+<span style="color:#f92672">spec</span>:
+  <span style="color:#f92672">capacity</span>:
+    <span style="color:#f92672">storage</span>: <span style="color:#ae81ff">5Gi</span>
+    <span style="color:#ae81ff">...</span>
+  <span style="color:#f92672">nfs</span>:
+    <span style="color:#f92672">path</span>: <span style="color:#ae81ff">/somepath</span>
+    <span style="color:#f92672">server</span>: <span style="color:#ae81ff">172.18.0.2</span>
 </code></pre></div><h3 id="namespace">Namespace</h3>
 <p>实现多租户的资源隔离. 默认: default</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-yaml" data-lang="yaml"><span style="color:#66d9ef">apiVersion</span>: v1
-<span style="color:#66d9ef">kind</span>: Pod
-<span style="color:#66d9ef">metadata</span>:
-  <span style="color:#66d9ef">name</span>: busybox
-  <span style="color:#66d9ef">namespace</span>: development
-  ...
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-yaml" data-lang="yaml"><span style="color:#f92672">apiVersion</span>: <span style="color:#ae81ff">v1</span>
+<span style="color:#f92672">kind</span>: <span style="color:#ae81ff">Pod</span>
+<span style="color:#f92672">metadata</span>:
+  <span style="color:#f92672">name</span>: <span style="color:#ae81ff">busybox</span>
+  <span style="color:#f92672">namespace</span>: <span style="color:#ae81ff">development</span>
+  <span style="color:#ae81ff">...</span>
 ...  
 </code></pre></div><h3 id="annotation">Annotation</h3>
 <p>注解, 与 Label 类似, 用户任意定义的附加信息, 便于外部工具查找</p>
@@ -397,11 +397,11 @@ Run <span style="color:#e6db74">&#34;kubectl apply -f [podnetwork].yaml&#34;</sp
 Then you can join any number of worker nodes by running the following on each as root:
 
 <span style="color:#75715e"># 在 Node 机器上执行下面命令来加入 cluster 中</span>
-kubeadm join 192.168.201.77:6443 --token bk73j1.q4mhg5ny3a8rgeaa <span style="color:#ae81ff">\</span>
-    --discovery-token-ca-cert-hash sha256:0980c44413e330a03fc16bcae13b19163c31191cde81d44a847ab6c66922e376 
+kubeadm join 192.168.201.77:6443 --token bk73j1.q4mhg5ny3a8rgeaa <span style="color:#ae81ff">\
+</span><span style="color:#ae81ff"></span>    --discovery-token-ca-cert-hash sha256:0980c44413e330a03fc16bcae13b19163c31191cde81d44a847ab6c66922e376 
 </code></pre></div><p>在所有 Node 机器上执行加入 cluster 命令:</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">$ kubeadm join 192.168.201.77:6443 --token bk73j1.q4mhg5ny3a8rgeaa <span style="color:#ae81ff">\</span>
-    --discovery-token-ca-cert-hash sha256:0980c44413e330a03fc16bcae13b19163c31191cde81d44a847ab6c66922e376
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">$ kubeadm join 192.168.201.77:6443 --token bk73j1.q4mhg5ny3a8rgeaa <span style="color:#ae81ff">\
+</span><span style="color:#ae81ff"></span>    --discovery-token-ca-cert-hash sha256:0980c44413e330a03fc16bcae13b19163c31191cde81d44a847ab6c66922e376
     
 <span style="color:#75715e"># 出现以下信息表示加入 cluster 成功</span>
 This node has joined the cluster:

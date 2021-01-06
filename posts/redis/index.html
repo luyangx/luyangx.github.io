@@ -154,7 +154,7 @@
 <p>Redis 中最简单的数据结构, 内部是一个动态字符数组</p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">&gt; set name xyang
 OK
-&gt; set age 22
+&gt; set age <span style="color:#ae81ff">22</span>
 OK
 &gt; mget name age gender <span style="color:#75715e"># 批量获取多个 key</span>
 1<span style="color:#f92672">)</span> xyang
@@ -310,23 +310,23 @@ $ redis-server --loadmodule /path/to/redisbloom.so
 <p>限制用户在一定时间段内某个行为执行的次数</p>
 <h4 id="实现-4">实现</h4>
 <p>可以用 zset 来实现, 每个用会的每个行为用 zset 保存, score 保存毫秒时间戳</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-php" data-lang="php">/**
- * 检测用户某段时间内 action 次数是否超过 $maxCount
- */
-function checkAction($uid, $action, $periodSecond, $maxCount)
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-php" data-lang="php"><span style="color:#e6db74">/**
+</span><span style="color:#e6db74"> * 检测用户某段时间内 action 次数是否超过 $maxCount
+</span><span style="color:#e6db74"> */</span>
+<span style="color:#66d9ef">function</span> <span style="color:#a6e22e">checkAction</span>($uid, $action, $periodSecond, $maxCount)
 {
-    $redis = new Redis();
+    $redis <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> <span style="color:#a6e22e">Redis</span>();
     
-    $key = &#34;limit:{$uid}:{$action}&#34;;
-    $value = $score = round(microtime(true) * 1000);
+    $key <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;limit:</span><span style="color:#e6db74">{</span>$uid<span style="color:#e6db74">}</span><span style="color:#e6db74">:</span><span style="color:#e6db74">{</span>$action<span style="color:#e6db74">}</span><span style="color:#e6db74">&#34;</span>;
+    $value <span style="color:#f92672">=</span> $score <span style="color:#f92672">=</span> <span style="color:#a6e22e">round</span>(<span style="color:#a6e22e">microtime</span>(<span style="color:#66d9ef">true</span>) <span style="color:#f92672">*</span> <span style="color:#ae81ff">1000</span>);
     
-    // 增加 $score 和 $value 用毫秒时间戳
-    $redis-&gt;zadd($key, $score, $value);
-    // 删除 $periodSecond 之前的记录
-    $redis-&gt;zremrangebyscore($key, 0, $score - $periodSecond * 1000);
-    // 获取 action 数量
-    $count = $redis-&gt;zcard($key);
-    return $count <span style="color:#960050;background-color:#1e0010">&lt;</span> $maxCount;
+    <span style="color:#75715e">// 增加 $score 和 $value 用毫秒时间戳
+</span><span style="color:#75715e"></span>    $redis<span style="color:#f92672">-&gt;</span><span style="color:#a6e22e">zadd</span>($key, $score, $value);
+    <span style="color:#75715e">// 删除 $periodSecond 之前的记录
+</span><span style="color:#75715e"></span>    $redis<span style="color:#f92672">-&gt;</span><span style="color:#a6e22e">zremrangebyscore</span>($key, <span style="color:#ae81ff">0</span>, $score <span style="color:#f92672">-</span> $periodSecond <span style="color:#f92672">*</span> <span style="color:#ae81ff">1000</span>);
+    <span style="color:#75715e">// 获取 action 数量
+</span><span style="color:#75715e"></span>    $count <span style="color:#f92672">=</span> $redis<span style="color:#f92672">-&gt;</span><span style="color:#a6e22e">zcard</span>($key);
+    <span style="color:#66d9ef">return</span> $count <span style="color:#f92672">&lt;</span> $maxCount;
 }
 </code></pre></div><p>用 score 根据 periodSecond 维护一个时间窗口, 统计该时间窗口中 value 个数</p>
         </p>

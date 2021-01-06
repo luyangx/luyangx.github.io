@@ -179,7 +179,7 @@ log-bin <span style="color:#f92672">=</span> mysql-bin // log文件名前缀, �
 
 <span style="color:#75715e"># slave</span>
 <span style="color:#f92672">[</span>mysqld<span style="color:#f92672">]</span>
-server-id <span style="color:#f92672">=</span> 101
+server-id <span style="color:#f92672">=</span> <span style="color:#ae81ff">101</span>
 log-bin <span style="color:#f92672">=</span> mysql-bin
 </code></pre></div><ul>
 <li>运行master, port=3306</li>
@@ -224,12 +224,12 @@ show slave status<span style="color:#ae81ff">\G</span>
                Slave_IO_State: Waiting <span style="color:#66d9ef">for</span> master to send event
                   Master_Host: 172.18.0.3
                   Master_User: mysql_rep
-                  Master_Port: 3306
-                Connect_Retry: 60
+                  Master_Port: <span style="color:#ae81ff">3306</span>
+                Connect_Retry: <span style="color:#ae81ff">60</span>
               Master_Log_File: mysql-bin.000001 // 目前复制master的文件index
           Read_Master_Log_Pos: <span style="color:#ae81ff">455</span> // 最新复制文件位置
                Relay_Log_File: 5bf0e96072ce-relay-bin.000004 // slave中继日志
-                Relay_Log_Pos: 668
+                Relay_Log_Pos: <span style="color:#ae81ff">668</span>
         Relay_Master_Log_File: mysql-bin.000002
              Slave_IO_Running: Yes // Yes 表示允许正常, 很重要
             Slave_SQL_Running: Yes // Yes 表示允许正常, 很重要
@@ -239,25 +239,25 @@ show slave status<span style="color:#ae81ff">\G</span>
        Replicate_Ignore_Table: 
       Replicate_Wild_Do_Table: 
   Replicate_Wild_Ignore_Table: 
-                   Last_Errno: 0
+                   Last_Errno: <span style="color:#ae81ff">0</span>
                    Last_Error: 
-                 Skip_Counter: 0
-          Exec_Master_Log_Pos: 455
-              Relay_Log_Space: 929
+                 Skip_Counter: <span style="color:#ae81ff">0</span>
+          Exec_Master_Log_Pos: <span style="color:#ae81ff">455</span>
+              Relay_Log_Space: <span style="color:#ae81ff">929</span>
               Until_Condition: None
                Until_Log_File: 
-                Until_Log_Pos: 0
+                Until_Log_Pos: <span style="color:#ae81ff">0</span>
            Master_SSL_Allowed: No
            Master_SSL_CA_File: 
            Master_SSL_CA_Path: 
               Master_SSL_Cert: 
             Master_SSL_Cipher: 
                Master_SSL_Key: 
-        Seconds_Behind_Master: 0
+        Seconds_Behind_Master: <span style="color:#ae81ff">0</span>
 Master_SSL_Verify_Server_Cert: No
                 Last_IO_Errno: <span style="color:#ae81ff">0</span> // 非0代表有错误发送
                 Last_IO_Error:   // 错误信息
-               Last_SQL_Errno: 0
+               Last_SQL_Errno: <span style="color:#ae81ff">0</span>
                Last_SQL_Error: 
                ...省略
 </code></pre></div>
