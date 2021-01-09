@@ -7,7 +7,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="format-detection" content="telephone=no"/>
 
-    <title>HTTP | 扬</title>
+    <title>GoAccess 展示更多 Browsers | 扬</title>
     
     <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
     <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
@@ -28,8 +28,6 @@
     
     
  
-    
-    <link rel="alternate" type="application/rss+xml" href="https://luyangx.github.com/tags/http/index.xml" title="扬" />
     </head>
 
     <body>
@@ -138,42 +136,70 @@
         <div id="content" class="content-container">
         
 
-  <h1>Tagged "HTTP"</h1>
-  
-  
+<h1 class="post-title">GoAccess 展示更多 Browsers</h1>
     
-    <article>
-            <h2>
-                <a href="https://luyangx.github.com/posts/http2/">
-                    HTTP/2
-                </a>
-            </h2>
-            <div>
-                <p><p>HTTP2 已经发布已久, 性能较 HTTP/1.1 有了很多提升, 并且完全兼容 HTTP/1.1 语义, 又进一步减少了网络延迟.</p></p>
-                
-            </div>
-            <div class="post-footer">
-            <time>May 27, 2016</time>
-            </div> 
-        </article>
+    <time>January 8, 2021</time>
     
-  
+    <div>
+        <p>
+        <p>今天公司需要分析一个点播系统的 web 访问日志, 网上找到了 <a href="https://goaccess.io/">GoAccess</a> 这个工具, 按照教程快速搭建好了后发现页面上 <strong>BROWSERS</strong> 区域中有 90% 多的 Unknown, 记录下处理过程.</p>
+<p>查看了下源码文件 <a href="https://github.com/allinurl/goaccess/blob/master/src/browsers.c">src/browsers.c</a> 发现, BROWSERS 的识别都是代码中提前定义好的</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-c" data-lang="c"><span style="color:#66d9ef">static</span> <span style="color:#66d9ef">char</span> <span style="color:#f92672">***</span>browsers_hash <span style="color:#f92672">=</span> NULL;
+
+<span style="color:#75715e">/* {&#34;search string&#34;, &#34;belongs to&#34;} */</span>
+<span style="color:#66d9ef">static</span> <span style="color:#66d9ef">const</span> <span style="color:#66d9ef">char</span> <span style="color:#f92672">*</span>browsers[][<span style="color:#ae81ff">2</span>] <span style="color:#f92672">=</span> {
+  <span style="color:#75715e">/* Game systems: most of them are based of major browsers,
+</span><span style="color:#75715e">   * thus they need to go before. */</span>
+  {<span style="color:#e6db74">&#34;Xbox One&#34;</span>, <span style="color:#e6db74">&#34;Game Systems&#34;</span>},
+  {<span style="color:#e6db74">&#34;Xbox&#34;</span>, <span style="color:#e6db74">&#34;Game Systems&#34;</span>},
+  {<span style="color:#e6db74">&#34;PlayStation&#34;</span>, <span style="color:#e6db74">&#34;Game Systems&#34;</span>},
+  {<span style="color:#e6db74">&#34;NintendoBrowser&#34;</span>, <span style="color:#e6db74">&#34;Game Systems&#34;</span>},
+  {<span style="color:#e6db74">&#34;Valve Steam&#34;</span>, <span style="color:#e6db74">&#34;Game Systems&#34;</span>},
+  {<span style="color:#e6db74">&#34;Origin&#34;</span>, <span style="color:#e6db74">&#34;Game Systems&#34;</span>},
+  {<span style="color:#e6db74">&#34;Raptr&#34;</span>, <span style="color:#e6db74">&#34;Game Systems&#34;</span>},
+  ... <span style="color:#960050;background-color:#1e0010">各种</span> UA
+</code></pre></div><p>定义的基本都是不同的浏览器, 爬虫的 UA, 而公司点播系统日志中基本都是跟电视app相关的 UA, 这些 UA 又没有在 browsers_hash 中定义, 那就需要自己扩充下 browsers_hash 了</p>
+<p>首先找出日志中去重后的所有 UA</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell"><span style="color:#75715e"># ua 在日志中第12列</span>
+awk  <span style="color:#e6db74">&#39;{print $12}&#39;</span> ./logfile | sort | uniq
+</code></pre></div><p>按照 <a href="https://github.com/allinurl/goaccess/blob/master/src/browsers.c">src/browsers.c</a> 中 browsers_hash 的定义格式整理下</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-c" data-lang="c"> <span style="color:#75715e">/* TV */</span>
+{<span style="color:#e6db74">&#34;ADI&#34;</span>, <span style="color:#e6db74">&#34;ADI&#34;</span>},
+{<span style="color:#e6db74">&#34;AlionPlayer&#34;</span>, <span style="color:#e6db74">&#34;AlionPlayer&#34;</span>},
+{<span style="color:#e6db74">&#34;Allwinner/CedarX&#34;</span>, <span style="color:#e6db74">&#34;Allwinner&#34;</span>},
+{<span style="color:#e6db74">&#34;AppleCoreMedia/1.0.0.7B367&#34;</span>, <span style="color:#e6db74">&#34;AppleCoreMedia&#34;</span>},
+{<span style="color:#e6db74">&#34;Dalvik/1.6.0&#34;</span>, <span style="color:#e6db74">&#34;Dalvik&#34;</span>},
+{<span style="color:#e6db74">&#34;Dalvik/2.1.0&#34;</span>, <span style="color:#e6db74">&#34;Dalvik&#34;</span>},
+{<span style="color:#e6db74">&#34;ExoPlayerDemo/1.0.4&#34;</span>, <span style="color:#e6db74">&#34;ExoPlayerDemo&#34;</span>},
+{<span style="color:#e6db74">&#34;GStreamer&#34;</span>, <span style="color:#e6db74">&#34;GStreamer&#34;</span>},
+{<span style="color:#e6db74">&#34;hsp/1.0&#34;</span>, <span style="color:#e6db74">&#34;hsp&#34;</span>},
+{<span style="color:#e6db74">&#34;hsp/1.5&#34;</span>, <span style="color:#e6db74">&#34;hsp&#34;</span>},
+{<span style="color:#e6db74">&#34;Lavf/55.48.100&#34;</span>, <span style="color:#e6db74">&#34;Lavf&#34;</span>},
+{<span style="color:#e6db74">&#34;Lavf/56.15.102&#34;</span>, <span style="color:#e6db74">&#34;Lavf&#34;</span>},
+...
+</code></pre></div><p>剩下就是重新编译下 <a href="https://github.com/allinurl/goaccess/blob/master/src/browsers.c">src/browsers.c</a> 源码, 开启服务</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">$ cd goaccess-1.4.3/
+$ ./configure --enable-utf8 --enable-geoip<span style="color:#f92672">=</span>legacy
+$ make
+$ make install
+
+$ goaccess ./logfile -o ./report.html --real-time-html --time-format<span style="color:#f92672">=</span>%H:%M:%S --date-format<span style="color:#f92672">=</span>%d/%b/%Y --log-format<span style="color:#f92672">=</span>COMBINED --daemonize
+</code></pre></div><p>浏览 report.html 页面, 就能看到 <strong>BROWSERS</strong> 区域展示正常了</p>
+<p><img src="https://s3.ax1x.com/2021/01/09/sQiy9A.png" alt=""></p>
+        </p>
+    </div>
     
-    <article>
-            <h2>
-                <a href="https://luyangx.github.com/posts/http1/">
-                    HTTP/1.1 . 连接/缓存/安全
-                </a>
-            </h2>
-            <div>
-                <p><p>HTTP/1.1 目前在互联网上被广泛使用, 记录一下 HTTP1.1 重要的几块内容, 包括连接, 缓存控制等.</p></p>
-                
-            </div>
-            <div class="post-footer">
-            <time>May 2, 2014</time>
-            </div> 
-        </article>
+
     
+
+    <div class="page-footer">
+        
+        <hr class="footer-divider">
+        
+            <a class="tag" href="/tags/%E5%B7%A5%E5%85%B7">#工具</a>
+        
+      
+    </div>
 
 
         

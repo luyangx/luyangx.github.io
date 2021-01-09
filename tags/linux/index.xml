@@ -2,17 +2,17 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Linux on 扬</title>
-    <link>https://www.luyang.ink/tags/linux/</link>
+    <link>https://luyangx.github.com/tags/linux/</link>
     <description>Recent content in Linux on 扬</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>zh-cn</language>
-    <lastBuildDate>Sun, 06 Apr 2014 20:02:45 +0800</lastBuildDate><atom:link href="https://www.luyang.ink/tags/linux/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Sun, 06 Apr 2014 20:02:45 +0800</lastBuildDate><atom:link href="https://luyangx.github.com/tags/linux/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Linux 命令</title>
-      <link>https://www.luyang.ink/posts/linux-command/</link>
+      <link>https://luyangx.github.com/posts/linux-command/</link>
       <pubDate>Sun, 06 Apr 2014 20:02:45 +0800</pubDate>
       
-      <guid>https://www.luyang.ink/posts/linux-command/</guid>
+      <guid>https://luyangx.github.com/posts/linux-command/</guid>
       <description>&lt;p&gt;记录几个跟排查性能有关, 还有比较重要的 Linux 命令&lt;/p&gt;</description>
     </item>
     
