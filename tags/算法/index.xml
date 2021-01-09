@@ -2,17 +2,17 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>算法 on 扬</title>
-    <link>https://luyangx.github.com/tags/%E7%AE%97%E6%B3%95/</link>
+    <link>https://luyangx.github.io/tags/%E7%AE%97%E6%B3%95/</link>
     <description>Recent content in 算法 on 扬</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>zh-cn</language>
-    <lastBuildDate>Tue, 15 Nov 2016 21:23:12 +0800</lastBuildDate><atom:link href="https://luyangx.github.com/tags/%E7%AE%97%E6%B3%95/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Tue, 15 Nov 2016 21:23:12 +0800</lastBuildDate><atom:link href="https://luyangx.github.io/tags/%E7%AE%97%E6%B3%95/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>分布式系统中的一些一致性协议和算法</title>
-      <link>https://luyangx.github.com/posts/distributed-system-algorithm/</link>
+      <link>https://luyangx.github.io/posts/distributed-system-algorithm/</link>
       <pubDate>Tue, 15 Nov 2016 21:23:12 +0800</pubDate>
       
-      <guid>https://luyangx.github.com/posts/distributed-system-algorithm/</guid>
+      <guid>https://luyangx.github.io/posts/distributed-system-algorithm/</guid>
       <description>&lt;p&gt;分布式系统中涉及到的一些一致性的协议和算法, 简单记录下.&lt;/p&gt;</description>
     </item>
     

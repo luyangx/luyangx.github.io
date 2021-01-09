@@ -2,53 +2,53 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>C on 扬</title>
-    <link>https://luyangx.github.com/tags/c/</link>
+    <link>https://luyangx.github.io/tags/c/</link>
     <description>Recent content in C on 扬</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>zh-cn</language>
-    <lastBuildDate>Mon, 18 Apr 2016 20:24:24 +0800</lastBuildDate><atom:link href="https://luyangx.github.com/tags/c/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Mon, 18 Apr 2016 20:24:24 +0800</lastBuildDate><atom:link href="https://luyangx.github.io/tags/c/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Dynamic Memory Management</title>
-      <link>https://luyangx.github.com/posts/dynamic-memory-management/</link>
+      <link>https://luyangx.github.io/posts/dynamic-memory-management/</link>
       <pubDate>Mon, 18 Apr 2016 20:24:24 +0800</pubDate>
       
-      <guid>https://luyangx.github.com/posts/dynamic-memory-management/</guid>
+      <guid>https://luyangx.github.io/posts/dynamic-memory-management/</guid>
       <description>&lt;p&gt;&amp;laquo;C in a Nutshell&amp;raquo;笔记 - 内存管理&lt;/p&gt;</description>
     </item>
     
     <item>
       <title>Input and Output</title>
-      <link>https://luyangx.github.com/posts/input-and-output/</link>
+      <link>https://luyangx.github.io/posts/input-and-output/</link>
       <pubDate>Sat, 16 Apr 2016 21:01:12 +0800</pubDate>
       
-      <guid>https://luyangx.github.com/posts/input-and-output/</guid>
+      <guid>https://luyangx.github.io/posts/input-and-output/</guid>
       <description>&lt;p&gt;&amp;laquo;C in a Nutshell&amp;raquo;笔记 - 输入输出&lt;/p&gt;</description>
     </item>
     
     <item>
       <title>Multithreading</title>
-      <link>https://luyangx.github.com/posts/multithreading/</link>
+      <link>https://luyangx.github.io/posts/multithreading/</link>
       <pubDate>Fri, 15 Apr 2016 20:33:58 +0800</pubDate>
       
-      <guid>https://luyangx.github.com/posts/multithreading/</guid>
+      <guid>https://luyangx.github.io/posts/multithreading/</guid>
       <description>&lt;p&gt;&amp;laquo;C in a Nutshell&amp;raquo;笔记 - 多线程&lt;/p&gt;</description>
     </item>
     
     <item>
       <title>Declarations</title>
-      <link>https://luyangx.github.com/posts/declarations/</link>
+      <link>https://luyangx.github.io/posts/declarations/</link>
       <pubDate>Tue, 05 Apr 2016 21:33:01 +0800</pubDate>
       
-      <guid>https://luyangx.github.com/posts/declarations/</guid>
+      <guid>https://luyangx.github.io/posts/declarations/</guid>
       <description>&lt;p&gt;&amp;laquo;C in a Nutshell&amp;raquo;笔记 - 声明&lt;/p&gt;</description>
     </item>
     
     <item>
       <title>Structure</title>
-      <link>https://luyangx.github.com/posts/structure/</link>
+      <link>https://luyangx.github.io/posts/structure/</link>
       <pubDate>Tue, 05 Apr 2016 19:06:42 +0800</pubDate>
       
-      <guid>https://luyangx.github.com/posts/structure/</guid>
+      <guid>https://luyangx.github.io/posts/structure/</guid>
       <description>&lt;p&gt;&amp;laquo;C in a Nutshell&amp;raquo;笔记 - 结构体&lt;/p&gt;</description>
     </item>
     

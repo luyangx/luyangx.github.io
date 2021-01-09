@@ -2,388 +2,388 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>扬</title>
-    <link>https://luyangx.github.com/</link>
+    <link>https://luyangx.github.io/</link>
     <description>Recent content on 扬</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>zh-cn</language>
-    <lastBuildDate>Fri, 08 Jan 2021 20:18:57 +0800</lastBuildDate><atom:link href="https://luyangx.github.com/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Fri, 08 Jan 2021 20:18:57 +0800</lastBuildDate><atom:link href="https://luyangx.github.io/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>GoAccess 展示更多 Browsers</title>
-      <link>https://luyangx.github.com/posts/goaccess-browser/</link>
+      <link>https://luyangx.github.io/posts/goaccess-browser/</link>
       <pubDate>Fri, 08 Jan 2021 20:18:57 +0800</pubDate>
       
-      <guid>https://luyangx.github.com/posts/goaccess-browser/</guid>
+      <guid>https://luyangx.github.io/posts/goaccess-browser/</guid>
       <description>&lt;p&gt;今天公司需要分析一个点播系统的 web 访问日志, 网上找到了 &lt;a href=&#34;https://goaccess.io/&#34;&gt;GoAccess&lt;/a&gt; 这个工具, 按照教程快速搭建好了后发现页面上 &lt;strong&gt;BROWSERS&lt;/strong&gt; 区域中有 90% 多的 Unknown, 记录下处理过程.&lt;/p&gt;</description>
     </item>
     
     <item>
       <title>华擎Z390极限玩家4 主板和铠侠RC10</title>
-      <link>https://luyangx.github.com/posts/asrock-ssd-rc10/</link>
+      <link>https://luyangx.github.io/posts/asrock-ssd-rc10/</link>
       <pubDate>Tue, 05 Jan 2021 19:15:24 +0800</pubDate>
       
-      <guid>https://luyangx.github.com/posts/asrock-ssd-rc10/</guid>
+      <guid>https://luyangx.github.io/posts/asrock-ssd-rc10/</guid>
       <description>&lt;p&gt;给自己的娱乐主机更换了一块 铠侠 RC10 500G SSD, 没想到这也有坑&lt;/p&gt;</description>
     </item>
     
     <item>
       <title>About</title>
-      <link>https://luyangx.github.com/about/</link>
+      <link>https://luyangx.github.io/about/</link>
       <pubDate>Tue, 28 May 2019 00:00:00 +0000</pubDate>
       
-      <guid>https://luyangx.github.com/about/</guid>
+      <guid>https://luyangx.github.io/about/</guid>
       <description>Written in Go, Hugo is an open source static site generator available under the Apache License 2.</description>
     </item>
     
     <item>
       <title>Kubernetes</title>
-      <link>https://luyangx.github.com/posts/kubernetes/</link>
+      <link>https://luyangx.github.io/posts/kubernetes/</link>
       <pubDate>Sat, 09 Feb 2019 09:46:29 +0800</pubDate>
       
-      <guid>https://luyangx.github.com/posts/kubernetes/</guid>
+      <guid>https://luyangx.github.io/posts/kubernetes/</guid>
       <description>&lt;p&gt;Kubernetes 简称 K8s, 一个生成级别的容器编排系统. 这个还是得了解下, 免得落伍.&lt;/p&gt;</description>
     </item>
     
     <item>
       <title>Go 语言基础 . 错误和异常</title>
-      <link>https://luyangx.github.com/posts/go-error-exception/</link>
+      <link>https://luyangx.github.io/posts/go-error-exception/</link>
       <pubDate>Sat, 05 May 2018 19:54:42 +0800</pubDate>
       
-      <guid>https://luyangx.github.com/posts/go-error-exception/</guid>
+      <guid>https://luyangx.github.io/posts/go-error-exception/</guid>
       <description>&lt;p&gt;记录一下学习 &lt;a href=&#34;https://legacy.gitbook.com/book/chai2010/advanced-go-programming-book&#34;&gt;《Go语言高级编程》&lt;/a&gt; 中的错误和异常&lt;/p&gt;</description>
     </item>
     
     <item>
       <title>Go 语言基础 . 并发模式</title>
-      <link>https://luyangx.github.com/posts/go-concurrent-mode/</link>
+      <link>https://luyangx.github.io/posts/go-concurrent-mode/</link>
       <pubDate>Mon, 30 Apr 2018 21:34:15 +0800</pubDate>
       
-      <guid>https://luyangx.github.com/posts/go-concurrent-mode/</guid>
+      <guid>https://luyangx.github.io/posts/go-concurrent-mode/</guid>
       <description>&lt;p&gt;记录一下学习 &lt;a href=&#34;https://legacy.gitbook.com/book/chai2010/advanced-go-programming-book&#34;&gt;《Go语言高级编程》&lt;/a&gt; 中的常见并发模式&lt;/p&gt;</description>
     </item>
     
     <item>
       <title>Go 语言基础 . 面向并发的内存模型</title>
-      <link>https://luyangx.github.com/posts/go-concurrent/</link>
+      <link>https://luyangx.github.io/posts/go-concurrent/</link>
       <pubDate>Sat, 28 Apr 2018 22:15:41 +0800</pubDate>
       
-      <guid>https://luyangx.github.com/posts/go-concurrent/</guid>
+      <guid>https://luyangx.github.io/posts/go-concurrent/</guid>
       <description>&lt;p&gt;记录一下学习 &lt;a href=&#34;https://legacy.gitbook.com/book/chai2010/advanced-go-programming-book&#34;&gt;《Go语言高级编程》&lt;/a&gt; 中的面向并发的内存模型&lt;/p&gt;</description>
     </item>
     
     <item>
       <title>Go 语言基础 . 函数、方法和接口</title>
-      <link>https://luyangx.github.com/posts/go-func-method-interface/</link>
+      <link>https://luyangx.github.io/posts/go-func-method-interface/</link>
       <pubDate>Thu, 26 Apr 2018 21:03:56 +0800</pubDate>
       
-      <guid>https://luyangx.github.com/posts/go-func-method-interface/</guid>
+      <guid>https://luyangx.github.io/posts/go-func-method-interface/</guid>
       <description>&lt;p&gt;记录一下学习 &lt;a href=&#34;https://legacy.gitbook.com/book/chai2010/advanced-go-programming-book&#34;&gt;《Go语言高级编程》&lt;/a&gt; 中的函数、方法和接口&lt;/p&gt;</description>
     </item>
     
     <item>
       <title>Go 语言基础 . 数组、字符串和切片</title>
-      <link>https://luyangx.github.com/posts/go-array-string-slice/</link>
+      <link>https://luyangx.github.io/posts/go-array-string-slice/</link>
       <pubDate>Mon, 23 Apr 2018 19:21:34 +0800</pubDate>
       
-      <guid>https://luyangx.github.com/posts/go-array-string-slice/</guid>
+      <guid>https://luyangx.github.io/posts/go-array-string-slice/</guid>
       <description>&lt;p&gt;记录一下学习 &lt;a href=&#34;https://legacy.gitbook.com/book/chai2010/advanced-go-programming-book&#34;&gt;《Go语言高级编程》&lt;/a&gt; 中的数据结构 . 数组、字符串和切片&lt;/p&gt;</description>
     </item>
     
     <item>
       <title>PHP7 vs PHP5 zval 变化</title>
-      <link>https://luyangx.github.com/posts/php7-vs-php5-zval/</link>
+      <link>https://luyangx.github.io/posts/php7-vs-php5-zval/</link>
       <pubDate>Fri, 13 Apr 2018 19:58:16 +0800</pubDate>
       
-      <guid>https://luyangx.github.com/posts/php7-vs-php5-zval/</guid>
+      <guid>https://luyangx.github.io/posts/php7-vs-php5-zval/</guid>
       <description>&lt;p&gt;PHP7 已经发布很长时间了, 奈何公司现在还在用 PHP5.6, 不知何时可以上 7? PHP7 对 zval 做了优化, 之前看到鸟哥发了一篇对比 PHP5.6 zval 的&lt;a href=&#34;https://www.laruence.com/2018/04/08/3170.html&#34;&gt;博文&lt;/a&gt;, 学校整理下.&lt;/p&gt;</description>
     </item>
     
     <item>
       <title>Redis Internal . Part 2</title>
-      <link>https://luyangx.github.com/posts/redis-internal-2/</link>
+      <link>https://luyangx.github.io/posts/redis-internal-2/</link>
       <pubDate>Thu, 12 Oct 2017 23:02:12 +0800</pubDate>
       
-      <guid>https://luyangx.github.com/posts/redis-internal-2/</guid>
+      <guid>https://luyangx.github.io/posts/redis-internal-2/</guid>
       <description>&lt;p&gt;继续了解 Redis 内部. 记录一下 ziplist, quicklist&lt;/p&gt;</description>
     </item>
     
     <item>
       <title>Redis Internal . Part 1</title>
-      <link>https://luyangx.github.com/posts/redis-internal-1/</link>
+      <link>https://luyangx.github.io/posts/redis-internal-1/</link>
       <pubDate>Mon, 09 Oct 2017 22:51:43 +0800</pubDate>
       
-      <guid>https://luyangx.github.com/posts/redis-internal-1/</guid>
+      <guid>https://luyangx.github.io/posts/redis-internal-1/</guid>
       <description>&lt;p&gt;现在工作中已经离不开 Redis 了, 需要搞清楚它的内部原理, 知己知彼.&lt;/p&gt;</description>
     </item>
     
     <item>
       <title>Redis 学习记录</title>
-      <link>https://luyangx.github.com/posts/redis/</link>
+      <link>https://luyangx.github.io/posts/redis/</link>
       <pubDate>Thu, 05 Oct 2017 21:38:13 +0800</pubDate>
       
-      <guid>https://luyangx.github.com/posts/redis/</guid>
+      <guid>https://luyangx.github.io/posts/redis/</guid>
       <description>&lt;p&gt;平时工作中用 Redis 基本就是各种 Cache, 偶尔会当锁用解决下并发操作的问题, 这里记录一下其他使用场景.&lt;/p&gt;</description>
     </item>
     
     <item>
       <title>Docker 之 Dockerfile 定制镜像</title>
-      <link>https://luyangx.github.com/posts/docker-mysql-sshd/</link>
+      <link>https://luyangx.github.io/posts/docker-mysql-sshd/</link>
       <pubDate>Wed, 07 Dec 2016 21:07:41 +0800</pubDate>
       
-      <guid>https://luyangx.github.com/posts/docker-mysql-sshd/</guid>
+      <guid>https://luyangx.github.io/posts/docker-mysql-sshd/</guid>
       <description>&lt;p&gt;通过 Dockerfile 定制一个基于 ubuntu, 包含 sshd, mysqld 服务的 image, 记录一下, 后面可能会用到, 例如搭建 &lt;a href=&#34;https://code.google.com/archive/p/mysql-master-ha/&#34;&gt;mha&lt;/a&gt; 环境, 可以不需要安装虚拟机了.&lt;/p&gt;</description>
     </item>
     
     <item>
       <title>Docker 学习记录</title>
-      <link>https://luyangx.github.com/posts/docker/</link>
+      <link>https://luyangx.github.io/posts/docker/</link>
       <pubDate>Sat, 03 Dec 2016 19:55:39 +0800</pubDate>
       
-      <guid>https://luyangx.github.com/posts/docker/</guid>
+      <guid>https://luyangx.github.io/posts/docker/</guid>
       <description>&lt;p&gt;Docker 给人很爽的地方就是一次创建或配置, 之后就可以在任何地方, 任何时间让应用正常运行. 不用再按照任何 VM 或 PD 虚拟机了, 绝对轻量.&lt;/p&gt;</description>
     </item>
     
     <item>
       <title>Elasticsearch 学习记录</title>
-      <link>https://luyangx.github.com/posts/elasticsearch/</link>
+      <link>https://luyangx.github.io/posts/elasticsearch/</link>
       <pubDate>Mon, 28 Nov 2016 21:38:13 +0800</pubDate>
       
-      <guid>https://luyangx.github.com/posts/elasticsearch/</guid>
+      <guid>https://luyangx.github.io/posts/elasticsearch/</guid>
       <description>&lt;p&gt;公司最近在做一个政府用车的项目, 其中订单搜索这块用到了 Elasticsearch, 同时公司里的把脉平台也使用了 Elasticsearch, 学习记录一下.&lt;/p&gt;</description>
     </item>
     
     <item>
       <title>Kafka 学习记录</title>
-      <link>https://luyangx.github.com/posts/kafka/</link>
+      <link>https://luyangx.github.io/posts/kafka/</link>
       <pubDate>Sat, 19 Nov 2016 21:38:13 +0800</pubDate>
       
-      <guid>https://luyangx.github.com/posts/kafka/</guid>
+      <guid>https://luyangx.github.io/posts/kafka/</guid>
       <description>&lt;p&gt;Kafka 已经被定义为一个分布式流式处理平台, 它有高吞吐, 可持久化, 可水平扩展, 支持流数据处理等特性, 学习记录一下.&lt;/p&gt;</description>
     </item>
     
     <item>
       <title>分布式系统中的一些一致性协议和算法</title>
-      <link>https://luyangx.github.com/posts/distributed-system-algorithm/</link>
+      <link>https://luyangx.github.io/posts/distributed-system-algorithm/</link>
       <pubDate>Tue, 15 Nov 2016 21:23:12 +0800</pubDate>
       
-      <guid>https://luyangx.github.com/posts/distributed-system-algorithm/</guid>
+      <guid>https://luyangx.github.io/posts/distributed-system-algorithm/</guid>
       <description>&lt;p&gt;分布式系统中涉及到的一些一致性的协议和算法, 简单记录下.&lt;/p&gt;</description>
     </item>
     
     <item>
       <title>ZooKeeper 学习记录</title>
-      <link>https://luyangx.github.com/posts/zookeeper/</link>
+      <link>https://luyangx.github.io/posts/zookeeper/</link>
       <pubDate>Sun, 13 Nov 2016 23:02:46 +0800</pubDate>
       
-      <guid>https://luyangx.github.com/posts/zookeeper/</guid>
+      <guid>https://luyangx.github.io/posts/zookeeper/</guid>
       <description>&lt;p&gt;公司内部有使用 ZooKeeper, 学习记录下 ZooKeeper 相关内容.&lt;/p&gt;</description>
     </item>
     
     <item>
       <title>MySQL Server调优</title>
-      <link>https://luyangx.github.com/posts/mysql-server-turning/</link>
+      <link>https://luyangx.github.io/posts/mysql-server-turning/</link>
       <pubDate>Fri, 04 Nov 2016 23:04:23 +0800</pubDate>
       
-      <guid>https://luyangx.github.com/posts/mysql-server-turning/</guid>
+      <guid>https://luyangx.github.io/posts/mysql-server-turning/</guid>
       <description>&lt;p&gt;衡量数据库性能的指标, 一般有2个指标: 响应时间和吞吐率. 响应时间又包括等待时间和执行时间. 调优的目的是降低响应时间, 提高吞吐率.&lt;/p&gt;</description>
     </item>
     
     <item>
       <title>MySQL EXPLAIN</title>
-      <link>https://luyangx.github.com/posts/mysql-explain/</link>
+      <link>https://luyangx.github.io/posts/mysql-explain/</link>
       <pubDate>Tue, 25 Oct 2016 21:07:41 +0800</pubDate>
       
-      <guid>https://luyangx.github.com/posts/mysql-explain/</guid>
+      <guid>https://luyangx.github.io/posts/mysql-explain/</guid>
       <description>&lt;p&gt;EXPLAIN 命令输出的信息可以告诉我们 MySQL 是怎么执行 SQL 语句的, 访问了哪些表, 以及如何访问数据的. 其中有很重要的索引使用信息, 可以根据此信息来判断 SQL 是否需要优化&lt;/p&gt;</description>
     </item>
     
     <item>
       <title>MySQL 之 InnoDB . 复制</title>
-      <link>https://luyangx.github.com/posts/mysql-innode-rep/</link>
+      <link>https://luyangx.github.io/posts/mysql-innode-rep/</link>
       <pubDate>Tue, 11 Oct 2016 21:07:41 +0800</pubDate>
       
-      <guid>https://luyangx.github.com/posts/mysql-innode-rep/</guid>
+      <guid>https://luyangx.github.io/posts/mysql-innode-rep/</guid>
       <description>&lt;p&gt;学习记录 InnoDB 复制相关内容&lt;/p&gt;</description>
     </item>
     
     <item>
       <title>MySQL 之 InnoDB . 事务</title>
-      <link>https://luyangx.github.com/posts/mysql-innodb-trx/</link>
+      <link>https://luyangx.github.io/posts/mysql-innodb-trx/</link>
       <pubDate>Thu, 06 Oct 2016 10:22:35 +0800</pubDate>
       
-      <guid>https://luyangx.github.com/posts/mysql-innodb-trx/</guid>
+      <guid>https://luyangx.github.io/posts/mysql-innodb-trx/</guid>
       <description>&lt;p&gt;学习记录 InnoDB 事务相关内容&lt;/p&gt;</description>
     </item>
     
     <item>
       <title>MySQL 之 InnoDB . 锁</title>
-      <link>https://luyangx.github.com/posts/mysql-innodb-lock/</link>
+      <link>https://luyangx.github.io/posts/mysql-innodb-lock/</link>
       <pubDate>Wed, 05 Oct 2016 16:12:43 +0800</pubDate>
       
-      <guid>https://luyangx.github.com/posts/mysql-innodb-lock/</guid>
+      <guid>https://luyangx.github.io/posts/mysql-innodb-lock/</guid>
       <description>&lt;p&gt;学习记录 InnoDB 锁相关内容&lt;/p&gt;</description>
     </item>
     
     <item>
       <title>MySQL 之 InnoDB . 索引</title>
-      <link>https://luyangx.github.com/posts/mysql-innodb-index/</link>
+      <link>https://luyangx.github.io/posts/mysql-innodb-index/</link>
       <pubDate>Fri, 30 Sep 2016 20:43:21 +0800</pubDate>
       
-      <guid>https://luyangx.github.com/posts/mysql-innodb-index/</guid>
+      <guid>https://luyangx.github.io/posts/mysql-innodb-index/</guid>
       <description>&lt;p&gt;学习记录 InnoDB 索引相关内容&lt;/p&gt;</description>
     </item>
     
     <item>
       <title>MySQL 之 InnoDB . 表</title>
-      <link>https://luyangx.github.com/posts/mysql-innodb-table/</link>
+      <link>https://luyangx.github.io/posts/mysql-innodb-table/</link>
       <pubDate>Wed, 07 Sep 2016 21:12:53 +0800</pubDate>
       
-      <guid>https://luyangx.github.com/posts/mysql-innodb-table/</guid>
+      <guid>https://luyangx.github.io/posts/mysql-innodb-table/</guid>
       <description>&lt;p&gt;学习记录 InnoDB 表相关内容&lt;/p&gt;</description>
     </item>
     
     <item>
       <title>MySQL 之 InnoDB . 初见</title>
-      <link>https://luyangx.github.com/posts/mysql-innodb/</link>
+      <link>https://luyangx.github.io/posts/mysql-innodb/</link>
       <pubDate>Wed, 24 Aug 2016 22:43:39 +0800</pubDate>
       
-      <guid>https://luyangx.github.com/posts/mysql-innodb/</guid>
+      <guid>https://luyangx.github.io/posts/mysql-innodb/</guid>
       <description>&lt;p&gt;InnoDB 存储引擎支持事务, 其设计目的主要面向在线事务处理(OLTP)的应用. 其特点是行锁, 外键, 非锁定读等, MySQL在5.5.8版本后将其设为默认存储引擎.&lt;/p&gt;</description>
     </item>
     
     <item>
       <title>热乎的驾照</title>
-      <link>https://luyangx.github.com/posts/drivie-license/</link>
+      <link>https://luyangx.github.io/posts/drivie-license/</link>
       <pubDate>Sun, 14 Aug 2016 12:51:41 +0800</pubDate>
       
-      <guid>https://luyangx.github.com/posts/drivie-license/</guid>
+      <guid>https://luyangx.github.io/posts/drivie-license/</guid>
       <description>&lt;p&gt;从今年4月份报名开始, 经历了整个夏天, 久违的驾照终于到手了. 科目1到科目4竟然都是一把过, 这你能受的了吗, 😄~~&lt;/p&gt;</description>
     </item>
     
     <item>
       <title>Homebrew 设置代理</title>
-      <link>https://luyangx.github.com/posts/homebrew-proxy/</link>
+      <link>https://luyangx.github.io/posts/homebrew-proxy/</link>
       <pubDate>Tue, 19 Jul 2016 22:51:41 +0800</pubDate>
       
-      <guid>https://luyangx.github.com/posts/homebrew-proxy/</guid>
+      <guid>https://luyangx.github.io/posts/homebrew-proxy/</guid>
       <description>&lt;p&gt;由于国情, &lt;code&gt;homebrew update/install&lt;/code&gt; 非常缓慢, 还是不是遇到链接超时问题. 虽然可以缓存国内的源, 更新是快了,
 不过下载还是鸟样, 治标不治本&lt;/p&gt;</description>
     </item>
     
     <item>
       <title>HTTP/2</title>
-      <link>https://luyangx.github.com/posts/http2/</link>
+      <link>https://luyangx.github.io/posts/http2/</link>
       <pubDate>Fri, 27 May 2016 20:32:12 +0800</pubDate>
       
-      <guid>https://luyangx.github.com/posts/http2/</guid>
+      <guid>https://luyangx.github.io/posts/http2/</guid>
       <description>&lt;p&gt;HTTP2 已经发布已久, 性能较 HTTP/1.1 有了很多提升, 并且完全兼容 HTTP/1.1 语义, 又进一步减少了网络延迟.&lt;/p&gt;</description>
     </item>
     
     <item>
       <title>Dynamic Memory Management</title>
-      <link>https://luyangx.github.com/posts/dynamic-memory-management/</link>
+      <link>https://luyangx.github.io/posts/dynamic-memory-management/</link>
       <pubDate>Mon, 18 Apr 2016 20:24:24 +0800</pubDate>
       
-      <guid>https://luyangx.github.com/posts/dynamic-memory-management/</guid>
+      <guid>https://luyangx.github.io/posts/dynamic-memory-management/</guid>
       <description>&lt;p&gt;&amp;laquo;C in a Nutshell&amp;raquo;笔记 - 内存管理&lt;/p&gt;</description>
     </item>
     
     <item>
       <title>Input and Output</title>
-      <link>https://luyangx.github.com/posts/input-and-output/</link>
+      <link>https://luyangx.github.io/posts/input-and-output/</link>
       <pubDate>Sat, 16 Apr 2016 21:01:12 +0800</pubDate>
       
-      <guid>https://luyangx.github.com/posts/input-and-output/</guid>
+      <guid>https://luyangx.github.io/posts/input-and-output/</guid>
       <description>&lt;p&gt;&amp;laquo;C in a Nutshell&amp;raquo;笔记 - 输入输出&lt;/p&gt;</description>
     </item>
     
     <item>
       <title>Multithreading</title>
-      <link>https://luyangx.github.com/posts/multithreading/</link>
+      <link>https://luyangx.github.io/posts/multithreading/</link>
       <pubDate>Fri, 15 Apr 2016 20:33:58 +0800</pubDate>
       
-      <guid>https://luyangx.github.com/posts/multithreading/</guid>
+      <guid>https://luyangx.github.io/posts/multithreading/</guid>
       <description>&lt;p&gt;&amp;laquo;C in a Nutshell&amp;raquo;笔记 - 多线程&lt;/p&gt;</description>
     </item>
     
     <item>
       <title>Declarations</title>
-      <link>https://luyangx.github.com/posts/declarations/</link>
+      <link>https://luyangx.github.io/posts/declarations/</link>
       <pubDate>Tue, 05 Apr 2016 21:33:01 +0800</pubDate>
       
-      <guid>https://luyangx.github.com/posts/declarations/</guid>
+      <guid>https://luyangx.github.io/posts/declarations/</guid>
       <description>&lt;p&gt;&amp;laquo;C in a Nutshell&amp;raquo;笔记 - 声明&lt;/p&gt;</description>
     </item>
     
     <item>
       <title>Structure</title>
-      <link>https://luyangx.github.com/posts/structure/</link>
+      <link>https://luyangx.github.io/posts/structure/</link>
       <pubDate>Tue, 05 Apr 2016 19:06:42 +0800</pubDate>
       
-      <guid>https://luyangx.github.com/posts/structure/</guid>
+      <guid>https://luyangx.github.io/posts/structure/</guid>
       <description>&lt;p&gt;&amp;laquo;C in a Nutshell&amp;raquo;笔记 - 结构体&lt;/p&gt;</description>
     </item>
     
     <item>
       <title>PHP7 发布了</title>
-      <link>https://luyangx.github.com/posts/php7-released/</link>
+      <link>https://luyangx.github.io/posts/php7-released/</link>
       <pubDate>Fri, 04 Dec 2015 19:48:21 +0800</pubDate>
       
-      <guid>https://luyangx.github.com/posts/php7-released/</guid>
+      <guid>https://luyangx.github.io/posts/php7-released/</guid>
       <description>&lt;p&gt;今天看到鸟哥(&lt;a href=&#34;https://www.laruence.com/&#34;&gt;惠新宸&lt;/a&gt;)微信公众号的一篇 &lt;a href=&#34;https://mp.weixin.qq.com/s?__biz=MzIwNDExMjIzNA==&amp;amp;mid=401036257&amp;amp;idx=1&amp;amp;sn=f2272863c3bd1d9404f0da677c0a232d&amp;amp;scene=23&amp;amp;srcid=1202GHLzDus0AHfkcgCwIbfq#rd&#34;&gt;写在PHP7发布之际一些话&lt;/a&gt;, 感觉 PHPer 又行了😄&lt;/p&gt;</description>
     </item>
     
     <item>
       <title>PHP . 引用</title>
-      <link>https://luyangx.github.com/posts/references-in-php/</link>
+      <link>https://luyangx.github.io/posts/references-in-php/</link>
       <pubDate>Fri, 03 Oct 2014 22:20:49 +2002</pubDate>
       
-      <guid>https://luyangx.github.com/posts/references-in-php/</guid>
+      <guid>https://luyangx.github.io/posts/references-in-php/</guid>
       <description>&lt;meta name=&#34;referrer&#34; content=&#34;no-referrer&#34;&gt;
 &lt;p&gt;PHP中的变量都是存储在一个叫 zval 的容器中(数据结构), 这个 zval 中存储着变量的相关信息, 其中就包括变量的引用状态(is_ref)和引用次数(refcount).&lt;/p&gt;</description>
     </item>
     
     <item>
       <title>HTTP/1.1 . 连接/缓存/安全</title>
-      <link>https://luyangx.github.com/posts/http1/</link>
+      <link>https://luyangx.github.io/posts/http1/</link>
       <pubDate>Fri, 02 May 2014 10:13:25 +0800</pubDate>
       
-      <guid>https://luyangx.github.com/posts/http1/</guid>
+      <guid>https://luyangx.github.io/posts/http1/</guid>
       <description>&lt;p&gt;HTTP/1.1 目前在互联网上被广泛使用, 记录一下 HTTP1.1 重要的几块内容, 包括连接, 缓存控制等.&lt;/p&gt;</description>
     </item>
     
     <item>
       <title>TCP . 重传机制/滑动窗口/拥塞处理</title>
-      <link>https://luyangx.github.com/posts/tcp-key-points/</link>
+      <link>https://luyangx.github.io/posts/tcp-key-points/</link>
       <pubDate>Wed, 23 Apr 2014 20:13:54 +0800</pubDate>
       
-      <guid>https://luyangx.github.com/posts/tcp-key-points/</guid>
+      <guid>https://luyangx.github.io/posts/tcp-key-points/</guid>
       <description>&lt;p&gt;本文记录一下 TCP 的重传机制和拥塞处理.&lt;/p&gt;</description>
     </item>
     
     <item>
       <title>TCP . 连接过程</title>
-      <link>https://luyangx.github.com/posts/tcp-connection/</link>
+      <link>https://luyangx.github.io/posts/tcp-connection/</link>
       <pubDate>Sat, 19 Apr 2014 19:21:34 +0800</pubDate>
       
-      <guid>https://luyangx.github.com/posts/tcp-connection/</guid>
+      <guid>https://luyangx.github.io/posts/tcp-connection/</guid>
       <description>&lt;p&gt;传输控制协议(TCP, Transmission Control Protocol)是一种面向连接的/可靠的/基于字节流的传输层通信协议, 由IETF的&lt;a href=&#34;https://tools.ietf.org/html/rfc793&#34;&gt;RFC 793&lt;/a&gt;定义&lt;/p&gt;</description>
     </item>
     
     <item>
       <title>Linux 命令</title>
-      <link>https://luyangx.github.com/posts/linux-command/</link>
+      <link>https://luyangx.github.io/posts/linux-command/</link>
       <pubDate>Sun, 06 Apr 2014 20:02:45 +0800</pubDate>
       
-      <guid>https://luyangx.github.com/posts/linux-command/</guid>
+      <guid>https://luyangx.github.io/posts/linux-command/</guid>
       <description>&lt;p&gt;记录几个跟排查性能有关, 还有比较重要的 Linux 命令&lt;/p&gt;</description>
     </item>
     
     <item>
       <title>vim</title>
-      <link>https://luyangx.github.com/posts/vim/</link>
+      <link>https://luyangx.github.io/posts/vim/</link>
       <pubDate>Wed, 12 Mar 2014 15:42:13 +0800</pubDate>
       
-      <guid>https://luyangx.github.com/posts/vim/</guid>
+      <guid>https://luyangx.github.io/posts/vim/</guid>
       <description>&lt;p&gt;最近把 NetBeans IDE 换成了 vim, 自己鼓捣了下设置, 通过 Vundle 管理插件. 配置好后, 瞬间小清新.&lt;/p&gt;</description>
     </item>
     

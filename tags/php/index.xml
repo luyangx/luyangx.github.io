@@ -2,35 +2,35 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>PHP on 扬</title>
-    <link>https://luyangx.github.com/tags/php/</link>
+    <link>https://luyangx.github.io/tags/php/</link>
     <description>Recent content in PHP on 扬</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>zh-cn</language>
-    <lastBuildDate>Fri, 13 Apr 2018 19:58:16 +0800</lastBuildDate><atom:link href="https://luyangx.github.com/tags/php/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Fri, 13 Apr 2018 19:58:16 +0800</lastBuildDate><atom:link href="https://luyangx.github.io/tags/php/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>PHP7 vs PHP5 zval 变化</title>
-      <link>https://luyangx.github.com/posts/php7-vs-php5-zval/</link>
+      <link>https://luyangx.github.io/posts/php7-vs-php5-zval/</link>
       <pubDate>Fri, 13 Apr 2018 19:58:16 +0800</pubDate>
       
-      <guid>https://luyangx.github.com/posts/php7-vs-php5-zval/</guid>
+      <guid>https://luyangx.github.io/posts/php7-vs-php5-zval/</guid>
       <description>&lt;p&gt;PHP7 已经发布很长时间了, 奈何公司现在还在用 PHP5.6, 不知何时可以上 7? PHP7 对 zval 做了优化, 之前看到鸟哥发了一篇对比 PHP5.6 zval 的&lt;a href=&#34;https://www.laruence.com/2018/04/08/3170.html&#34;&gt;博文&lt;/a&gt;, 学校整理下.&lt;/p&gt;</description>
     </item>
     
     <item>
       <title>PHP7 发布了</title>
-      <link>https://luyangx.github.com/posts/php7-released/</link>
+      <link>https://luyangx.github.io/posts/php7-released/</link>
       <pubDate>Fri, 04 Dec 2015 19:48:21 +0800</pubDate>
       
-      <guid>https://luyangx.github.com/posts/php7-released/</guid>
+      <guid>https://luyangx.github.io/posts/php7-released/</guid>
       <description>&lt;p&gt;今天看到鸟哥(&lt;a href=&#34;https://www.laruence.com/&#34;&gt;惠新宸&lt;/a&gt;)微信公众号的一篇 &lt;a href=&#34;https://mp.weixin.qq.com/s?__biz=MzIwNDExMjIzNA==&amp;amp;mid=401036257&amp;amp;idx=1&amp;amp;sn=f2272863c3bd1d9404f0da677c0a232d&amp;amp;scene=23&amp;amp;srcid=1202GHLzDus0AHfkcgCwIbfq#rd&#34;&gt;写在PHP7发布之际一些话&lt;/a&gt;, 感觉 PHPer 又行了😄&lt;/p&gt;</description>
     </item>
     
     <item>
       <title>PHP . 引用</title>
-      <link>https://luyangx.github.com/posts/references-in-php/</link>
+      <link>https://luyangx.github.io/posts/references-in-php/</link>
       <pubDate>Fri, 03 Oct 2014 22:20:49 +2002</pubDate>
       
-      <guid>https://luyangx.github.com/posts/references-in-php/</guid>
+      <guid>https://luyangx.github.io/posts/references-in-php/</guid>
       <description>&lt;meta name=&#34;referrer&#34; content=&#34;no-referrer&#34;&gt;
 &lt;p&gt;PHP中的变量都是存储在一个叫 zval 的容器中(数据结构), 这个 zval 中存储着变量的相关信息, 其中就包括变量的引用状态(is_ref)和引用次数(refcount).&lt;/p&gt;</description>
     </item>

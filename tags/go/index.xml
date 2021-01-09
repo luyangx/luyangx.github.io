@@ -2,53 +2,53 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Go on 扬</title>
-    <link>https://luyangx.github.com/tags/go/</link>
+    <link>https://luyangx.github.io/tags/go/</link>
     <description>Recent content in Go on 扬</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>zh-cn</language>
-    <lastBuildDate>Sat, 05 May 2018 19:54:42 +0800</lastBuildDate><atom:link href="https://luyangx.github.com/tags/go/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Sat, 05 May 2018 19:54:42 +0800</lastBuildDate><atom:link href="https://luyangx.github.io/tags/go/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Go 语言基础 . 错误和异常</title>
-      <link>https://luyangx.github.com/posts/go-error-exception/</link>
+      <link>https://luyangx.github.io/posts/go-error-exception/</link>
       <pubDate>Sat, 05 May 2018 19:54:42 +0800</pubDate>
       
-      <guid>https://luyangx.github.com/posts/go-error-exception/</guid>
+      <guid>https://luyangx.github.io/posts/go-error-exception/</guid>
       <description>&lt;p&gt;记录一下学习 &lt;a href=&#34;https://legacy.gitbook.com/book/chai2010/advanced-go-programming-book&#34;&gt;《Go语言高级编程》&lt;/a&gt; 中的错误和异常&lt;/p&gt;</description>
     </item>
     
     <item>
       <title>Go 语言基础 . 并发模式</title>
-      <link>https://luyangx.github.com/posts/go-concurrent-mode/</link>
+      <link>https://luyangx.github.io/posts/go-concurrent-mode/</link>
       <pubDate>Mon, 30 Apr 2018 21:34:15 +0800</pubDate>
       
-      <guid>https://luyangx.github.com/posts/go-concurrent-mode/</guid>
+      <guid>https://luyangx.github.io/posts/go-concurrent-mode/</guid>
       <description>&lt;p&gt;记录一下学习 &lt;a href=&#34;https://legacy.gitbook.com/book/chai2010/advanced-go-programming-book&#34;&gt;《Go语言高级编程》&lt;/a&gt; 中的常见并发模式&lt;/p&gt;</description>
     </item>
     
     <item>
       <title>Go 语言基础 . 面向并发的内存模型</title>
-      <link>https://luyangx.github.com/posts/go-concurrent/</link>
+      <link>https://luyangx.github.io/posts/go-concurrent/</link>
       <pubDate>Sat, 28 Apr 2018 22:15:41 +0800</pubDate>
       
-      <guid>https://luyangx.github.com/posts/go-concurrent/</guid>
+      <guid>https://luyangx.github.io/posts/go-concurrent/</guid>
       <description>&lt;p&gt;记录一下学习 &lt;a href=&#34;https://legacy.gitbook.com/book/chai2010/advanced-go-programming-book&#34;&gt;《Go语言高级编程》&lt;/a&gt; 中的面向并发的内存模型&lt;/p&gt;</description>
     </item>
     
     <item>
       <title>Go 语言基础 . 函数、方法和接口</title>
-      <link>https://luyangx.github.com/posts/go-func-method-interface/</link>
+      <link>https://luyangx.github.io/posts/go-func-method-interface/</link>
       <pubDate>Thu, 26 Apr 2018 21:03:56 +0800</pubDate>
       
-      <guid>https://luyangx.github.com/posts/go-func-method-interface/</guid>
+      <guid>https://luyangx.github.io/posts/go-func-method-interface/</guid>
       <description>&lt;p&gt;记录一下学习 &lt;a href=&#34;https://legacy.gitbook.com/book/chai2010/advanced-go-programming-book&#34;&gt;《Go语言高级编程》&lt;/a&gt; 中的函数、方法和接口&lt;/p&gt;</description>
     </item>
     
     <item>
       <title>Go 语言基础 . 数组、字符串和切片</title>
-      <link>https://luyangx.github.com/posts/go-array-string-slice/</link>
+      <link>https://luyangx.github.io/posts/go-array-string-slice/</link>
       <pubDate>Mon, 23 Apr 2018 19:21:34 +0800</pubDate>
       
-      <guid>https://luyangx.github.com/posts/go-array-string-slice/</guid>
+      <guid>https://luyangx.github.io/posts/go-array-string-slice/</guid>
       <description>&lt;p&gt;记录一下学习 &lt;a href=&#34;https://legacy.gitbook.com/book/chai2010/advanced-go-programming-book&#34;&gt;《Go语言高级编程》&lt;/a&gt; 中的数据结构 . 数组、字符串和切片&lt;/p&gt;</description>
     </item>
     
