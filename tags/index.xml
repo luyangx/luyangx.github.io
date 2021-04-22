@@ -35,20 +35,29 @@
     </item>
     
     <item>
-      <title>Kubernetes</title>
-      <link>https://luyangx.github.io/tags/kubernetes/</link>
-      <pubDate>Sat, 09 Feb 2019 09:46:29 +0800</pubDate>
+      <title>Redis</title>
+      <link>https://luyangx.github.io/tags/redis/</link>
+      <pubDate>Sat, 06 Jun 2020 19:43:32 +0800</pubDate>
       
-      <guid>https://luyangx.github.io/tags/kubernetes/</guid>
+      <guid>https://luyangx.github.io/tags/redis/</guid>
       <description></description>
     </item>
     
     <item>
       <title>学习笔记</title>
       <link>https://luyangx.github.io/tags/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/</link>
-      <pubDate>Sat, 09 Feb 2019 09:46:29 +0800</pubDate>
+      <pubDate>Sat, 06 Jun 2020 19:43:32 +0800</pubDate>
       
       <guid>https://luyangx.github.io/tags/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Kubernetes</title>
+      <link>https://luyangx.github.io/tags/kubernetes/</link>
+      <pubDate>Sat, 09 Feb 2019 09:46:29 +0800</pubDate>
+      
+      <guid>https://luyangx.github.io/tags/kubernetes/</guid>
       <description></description>
     </item>
     
@@ -67,15 +76,6 @@
       <pubDate>Fri, 13 Apr 2018 19:58:16 +0800</pubDate>
       
       <guid>https://luyangx.github.io/tags/php/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>Redis</title>
-      <link>https://luyangx.github.io/tags/redis/</link>
-      <pubDate>Thu, 12 Oct 2017 23:02:12 +0800</pubDate>
-      
-      <guid>https://luyangx.github.io/tags/redis/</guid>
       <description></description>
     </item>
     

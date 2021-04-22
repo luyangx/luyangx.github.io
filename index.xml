@@ -36,6 +36,15 @@
     </item>
     
     <item>
+      <title>Redis 之 Stream</title>
+      <link>https://luyangx.github.io/posts/redis-streams/</link>
+      <pubDate>Sat, 06 Jun 2020 19:43:32 +0800</pubDate>
+      
+      <guid>https://luyangx.github.io/posts/redis-streams/</guid>
+      <description>&lt;p&gt;Redis 在 5.0 版本带来了 Stream 数据结构, 用做消息队列. Redis 本身虽然已经提供了 pub/sub 功能, 但是消息无法持久化, 而 Stream 补齐了其不足, 还借鉴了 Kafka 的 &lt;strong&gt;消费者组&lt;/strong&gt;&lt;/p&gt;</description>
+    </item>
+    
+    <item>
       <title>Kubernetes</title>
       <link>https://luyangx.github.io/posts/kubernetes/</link>
       <pubDate>Sat, 09 Feb 2019 09:46:29 +0800</pubDate>

@@ -6,7 +6,16 @@
     <description>Recent content in Redis on 扬</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>zh-cn</language>
-    <lastBuildDate>Thu, 12 Oct 2017 23:02:12 +0800</lastBuildDate><atom:link href="https://luyangx.github.io/tags/redis/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Sat, 06 Jun 2020 19:43:32 +0800</lastBuildDate><atom:link href="https://luyangx.github.io/tags/redis/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Redis 之 Stream</title>
+      <link>https://luyangx.github.io/posts/redis-streams/</link>
+      <pubDate>Sat, 06 Jun 2020 19:43:32 +0800</pubDate>
+      
+      <guid>https://luyangx.github.io/posts/redis-streams/</guid>
+      <description>&lt;p&gt;Redis 在 5.0 版本带来了 Stream 数据结构, 用做消息队列. Redis 本身虽然已经提供了 pub/sub 功能, 但是消息无法持久化, 而 Stream 补齐了其不足, 还借鉴了 Kafka 的 &lt;strong&gt;消费者组&lt;/strong&gt;&lt;/p&gt;</description>
+    </item>
+    
     <item>
       <title>Redis Internal . Part 2</title>
       <link>https://luyangx.github.io/posts/redis-internal-2/</link>
