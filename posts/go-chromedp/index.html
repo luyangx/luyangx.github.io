@@ -2,13 +2,12 @@
 
 <html lang="zh-cn">
     <head>
-	<meta name="generator" content="Hugo 0.80.0" />
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="format-detection" content="telephone=no"/>
 
-    <title>扬</title>
+    <title>Go 之 chromedp | 扬</title>
     
     <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
     <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
@@ -29,8 +28,6 @@
     
     
  
-    
-    <link rel="alternate" type="application/rss+xml" href="https://luyangx.github.io/index.xml" title="扬" />
     </head>
 
     <body>
@@ -138,244 +135,144 @@
 
         <div id="content" class="content-container">
         
-<div class = "article-content">
-        
-        <div class="description">
-            <p>Stay Young :)</p>
-        </div>
-        
-        
-        
-        
-        <article>
-            <h2>
-                <a href="https://luyangx.github.io/posts/go-func-method-interface/">
-                    Go 语言基础 . 函数、方法和接口
-                </a>
-            </h2>
-            <div>
-                <p><p>记录一下学习 <a href="https://legacy.gitbook.com/book/chai2010/advanced-go-programming-book">《Go语言高级编程》</a> 中的函数、方法和接口</p></p>
-                
-            </div>
-            <div class="post-footer">
-            <time>April 26, 2018</time>
 
-            
-            
-                
-                    <a class="tag" href="/tags/go">#Go</a>
-                
-                    <a class="tag" href="/tags/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0">#学习笔记</a>
-                
-            
-            </div> 
-           
-        </article>
-        
-        <article>
-            <h2>
-                <a href="https://luyangx.github.io/posts/go-array-string-slice/">
-                    Go 语言基础 . 数组、字符串和切片
-                </a>
-            </h2>
-            <div>
-                <p><p>记录一下学习 <a href="https://legacy.gitbook.com/book/chai2010/advanced-go-programming-book">《Go语言高级编程》</a> 中的数据结构 . 数组、字符串和切片</p></p>
-                
-            </div>
-            <div class="post-footer">
-            <time>April 23, 2018</time>
+<h1 class="post-title">Go 之 chromedp</h1>
+    
+    <time>July 4, 2020</time>
+    
+    <div>
+        <p>
+        <p>前几天从 Github 上发现一个 <a href="https://github.com/chromedp/chromedp">chromedp</a> 包, 可以调用支持Chrome DevTools协议的浏览器, 又无额外依赖, 够轻量.</p>
+<p>chromedp 加上 <a href="https://github.com/PuerkitoBio/goquery">goquery</a> 感觉是个扒站/仿站神器</p>
+<h4 id="思路">思路</h4>
+<ol>
+<li>chromedp 用 headless 模式打开指定页面, 获取 html 内容保存到本地文件</li>
+<li>goquery 加载本地 html 文件内容, 解析 dom, 获取静态资源链接(css, js, img文件等), 然后下载到本地</li>
+<li>通过 goquery 的 <code>SetAttr</code> 函数, 重置设置资源链接为本地路径</li>
+<li>输出新的 html 内容, 保存完成</li>
+</ol>
+<h4 id="示例代码">示例代码</h4>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#f92672">package</span> <span style="color:#a6e22e">main</span>
 
-            
-            
-                
-                    <a class="tag" href="/tags/go">#Go</a>
-                
-                    <a class="tag" href="/tags/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0">#学习笔记</a>
-                
-            
-            </div> 
-           
-        </article>
-        
-        <article>
-            <h2>
-                <a href="https://luyangx.github.io/posts/php7-vs-php5-zval/">
-                    PHP7 vs PHP5 zval 变化
-                </a>
-            </h2>
-            <div>
-                <p><p>PHP7 已经发布很长时间了, 奈何公司现在还在用 PHP5.6, 不知何时可以上 7? PHP7 对 zval 做了优化, 之前看到鸟哥发了一篇对比 PHP5.6 zval 的<a href="https://www.laruence.com/2018/04/08/3170.html">博文</a>, 学校整理下.</p></p>
-                
-            </div>
-            <div class="post-footer">
-            <time>April 13, 2018</time>
+<span style="color:#f92672">import</span> (
+	<span style="color:#e6db74">&#34;context&#34;</span>
+	<span style="color:#e6db74">&#34;github.com/PuerkitoBio/goquery&#34;</span>
+	<span style="color:#e6db74">&#34;github.com/chromedp/chromedp&#34;</span>
+	<span style="color:#e6db74">&#34;io/ioutil&#34;</span>
+	<span style="color:#e6db74">&#34;log&#34;</span>
+	<span style="color:#e6db74">&#34;net/http&#34;</span>
+	<span style="color:#e6db74">&#34;net/url&#34;</span>
+	<span style="color:#e6db74">&#34;os&#34;</span>
+	<span style="color:#e6db74">&#34;path&#34;</span>
+	<span style="color:#e6db74">&#34;strings&#34;</span>
+)
 
-            
-            
-                
-                    <a class="tag" href="/tags/php">#PHP</a>
-                
-            
-            </div> 
-           
-        </article>
-        
-        <article>
-            <h2>
-                <a href="https://luyangx.github.io/posts/redis-internal-2/">
-                    Redis Internal . Part 2
-                </a>
-            </h2>
-            <div>
-                <p><p>继续了解 Redis 内部. 记录一下 ziplist, quicklist</p></p>
-                
-            </div>
-            <div class="post-footer">
-            <time>October 12, 2017</time>
+<span style="color:#66d9ef">var</span> (
+	<span style="color:#a6e22e">dlLink</span> = <span style="color:#e6db74">&#34;http://website_example.com&#34;</span> <span style="color:#75715e">// 抓取页面地址
+</span><span style="color:#75715e"></span>	<span style="color:#a6e22e">saveFile</span> = <span style="color:#e6db74">&#34;index.html&#34;</span> <span style="color:#75715e">// 保存文件
+</span><span style="color:#75715e"></span>	<span style="color:#a6e22e">saveDir</span> = <span style="color:#e6db74">&#34;./pages&#34;</span> <span style="color:#75715e">// 保存文件目录
+</span><span style="color:#75715e"></span>)
 
-            
-            
-                
-                    <a class="tag" href="/tags/redis">#Redis</a>
-                
-                    <a class="tag" href="/tags/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0">#学习笔记</a>
-                
-            
-            </div> 
-           
-        </article>
-        
-        <article>
-            <h2>
-                <a href="https://luyangx.github.io/posts/redis-internal-1/">
-                    Redis Internal . Part 1
-                </a>
-            </h2>
-            <div>
-                <p><p>现在工作中已经离不开 Redis 了, 需要搞清楚它的内部原理, 知己知彼.</p></p>
-                
-            </div>
-            <div class="post-footer">
-            <time>October 9, 2017</time>
+<span style="color:#66d9ef">func</span> <span style="color:#a6e22e">main</span>() {
+	<span style="color:#a6e22e">ctx</span>, <span style="color:#a6e22e">cancel</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">chromedp</span>.<span style="color:#a6e22e">NewContext</span>(<span style="color:#a6e22e">context</span>.<span style="color:#a6e22e">Background</span>())
+	<span style="color:#66d9ef">defer</span> <span style="color:#a6e22e">cancel</span>()
 
-            
-            
-                
-                    <a class="tag" href="/tags/redis">#Redis</a>
-                
-                    <a class="tag" href="/tags/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0">#学习笔记</a>
-                
-            
-            </div> 
-           
-        </article>
-        
-        <article>
-            <h2>
-                <a href="https://luyangx.github.io/posts/redis/">
-                    Redis 学习记录
-                </a>
-            </h2>
-            <div>
-                <p><p>平时工作中用 Redis 基本就是各种 Cache, 偶尔会当锁用解决下并发操作的问题, 这里记录一下其他使用场景.</p></p>
-                
-            </div>
-            <div class="post-footer">
-            <time>October 5, 2017</time>
+	<span style="color:#66d9ef">var</span> <span style="color:#a6e22e">html</span> <span style="color:#66d9ef">string</span>
+	<span style="color:#a6e22e">err</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">chromedp</span>.<span style="color:#a6e22e">Run</span>(<span style="color:#a6e22e">ctx</span>,
+		<span style="color:#a6e22e">chromedp</span>.<span style="color:#a6e22e">Navigate</span>(<span style="color:#a6e22e">dlLink</span>),
+		<span style="color:#75715e">// 等待 footer dom 显示, 对应动态生成的页面很适用
+</span><span style="color:#75715e"></span>		<span style="color:#a6e22e">chromedp</span>.<span style="color:#a6e22e">WaitVisible</span>(<span style="color:#e6db74">`body &gt; footer`</span>), 
+		<span style="color:#a6e22e">chromedp</span>.<span style="color:#a6e22e">OuterHTML</span>(<span style="color:#e6db74">`html`</span>, <span style="color:#f92672">&amp;</span><span style="color:#a6e22e">html</span>),
+	)
+	<span style="color:#66d9ef">if</span> <span style="color:#a6e22e">err</span> <span style="color:#f92672">!=</span> <span style="color:#66d9ef">nil</span> {
+		<span style="color:#a6e22e">log</span>.<span style="color:#a6e22e">Fatal</span>(<span style="color:#a6e22e">err</span>)
+	}
 
-            
-            
-                
-                    <a class="tag" href="/tags/redis">#Redis</a>
-                
-                    <a class="tag" href="/tags/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0">#学习笔记</a>
-                
-            
-            </div> 
-           
-        </article>
-        
-        <article>
-            <h2>
-                <a href="https://luyangx.github.io/posts/docker-mysql-sshd/">
-                    Docker 之 Dockerfile 定制镜像
-                </a>
-            </h2>
-            <div>
-                <p><p>通过 Dockerfile 定制一个基于 ubuntu, 包含 sshd, mysqld 服务的 image, 记录一下, 后面可能会用到, 例如搭建 <a href="https://code.google.com/archive/p/mysql-master-ha/">mha</a> 环境, 可以不需要安装虚拟机了.</p></p>
-                
-            </div>
-            <div class="post-footer">
-            <time>December 7, 2016</time>
+   <span style="color:#75715e">// goquery 解析 dom
+</span><span style="color:#75715e"></span>	<span style="color:#a6e22e">doc</span>, <span style="color:#a6e22e">err</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">goquery</span>.<span style="color:#a6e22e">NewDocumentFromReader</span>(<span style="color:#a6e22e">strings</span>.<span style="color:#a6e22e">NewReader</span>(<span style="color:#a6e22e">html</span>))
+	<span style="color:#66d9ef">if</span> <span style="color:#a6e22e">err</span> <span style="color:#f92672">!=</span> <span style="color:#66d9ef">nil</span> {
+		<span style="color:#a6e22e">log</span>.<span style="color:#a6e22e">Fatal</span>(<span style="color:#a6e22e">err</span>)
+	}
 
-            
-            
-                
-                    <a class="tag" href="/tags/docker">#Docker</a>
-                
-                    <a class="tag" href="/tags/dockerfile">#Dockerfile</a>
-                
-            
-            </div> 
-           
-        </article>
-        
-        <article>
-            <h2>
-                <a href="https://luyangx.github.io/posts/docker/">
-                    Docker 学习记录
-                </a>
-            </h2>
-            <div>
-                <p><p>Docker 给人很爽的地方就是一次创建或配置, 之后就可以在任何地方, 任何时间让应用正常运行. 不用再按照任何 VM 或 PD 虚拟机了, 绝对轻量.</p></p>
-                
-            </div>
-            <div class="post-footer">
-            <time>December 3, 2016</time>
+	<span style="color:#75715e">// css link
+</span><span style="color:#75715e"></span>	<span style="color:#a6e22e">doc</span>.<span style="color:#a6e22e">Find</span>(<span style="color:#e6db74">&#34;link&#34;</span>).<span style="color:#a6e22e">Each</span>(<span style="color:#66d9ef">func</span>(<span style="color:#a6e22e">i</span> <span style="color:#66d9ef">int</span>, <span style="color:#a6e22e">s</span> <span style="color:#f92672">*</span><span style="color:#a6e22e">goquery</span>.<span style="color:#a6e22e">Selection</span>) {
+		<span style="color:#66d9ef">if</span> <span style="color:#a6e22e">href</span>, <span style="color:#a6e22e">ok</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">s</span>.<span style="color:#a6e22e">Attr</span>(<span style="color:#e6db74">&#34;href&#34;</span>); <span style="color:#a6e22e">ok</span> {
+			<span style="color:#a6e22e">newAttr</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">downloadFile</span>(<span style="color:#a6e22e">href</span>)
+			<span style="color:#a6e22e">s</span>.<span style="color:#a6e22e">SetAttr</span>(<span style="color:#e6db74">&#34;href&#34;</span>, <span style="color:#a6e22e">newAttr</span>) <span style="color:#75715e">// 换成本地地址
+</span><span style="color:#75715e"></span>		}
+	})
+	<span style="color:#75715e">// js src, img src 类似
+</span><span style="color:#75715e"></span>
+	<span style="color:#a6e22e">html</span>, <span style="color:#a6e22e">err</span> = <span style="color:#a6e22e">doc</span>.<span style="color:#a6e22e">Html</span>()
+	<span style="color:#66d9ef">if</span> <span style="color:#a6e22e">err</span> <span style="color:#f92672">!=</span> <span style="color:#66d9ef">nil</span> {
+		<span style="color:#a6e22e">log</span>.<span style="color:#a6e22e">Fatal</span>(<span style="color:#a6e22e">err</span>)
+	}
 
-            
-            
-                
-                    <a class="tag" href="/tags/docker">#Docker</a>
-                
-            
-            </div> 
-           
-        </article>
-        
+	<span style="color:#a6e22e">ioutil</span>.<span style="color:#a6e22e">WriteFile</span>(<span style="color:#a6e22e">saveFile</span>, []byte(<span style="color:#a6e22e">html</span>), <span style="color:#a6e22e">os</span>.<span style="color:#a6e22e">ModePerm</span>)
+}
+
+<span style="color:#75715e">// 下载文件, 需要注意, &#34;//&#34;, &#34;/&#34; &#34;http&#34; 开头的链接处理, 这里只是简单处理下
+</span><span style="color:#75715e"></span><span style="color:#66d9ef">func</span> <span style="color:#a6e22e">downloadFile</span>(<span style="color:#a6e22e">link</span> <span style="color:#66d9ef">string</span>) <span style="color:#66d9ef">string</span> {
+  <span style="color:#66d9ef">if</span> len(<span style="color:#a6e22e">link</span>) &lt; <span style="color:#ae81ff">2</span> {
+		<span style="color:#66d9ef">return</span> <span style="color:#e6db74">&#34;&#34;</span>
+	}
+	<span style="color:#66d9ef">if</span> <span style="color:#a6e22e">link</span>[<span style="color:#ae81ff">0</span>:<span style="color:#ae81ff">2</span>] <span style="color:#f92672">==</span> <span style="color:#e6db74">&#34;//&#34;</span> {
+		<span style="color:#a6e22e">link</span> = <span style="color:#e6db74">&#34;http:&#34;</span> <span style="color:#f92672">+</span> <span style="color:#a6e22e">link</span>
+	}
+	<span style="color:#66d9ef">if</span> <span style="color:#a6e22e">link</span>[<span style="color:#ae81ff">0</span>:<span style="color:#ae81ff">1</span>] <span style="color:#f92672">==</span> <span style="color:#e6db74">&#34;/&#34;</span> {
+		<span style="color:#66d9ef">return</span> <span style="color:#e6db74">&#34;&#34;</span>
+	}
+
+	<span style="color:#a6e22e">u</span>, <span style="color:#a6e22e">err</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">url</span>.<span style="color:#a6e22e">Parse</span>(<span style="color:#a6e22e">link</span>)
+	<span style="color:#66d9ef">if</span> <span style="color:#a6e22e">err</span> <span style="color:#f92672">!=</span> <span style="color:#66d9ef">nil</span> {
+		<span style="color:#a6e22e">log</span>.<span style="color:#a6e22e">Fatal</span>(<span style="color:#a6e22e">err</span>)
+	}
+
+	<span style="color:#a6e22e">file</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">saveDir</span> <span style="color:#f92672">+</span> <span style="color:#a6e22e">u</span>.<span style="color:#a6e22e">Host</span> <span style="color:#f92672">+</span> <span style="color:#a6e22e">u</span>.<span style="color:#a6e22e">Path</span>
+	<span style="color:#66d9ef">if</span> <span style="color:#a6e22e">_</span>, <span style="color:#a6e22e">err</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">os</span>.<span style="color:#a6e22e">Stat</span>(<span style="color:#a6e22e">file</span>); <span style="color:#a6e22e">os</span>.<span style="color:#a6e22e">IsExist</span>(<span style="color:#a6e22e">err</span>) {
+		<span style="color:#66d9ef">return</span> <span style="color:#e6db74">&#34;&#34;</span>
+	}
+
+	<span style="color:#a6e22e">res</span>, <span style="color:#a6e22e">err</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">http</span>.<span style="color:#a6e22e">Get</span>(<span style="color:#a6e22e">link</span>)
+	<span style="color:#66d9ef">if</span> <span style="color:#a6e22e">err</span> <span style="color:#f92672">!=</span> <span style="color:#66d9ef">nil</span> {
+		<span style="color:#a6e22e">log</span>.<span style="color:#a6e22e">Fatal</span>(<span style="color:#a6e22e">err</span>)
+	}
+	<span style="color:#66d9ef">defer</span> <span style="color:#a6e22e">res</span>.<span style="color:#a6e22e">Body</span>.<span style="color:#a6e22e">Close</span>()
+
+	<span style="color:#a6e22e">body</span>, <span style="color:#a6e22e">err</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">ioutil</span>.<span style="color:#a6e22e">ReadAll</span>(<span style="color:#a6e22e">res</span>.<span style="color:#a6e22e">Body</span>)
+	<span style="color:#66d9ef">if</span> <span style="color:#a6e22e">err</span> <span style="color:#f92672">!=</span> <span style="color:#66d9ef">nil</span> {
+		<span style="color:#a6e22e">log</span>.<span style="color:#a6e22e">Fatal</span>(<span style="color:#a6e22e">err</span>)
+	}
+
+	<span style="color:#a6e22e">path</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">path</span>.<span style="color:#a6e22e">Dir</span>(<span style="color:#a6e22e">file</span>)
+	<span style="color:#66d9ef">if</span> <span style="color:#a6e22e">err</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">os</span>.<span style="color:#a6e22e">MkdirAll</span>(<span style="color:#a6e22e">path</span>, <span style="color:#a6e22e">os</span>.<span style="color:#a6e22e">ModePerm</span>); <span style="color:#a6e22e">err</span> <span style="color:#f92672">!=</span> <span style="color:#66d9ef">nil</span> {
+		<span style="color:#a6e22e">log</span>.<span style="color:#a6e22e">Fatal</span>(<span style="color:#a6e22e">err</span>)
+	}
+
+	<span style="color:#66d9ef">if</span> <span style="color:#a6e22e">err</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">ioutil</span>.<span style="color:#a6e22e">WriteFile</span>(<span style="color:#a6e22e">file</span>, <span style="color:#a6e22e">body</span>, <span style="color:#ae81ff">0755</span>); <span style="color:#a6e22e">err</span> <span style="color:#f92672">!=</span> <span style="color:#66d9ef">nil</span> {
+		<span style="color:#a6e22e">log</span>.<span style="color:#a6e22e">Fatal</span>(<span style="color:#a6e22e">err</span>)
+	}
+
+	<span style="color:#66d9ef">return</span> <span style="color:#a6e22e">saveDir</span> <span style="color:#f92672">+</span> <span style="color:#e6db74">&#34;/&#34;</span> <span style="color:#f92672">+</span> <span style="color:#a6e22e">u</span>.<span style="color:#a6e22e">Host</span> <span style="color:#f92672">+</span> <span style="color:#a6e22e">u</span>.<span style="color:#a6e22e">Path</span>
+}
+</code></pre></div>
+        </p>
     </div>
+    
+
+    
+
+    <div class="page-footer">
         
-        <div class="paginator">
+        <hr class="footer-divider">
         
+            <a class="tag" href="/tags/go">#Go</a>
         
-        <p>Page 2 of 6</p>
-        <div class="paginator-group">
-            
-            <a class="color-link" href="/">
-                    <svg width="13px" height="9px" viewBox="0 0 13 9" version="1.1" xmlns="https://www.w3.org/2000/svg" xmlns:xlink="https://www.w3.org/1999/xlink">
-                        <g class="color-arrow" fill="#63BDA2" fill-rule="nonzero">
-                            <polygon id="Path" points="1.75929935 4.50000282 5.3292523 7.62371165 4.6707477 8.37628835 0.240700645 4.49999718 4.67081049 0.623709205 5.32930951 1.37629079"></polygon>
-                            <polygon id="Path" points="13 4 13 5 1 5 1 4"></polygon>
-                        </g>
-                </svg>  
-                Newer          
-            </a>
-            
-            
-                <a class="color-link older" href="/page/3/">
-                    Older
-                    <svg width="13px" height="9px" viewBox="0 0 13 9" version="1.1" xmlns="https://www.w3.org/2000/svg" xmlns:xlink="https://www.w3.org/1999/xlink">
-                            <g class="color-arrow" fill="#63BDA2" fill-rule="nonzero">
-                                <polygon points="7.6707477 1.37628835 8.3292523 0.623711653 12.7592994 4.50000282 8.32918951 8.37629079 7.67069049 7.62370921 11.2407006 4.49999718"></polygon>
-                                <polygon id="Path" points="0 5 0 4 12 4 12 5"></polygon>
-                            </g>
-                    </svg>
-                        
-                </a>
-            
-        </div>
+            <a class="tag" href="/tags/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0">#学习笔记</a>
         
+      
     </div>
+
 
         
 

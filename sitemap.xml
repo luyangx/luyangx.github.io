@@ -48,17 +48,27 @@
   </url>
   
   <url>
+    <loc>https://luyangx.github.io/tags/go/</loc>
+    <lastmod>2020-07-04T20:52:13+08:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://luyangx.github.io/posts/go-chromedp/</loc>
+    <lastmod>2020-07-04T20:52:13+08:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://luyangx.github.io/tags/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/</loc>
+    <lastmod>2020-07-04T20:52:13+08:00</lastmod>
+  </url>
+  
+  <url>
     <loc>https://luyangx.github.io/tags/redis/</loc>
     <lastmod>2020-06-06T19:43:32+08:00</lastmod>
   </url>
   
   <url>
     <loc>https://luyangx.github.io/posts/redis-streams/</loc>
-    <lastmod>2020-06-06T19:43:32+08:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>https://luyangx.github.io/tags/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/</loc>
     <lastmod>2020-06-06T19:43:32+08:00</lastmod>
   </url>
   
@@ -70,11 +80,6 @@
   <url>
     <loc>https://luyangx.github.io/posts/kubernetes/</loc>
     <lastmod>2019-02-09T09:46:29+08:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>https://luyangx.github.io/tags/go/</loc>
-    <lastmod>2018-05-05T19:54:42+08:00</lastmod>
   </url>
   
   <url>
@@ -148,13 +153,18 @@
   </url>
   
   <url>
+    <loc>https://luyangx.github.io/tags/elasticsearch/</loc>
+    <lastmod>2016-11-28T21:38:13+08:00</lastmod>
+  </url>
+  
+  <url>
     <loc>https://luyangx.github.io/posts/elasticsearch/</loc>
     <lastmod>2016-11-28T21:38:13+08:00</lastmod>
   </url>
   
   <url>
     <loc>https://luyangx.github.io/tags/kafka/</loc>
-    <lastmod>2016-11-28T21:38:13+08:00</lastmod>
+    <lastmod>2016-11-19T21:38:13+08:00</lastmod>
   </url>
   
   <url>
