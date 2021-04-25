@@ -26,6 +26,15 @@
     </item>
     
     <item>
+      <title>ESXi 修复 web ui 不可用(503)问题</title>
+      <link>https://luyangx.github.io/posts/esxi-503/</link>
+      <pubDate>Tue, 11 Aug 2020 15:32:02 +0800</pubDate>
+      
+      <guid>https://luyangx.github.io/posts/esxi-503/</guid>
+      <description>&lt;p&gt;工作中需要用到多个不同系统, 例如: 不同版本的Ubuntu, CentOS, Windows系统. 现在在一台闲置服务器上安装了 &lt;a href=&#34;https://www.vmware.com/products/esxi-and-esx.html&#34;&gt;ESXi&lt;/a&gt;, 重启服务器后, 偶尔会出现 web ui 不可用的问题.&lt;/p&gt;</description>
+    </item>
+    
+    <item>
       <title>Go 之 chromedp</title>
       <link>https://luyangx.github.io/posts/go-chromedp/</link>
       <pubDate>Sat, 04 Jul 2020 20:52:13 +0800</pubDate>

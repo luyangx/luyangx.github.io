@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>ESXi on 扬</title>
+    <link>https://luyangx.github.io/tags/esxi/</link>
+    <description>Recent content in ESXi on 扬</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>zh-cn</language>
+    <lastBuildDate>Tue, 11 Aug 2020 15:32:02 +0800</lastBuildDate><atom:link href="https://luyangx.github.io/tags/esxi/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>ESXi 修复 web ui 不可用(503)问题</title>
+      <link>https://luyangx.github.io/posts/esxi-503/</link>
+      <pubDate>Tue, 11 Aug 2020 15:32:02 +0800</pubDate>
+      
+      <guid>https://luyangx.github.io/posts/esxi-503/</guid>
+      <description>&lt;p&gt;工作中需要用到多个不同系统, 例如: 不同版本的Ubuntu, CentOS, Windows系统. 现在在一台闲置服务器上安装了 &lt;a href=&#34;https://www.vmware.com/products/esxi-and-esx.html&#34;&gt;ESXi&lt;/a&gt;, 重启服务器后, 偶尔会出现 web ui 不可用的问题.&lt;/p&gt;</description>
+    </item>
+    
+  </channel>
+</rss>
