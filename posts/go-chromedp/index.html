@@ -146,8 +146,8 @@
 <p>chromedp 加上 <a href="https://github.com/PuerkitoBio/goquery">goquery</a> 感觉是个扒站/仿站神器</p>
 <h4 id="思路">思路</h4>
 <ol>
-<li>chromedp 用 headless 模式打开指定页面, 获取 html 内容保存到本地文件</li>
-<li>goquery 加载本地 html 文件内容, 解析 dom, 获取静态资源链接(css, js, img文件等), 然后下载到本地</li>
+<li>chromedp 用 headless 模式打开指定页面, 获取 html 内容交给 goquery 处理</li>
+<li>goquery 加载 html, 解析 dom, 获取静态资源链接(css, js, img文件等), 然后下载到本地</li>
 <li>通过 goquery 的 <code>SetAttr</code> 函数, 重置设置资源链接为本地路径</li>
 <li>输出新的 html 内容, 保存完成</li>
 </ol>
