@@ -53,6 +53,15 @@
     </item>
     
     <item>
+      <title>Redis Cluster</title>
+      <link>https://luyangx.github.io/posts/redis-cluster/</link>
+      <pubDate>Mon, 04 Nov 2019 22:31:28 +0800</pubDate>
+      
+      <guid>https://luyangx.github.io/posts/redis-cluster/</guid>
+      <description>&lt;p&gt;Redis Cluster 是一个可以在多个 Redis Node 之间进行数据共享的分布式集群, 之前接触比较多的还是 Master-Slave 这种一主多从的经典模式, 而 Redis Cluster 没接触过, 正好官网有提供 &lt;a href=&#34;https://redis.io/topics/cluster-tutorial&#34;&gt;教程&lt;/a&gt;, 可以学习下&lt;/p&gt;</description>
+    </item>
+    
+    <item>
       <title>Kubernetes</title>
       <link>https://luyangx.github.io/posts/kubernetes/</link>
       <pubDate>Sat, 09 Feb 2019 09:46:29 +0800</pubDate>

@@ -1,0 +1,540 @@
+<!DOCTYPE html>
+
+<html lang="zh-cn">
+    <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="format-detection" content="telephone=no"/>
+
+    <title>Redis Cluster | 扬</title>
+    
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+    <link rel="manifest" href="/manifest.json">
+    <link rel="mask-icon" href="/safari-pinned-tab.svg" color="#FF3DB4">
+    <meta name="theme-color" content="#ffffff">
+
+    
+    
+    
+    <link rel="stylesheet" href="https://luyangx.github.io/css/main.min.f776e73347bcc0283f466141c12492a602fdd4909b1326120c3764628a98acc6.css"/>
+
+    
+    
+    
+
+    
+    
+ 
+    </head>
+
+    <body>
+        
+<nav>
+  <header>
+    <div class="site-title">
+        <a href="/">扬</a>
+    </div>  
+</header>
+
+  <div class="nav-menu">
+  
+    <a class="color-link nav-link" href="/about/">About</a>
+  
+    <a class="color-link nav-link" href="/tags/">Tags</a>
+  
+  <a class="color-link nav-link" href="https://luyangx.github.io/index.xml" target="_blank" rel="noopener" type="application/rss+xml">RSS</a>
+</div>
+<footer class="footer">
+	<div class="social-icons">
+        
+    <a class="social-icon" href="0xd1ef@gmail.com" target="_blank" rel="noopener" title="Email">
+        <svg width="28px" height="28px" viewBox="0 0 28 28" version="1.1" fill="#ABABAB" xmlns="https://www.w3.org/2000/svg" xmlns:xlink="https://www.w3.org/1999/xlink">
+            <path d="M25.2794292,5.59128519 L14,16.8707144 L2.72057081,5.59128519 C3.06733103,5.30237414 3.51336915,5.12857603 4,5.12857603 L24,5.12857603 C24.4866308,5.12857603 24.932669,5.30237414 25.2794292,5.59128519 Z M25.9956978,6.99633695 C25.998551,7.04004843 26,7.08414302 26,7.12857603 L26,20.871424 C26,21.0798433 25.9681197,21.2808166 25.9089697,21.4697335 L18.7156355,14.2763993 L25.9956978,6.99633695 Z M24.9498374,22.6319215 C24.6672737,22.7846939 24.3437653,22.871424 24,22.871424 L4,22.871424 C3.5268522,22.871424 3.09207889,22.7071233 2.74962118,22.432463 L10.0950247,15.0870594 L13.9848068,18.9768415 L14.1878486,18.7737996 L14.2030419,18.7889929 L17.6549753,15.3370594 L24.9498374,22.6319215 Z M2.00810114,21.0526627 C2.00273908,20.9929669 2,20.9325153 2,20.871424 L2,7.12857603 C2,7.08414302 2.00144896,7.04004843 2.00430222,6.99633695 L9.03436454,14.0263993 L2.00810114,21.0526627 Z"></path>
+        </svg>
+    </a>
+    
+
+    
+
+    
+    <a class="social-icon" href="https://twitter.com/luyang87" target="_blank" rel="noopener" title="Twitter">
+        <svg width="28px" height="28px" viewBox="0 0 28 28" version="1.1" fill="#ABABAB" xmlns="https://www.w3.org/2000/svg" xmlns:xlink="https://www.w3.org/1999/xlink">
+            <path d="M8.991284,24.971612 C19.180436,24.971612 24.752372,16.530224 24.752372,9.210524 C24.752372,8.970656 24.747512,8.731868 24.736496,8.494376 C25.818008,7.712564 26.758256,6.737 27.5,5.62622 C26.507372,6.067076 25.439252,6.364292 24.318752,6.498212 C25.462472,5.812628 26.340512,4.727444 26.754584,3.434036 C25.684088,4.068536 24.499004,4.53002 23.23724,4.778528 C22.226468,3.701876 20.786828,3.028388 19.193828,3.028388 C16.134404,3.028388 13.653536,5.509256 13.653536,8.567492 C13.653536,9.0023 13.702244,9.424904 13.797176,9.830552 C9.19346,9.599108 5.11106,7.39472 2.3792,4.04294 C1.903028,4.861364 1.629032,5.812628 1.629032,6.827072 C1.629032,8.74904 2.606972,10.445612 4.094024,11.438132 C3.185528,11.41016 2.331788,11.160464 1.585184,10.745096 C1.583888,10.768208 1.583888,10.791428 1.583888,10.815728 C1.583888,13.49888 3.493652,15.738584 6.028088,16.246508 C5.562932,16.373084 5.07326,16.44134 4.56782,16.44134 C4.210988,16.44134 3.863876,16.406024 3.526484,16.34144 C4.231724,18.542264 6.276596,20.143796 8.701412,20.18894 C6.805148,21.674696 4.416836,22.56008 1.821488,22.56008 C1.374476,22.56008 0.93362,22.534592 0.5,22.4834 C2.951708,24.054476 5.862524,24.971612 8.991284,24.971612"></path>
+        </svg>
+    </a>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <a class="social-icon" href="https://weibo.com/0xd1ef" target="_blank" rel="noopener" title="Weibo">
+        <svg width="28px" height="28px" viewBox="0 0 28 28" version="1.1" fill="#ABABAB" xmlns="https://www.w3.org/2000/svg" xmlns:xlink="https://www.w3.org/1999/xlink">
+            <path d="M11.7643305,23.68043 C16.3966564,23.2245381 19.9124334,20.3848721 19.6072176,17.3404411 C19.3097287,14.2998735 15.3071519,12.2019978 10.6709625,12.6617533 C6.03863666,13.1215087 2.52285972,15.9573112 2.82421203,19.0017422 C3.12556434,22.0423098 7.12814116,24.1401855 11.7643305,23.68043 Z M21.0328458,13.5774007 C22.6400581,14.075791 24.4288545,15.2812003 24.424991,17.4061204 C24.424991,20.9180339 19.3599541,25.3417312 11.7450131,25.3417312 C5.93818589,25.3417312 -2.23820962e-13,22.5252462 -2.23820962e-13,17.8967838 C-2.23820962e-13,15.4743748 1.53380598,12.6733438 4.17257044,10.0345793 C7.69993785,6.50721189 11.8145559,4.89999957 13.3599524,6.44925952 C14.0399268,7.13309745 14.1056062,8.31146225 13.6690317,9.72163652 C13.4372222,10.4286554 14.3335521,10.0384428 14.3335521,10.0384428 C17.1848086,8.84462403 19.6728969,8.77508119 20.5808173,10.0732142 C21.0676172,10.7686426 21.0212553,11.7383789 20.5730903,12.8626548 C20.3683253,13.3803626 20.6387697,13.4576325 21.0328458,13.5774007 Z M26.0901557,5.1047646 C27.9291775,7.14082443 28.4275678,9.91867457 27.6394156,12.3488105 C27.6394156,12.3488105 27.6394156,12.352674 27.6394156,12.352674 C27.4578316,12.9128802 26.8551269,13.2219595 26.2910572,13.0403754 C25.7269875,12.8587913 25.4179082,12.2560867 25.5994923,11.692017 C26.1596985,9.96117297 25.8042573,7.98692899 24.4983973,6.53811982 C23.1925373,5.08931064 21.2646553,4.5368314 19.4835858,4.91545354 C18.9040622,5.03908525 18.336129,4.67205359 18.2124973,4.09252992 C18.0888655,3.51686974 18.4558972,2.94507305 19.0354209,2.82144134 C21.5389631,2.28827956 24.2511339,3.06484128 26.0901557,5.1047646 Z M23.2659437,7.65466876 C24.1622736,8.64758598 24.4018101,9.99980788 24.0193244,11.1858997 C23.8609213,11.6726995 23.3432135,11.9354169 22.8564136,11.7808773 C22.3696137,11.6224742 22.1068963,11.1009029 22.261436,10.6179665 C22.450747,10.0384428 22.3309788,9.37778581 21.8944043,8.89098592 C21.4578298,8.40804953 20.8087633,8.22260195 20.2137857,8.35009716 C19.7192588,8.45827491 19.2285954,8.14146864 19.1204177,7.64307828 C19.0161034,7.14468793 19.3329097,6.65016106 19.8313,6.5458468 C21.0482998,6.2831294 22.3696137,6.66175153 23.2659437,7.65466876 Z M12.0193209,18.1710916 C12.1738606,17.8890568 12.0734098,17.576114 11.7952385,17.4756632 C11.5209306,17.3674855 11.1770799,17.4988442 11.0148133,17.7692886 C10.8564101,18.039733 10.9414069,18.3526757 11.2195783,18.464717 C11.4977496,18.5806217 11.8570543,18.449263 12.0193209,18.1710916 Z M10.5396038,20.0642023 C10.9800418,19.3417295 10.7482324,18.5188059 10.021896,18.2058631 C9.30328667,17.9045108 8.3760488,18.2135901 7.93174732,18.9090185 C7.48358235,19.6083104 7.69607436,20.438961 8.40695673,20.7634942 C9.12942957,21.091891 10.0914389,20.7789482 10.5396038,20.0642023 Z M12.224086,15.0030289 C14.5074092,15.5941431 15.6741836,17.7461076 14.7392187,19.8401198 C13.7926634,21.9766304 11.0727656,23.1202238 8.76239791,22.37457 C6.53702702,21.6559607 5.59047169,19.4537707 6.56793494,17.4717998 C7.52608075,15.5284637 10.0180325,14.4273687 12.224086,15.0030289 Z"></path>
+        </svg>
+    </a>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    
+    
+
+    
+    
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+</div>
+
+
+
+
+	<p><a href="https://github.com/kimcc/hugo-theme-noteworthy" target="_blank" rel="noopener">Noteworthy theme</a></p>
+	<p><a href="https://gohugo.io" target="_blank" rel="noopener">Built with Hugo</a></p>
+
+	<script src="https://luyangx.github.io/js/main.min.fa5c2b23e07b5d9bfad267a52b4b24fdb053e6fb7524993383594926a3ac270c.js" integrity="sha256-+lwrI+B7XZv60melK0sk/bBT5vt1JJkzg1lJJqOsJww=" crossorigin="anonymous"></script>
+</footer>
+</nav>
+
+        <div id="content" class="content-container">
+        
+
+<h1 class="post-title">Redis Cluster</h1>
+    
+    <time>November 4, 2019</time>
+    
+    <div>
+        <p>
+        <p>Redis Cluster 是一个可以在多个 Redis Node 之间进行数据共享的分布式集群, 之前接触比较多的还是 Master-Slave 这种一主多从的经典模式, 而 Redis Cluster 没接触过, 正好官网有提供 <a href="https://redis.io/topics/cluster-tutorial">教程</a>, 可以学习下</p>
+<p>Redis Cluster 没有使用一致性hash, 而是引入了一个叫 <strong>哈希槽(hash slot)</strong> 概念, 在 Redis Cluster 中一共有 <strong>16384</strong> 个哈希槽, 所有数据会根据 key 的 <strong>CRC16</strong> 值与 16383 取模, 得到数据需要存储的槽的编号</p>
+<p>Redis Cluster 中的每个节点负责一部分哈希槽, 例如:</p>
+<ul>
+<li>Node A 负责第 0 - 5500哈希槽</li>
+<li>Node B 负责第 5501 - 11000哈希槽</li>
+<li>Node C 负责第 11001 - 16384哈希槽</li>
+</ul>
+<p>这种方式可以很容易对 Redis Cluster 进行增删节点操作, Redis 会将其他节点负责的哈希槽, 分给新加入的节点, 也会将要删除的节点所负责的哈希槽分配给其他正常服务的节点, 而这些操作无需停机, 从而不会让整个集群不可用</p>
+<p>Redis Cluster 也支持对 key 的多个指令操作, 前提是这些指令需打包成一个命令执行, 可以用 lua 封装成一个命令</p>
+<p>Redis CLuster 使用 Master-Slave 模型来保证即使部分节点或大部分节点都无法通信的情况下集群仍然可用. 例如集群中有 A,A1, B,B1, C,C1 6个 Nodes, 其中 A,B,C 为 Master, A1,B1,C1 为 Slave, 当其中某个 Master 不可用时, 对应 Slave 会提升为 Master, 这时整个集群还是可用的, 如果 Master 和对应的 Slave 同时不可用时, 此时整个集群可能无法正常提供服务</p>
+<p>集群采用的是 <strong>异步复制</strong>, 也就无法保证数据的 <strong>强一致性</strong></p>
+<h3 id="redis-cluster-搭建">Redis Cluster 搭建</h3>
+<p>几个相关配置</p>
+<ul>
+<li><strong>cluster-enabled&lt;yes/no&gt;</strong>: 是否开启 cluster 功能</li>
+<li><strong>cluster-config-file<filename></strong>: cluster 配置文件, 可选, 自动生成, 保存着 cluster 节点信息</li>
+<li><strong>cluster-node-timeout <milliseconds></strong>: 超时</li>
+</ul>
+<h4 id="准备环境">准备环境</h4>
+<p>根据教程创建 6 个示例, 配置文件如下, 注意每个实例 port 需要进行调整, 7000,7001,7002,7003,7004,7005,</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">port <span style="color:#ae81ff">7000</span>
+cluster-enabled yes
+cluster-config-file nodes.conf
+cluster-node-timeout <span style="color:#ae81ff">5000</span>
+appendonly yes
+</code></pre></div><p>先创建 6 个目录, 用作每个实例的工作目录, 同时新建好每个实例的配置文件</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">luyang@dev:~/redis$ mkdir <span style="color:#ae81ff">7000</span> <span style="color:#ae81ff">7001</span> <span style="color:#ae81ff">7002</span> <span style="color:#ae81ff">7003</span> <span style="color:#ae81ff">7004</span> <span style="color:#ae81ff">7005</span>
+luyang@dev:~/redis$ ll
+total 24K
+drwxrwxr-x <span style="color:#ae81ff">2</span> luyang luyang 4.0K 14:45 <span style="color:#ae81ff">7000</span>
+drwxrwxr-x <span style="color:#ae81ff">2</span> luyang luyang 4.0K 14:45 <span style="color:#ae81ff">7001</span>
+drwxrwxr-x <span style="color:#ae81ff">2</span> luyang luyang 4.0K 14:45 <span style="color:#ae81ff">7002</span>
+drwxrwxr-x <span style="color:#ae81ff">2</span> luyang luyang 4.0K 14:45 <span style="color:#ae81ff">7003</span>
+drwxrwxr-x <span style="color:#ae81ff">2</span> luyang luyang 4.0K 14:45 <span style="color:#ae81ff">7004</span>
+drwxrwxr-x <span style="color:#ae81ff">2</span> luyang luyang 4.0K 14:45 <span style="color:#ae81ff">7005</span>
+
+luyang@dev:~/redis$ ll <span style="color:#ae81ff">7000</span>
+-rw-rw-r-- <span style="color:#ae81ff">1</span> luyang luyang  <span style="color:#ae81ff">102</span> 14:55 redis.conf
+</code></pre></div><p>启动每个实例, 这里用 <code>nohup</code> 免去要开6个终端tab, 同时将输出内容保存到日志中去, 方便后续查看</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">luyang@dev:~/redis$ cd <span style="color:#ae81ff">7000</span>
+luyang@dev:~/redis/7000$ nohup redis-server redis.conf &gt;&gt; 7000.log &amp;
+...
+luyang@dev:~/redis$ cd <span style="color:#ae81ff">7005</span>
+luyang@dev:~/redis/7005$ nohup redis-server redis.conf &gt;&gt; 7005.log &amp;
+
+luyang@haomaisho-dev:~/redis/7005$ jobs
+<span style="color:#f92672">[</span>1<span style="color:#f92672">]</span>   Running   nohup redis-server redis.conf &gt;&gt; 7000.log &amp;  <span style="color:#f92672">(</span>wd: ~/redis/7000<span style="color:#f92672">)</span>
+<span style="color:#f92672">[</span>2<span style="color:#f92672">]</span>   Running   nohup redis-server redis.conf &gt;&gt; 7001.log &amp;  <span style="color:#f92672">(</span>wd: ~/redis/7001<span style="color:#f92672">)</span>
+<span style="color:#f92672">[</span>3<span style="color:#f92672">]</span>   Running   nohup redis-server redis.conf &gt;&gt; 7002.log &amp;  <span style="color:#f92672">(</span>wd: ~/redis/7002<span style="color:#f92672">)</span>
+<span style="color:#f92672">[</span>4<span style="color:#f92672">]</span>   Running   nohup redis-server redis.conf &gt;&gt; 7003.log &amp;  <span style="color:#f92672">(</span>wd: ~/redis/7003<span style="color:#f92672">)</span>
+<span style="color:#f92672">[</span>5<span style="color:#f92672">]</span>-  Running   nohup redis-server redis.conf &gt;&gt; 7004.log &amp;  <span style="color:#f92672">(</span>wd: ~/redis/7004<span style="color:#f92672">)</span>
+<span style="color:#f92672">[</span>6<span style="color:#f92672">]</span>+  Running   nohup redis-server redis.conf &gt;&gt; 7005.log &amp;
+</code></pre></div><p>启动后查看对应日志文件中会发现一行</p>
+<blockquote>
+<p>Node configuration loaded, I&rsquo;m 6aba459a23797727eacd74b5c85dd1a9b7258eea</p>
+</blockquote>
+<p>6aba459a23797727eacd74b5c85dd1a9b7258eea 就是节点ID</p>
+<h4 id="创建-redis-cluster">创建 Redis Cluster</h4>
+<p><code>redis-cli --cluster create</code> 命令可以很方便的创建集群, 不过需要 Redis 5 以上版本, Redis 5以下的可以参考 <a href="https://github.com/redis/redis/blob/unstable/src/redis-trib.rb">redis-trib</a> 这个 ruby 脚本</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">luyang@dev:~$ redis-cli --cluster create 127.0.0.1:7000 127.0.0.1:7001 127.0.0.1:7002 127.0.0.1:7003 127.0.0.1:7004 127.0.0.1:7005 --cluster-replicas <span style="color:#ae81ff">1</span>
+&gt;&gt;&gt; Performing hash slots allocation on <span style="color:#ae81ff">6</span> nodes...
+Master<span style="color:#f92672">[</span>0<span style="color:#f92672">]</span> -&gt; Slots <span style="color:#ae81ff">0</span> - <span style="color:#ae81ff">5460</span>
+Master<span style="color:#f92672">[</span>1<span style="color:#f92672">]</span> -&gt; Slots <span style="color:#ae81ff">5461</span> - <span style="color:#ae81ff">10922</span>
+Master<span style="color:#f92672">[</span>2<span style="color:#f92672">]</span> -&gt; Slots <span style="color:#ae81ff">10923</span> - <span style="color:#ae81ff">16383</span>
+Adding replica 127.0.0.1:7004 to 127.0.0.1:7000
+Adding replica 127.0.0.1:7005 to 127.0.0.1:7001
+Adding replica 127.0.0.1:7003 to 127.0.0.1:7002
+&gt;&gt;&gt; Trying to optimize slaves allocation <span style="color:#66d9ef">for</span> anti-affinity
+<span style="color:#f92672">[</span>WARNING<span style="color:#f92672">]</span> Some slaves are in the same host as their master
+M: 6aba459a23797727eacd74b5c85dd1a9b7258eea 127.0.0.1:7000
+   slots:<span style="color:#f92672">[</span>0-5460<span style="color:#f92672">]</span> <span style="color:#f92672">(</span><span style="color:#ae81ff">5461</span> slots<span style="color:#f92672">)</span> master
+M: 3987291080a98eabd7b01e1a3f8eb964342e6b51 127.0.0.1:7001
+   slots:<span style="color:#f92672">[</span>5461-10922<span style="color:#f92672">]</span> <span style="color:#f92672">(</span><span style="color:#ae81ff">5462</span> slots<span style="color:#f92672">)</span> master
+M: 4b145114865fbaf9a7f2e628c2e5a57a645e1864 127.0.0.1:7002
+   slots:<span style="color:#f92672">[</span>10923-16383<span style="color:#f92672">]</span> <span style="color:#f92672">(</span><span style="color:#ae81ff">5461</span> slots<span style="color:#f92672">)</span> master
+S: 1d85a7946efd02ee387ef3ee80f5489c3bea71a1 127.0.0.1:7003
+   replicates 6aba459a23797727eacd74b5c85dd1a9b7258eea
+S: 9ae63ac64cfa2ed94eb1e6ea41935559112c3c73 127.0.0.1:7004
+   replicates 3987291080a98eabd7b01e1a3f8eb964342e6b51
+S: 4c465ad84539eb98fda335c4ec90e22f3e39f482 127.0.0.1:7005
+   replicates 4b145114865fbaf9a7f2e628c2e5a57a645e1864
+Can I set the above configuration? <span style="color:#f92672">(</span>type <span style="color:#e6db74">&#39;yes&#39;</span> to accept<span style="color:#f92672">)</span>:
+</code></pre></div><p><code>redis-cli --cluster</code> 执行后会显示一个集群配置的确认清单, 这里可以看到哪些节点是 Master 及对应的 Slave 节点以及每个节点在集群中的ID, 还有每个 Master 节点负责的哈希槽</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">Can I set the above configuration? <span style="color:#f92672">(</span>type <span style="color:#e6db74">&#39;yes&#39;</span> to accept<span style="color:#f92672">)</span>: yes
+&gt;&gt;&gt; Nodes configuration updated
+&gt;&gt;&gt; Assign a different config epoch to each node
+&gt;&gt;&gt; Sending CLUSTER MEET messages to join the cluster
+Waiting <span style="color:#66d9ef">for</span> the cluster to join
+....
+&gt;&gt;&gt; Performing Cluster Check <span style="color:#f92672">(</span>using node 127.0.0.1:7000<span style="color:#f92672">)</span>
+M: 6aba459a23797727eacd74b5c85dd1a9b7258eea 127.0.0.1:7000
+   slots:<span style="color:#f92672">[</span>0-5460<span style="color:#f92672">]</span> <span style="color:#f92672">(</span><span style="color:#ae81ff">5461</span> slots<span style="color:#f92672">)</span> master
+   <span style="color:#ae81ff">1</span> additional replica<span style="color:#f92672">(</span>s<span style="color:#f92672">)</span>
+S: 9ae63ac64cfa2ed94eb1e6ea41935559112c3c73 127.0.0.1:7004
+   slots: <span style="color:#f92672">(</span><span style="color:#ae81ff">0</span> slots<span style="color:#f92672">)</span> slave
+   replicates 3987291080a98eabd7b01e1a3f8eb964342e6b51
+M: 3987291080a98eabd7b01e1a3f8eb964342e6b51 127.0.0.1:7001
+   slots:<span style="color:#f92672">[</span>5461-10922<span style="color:#f92672">]</span> <span style="color:#f92672">(</span><span style="color:#ae81ff">5462</span> slots<span style="color:#f92672">)</span> master
+   <span style="color:#ae81ff">1</span> additional replica<span style="color:#f92672">(</span>s<span style="color:#f92672">)</span>
+S: 1d85a7946efd02ee387ef3ee80f5489c3bea71a1 127.0.0.1:7003
+   slots: <span style="color:#f92672">(</span><span style="color:#ae81ff">0</span> slots<span style="color:#f92672">)</span> slave
+   replicates 6aba459a23797727eacd74b5c85dd1a9b7258eea
+S: 4c465ad84539eb98fda335c4ec90e22f3e39f482 127.0.0.1:7005
+   slots: <span style="color:#f92672">(</span><span style="color:#ae81ff">0</span> slots<span style="color:#f92672">)</span> slave
+   replicates 4b145114865fbaf9a7f2e628c2e5a57a645e1864
+M: 4b145114865fbaf9a7f2e628c2e5a57a645e1864 127.0.0.1:7002
+   slots:<span style="color:#f92672">[</span>10923-16383<span style="color:#f92672">]</span> <span style="color:#f92672">(</span><span style="color:#ae81ff">5461</span> slots<span style="color:#f92672">)</span> master
+   <span style="color:#ae81ff">1</span> additional replica<span style="color:#f92672">(</span>s<span style="color:#f92672">)</span>
+<span style="color:#f92672">[</span>OK<span style="color:#f92672">]</span> All nodes agree about slots configuration.
+&gt;&gt;&gt; Check <span style="color:#66d9ef">for</span> open slots...
+&gt;&gt;&gt; Check slots coverage...
+<span style="color:#f92672">[</span>OK<span style="color:#f92672">]</span> All <span style="color:#ae81ff">16384</span> slots covered.
+</code></pre></div><p>整个 Redis Cluster 创建成功</p>
+<h4 id="redis-cluster-测试">Redis Cluster 测试</h4>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">luyang@dev:~$ redis-cli -c -p <span style="color:#ae81ff">7000</span>
+127.0.0.1:7000&gt; set name lisi
+-&gt; Redirected to slot <span style="color:#f92672">[</span>5798<span style="color:#f92672">]</span> located at 127.0.0.1:7001
+OK
+127.0.0.1:7001&gt;
+
+luyang@dev:~$ redis-cli -c -p <span style="color:#ae81ff">7002</span>
+127.0.0.1:7002&gt; set say oops
+-&gt; Redirected to slot <span style="color:#f92672">[</span>5885<span style="color:#f92672">]</span> located at 127.0.0.1:7001
+OK
+127.0.0.1:7001&gt;
+
+luyang@dev:~$ redis-cli -c -p <span style="color:#ae81ff">7000</span>
+127.0.0.1:7000&gt; get name
+-&gt; Redirected to slot <span style="color:#f92672">[</span>5798<span style="color:#f92672">]</span> located at 127.0.0.1:7001
+<span style="color:#e6db74">&#34;lisi&#34;</span>
+127.0.0.1:7001&gt;
+
+luyang@dev:~$ redis-cli -c -p <span style="color:#ae81ff">7003</span>
+127.0.0.1:7003&gt; get say
+-&gt; Redirected to slot <span style="color:#f92672">[</span>5885<span style="color:#f92672">]</span> located at 127.0.0.1:7001
+<span style="color:#e6db74">&#34;hi&#34;</span>
+127.0.0.1:7001&gt;
+</code></pre></div><p>可以通过如下命令查看当前节点的ID</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">luyang@dev:~$ redis-cli -p <span style="color:#ae81ff">7000</span> cluster nodes | grep myself
+6aba459a23797727eacd74b5c85dd1a9b7258eea 127.0.0.1:7000@17000 myself,master - <span style="color:#ae81ff">0</span> <span style="color:#ae81ff">1619516561000</span> <span style="color:#ae81ff">1</span> connected 0-5460
+</code></pre></div><h4 id="redis-cluster-failover">Redis Cluster Failover</h4>
+<p>通过执行 DEBUG SEGFAULT 命令, 可以模拟节点 crash 情况</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">luyang@dev:~$ redis-cli -p <span style="color:#ae81ff">7002</span> debug segfault
+Error: Server closed the connection
+</code></pre></div><p>查看下节点状态你会发现 7002 的 Slave 节点 7005 自动提升为 Master 了, 而 7002 本身是 <strong>fail</strong> 状态</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">luyang@dev:~$ redis-cli -p <span style="color:#ae81ff">7000</span> cluster nodes
+9ae63ac64cfa2ed94eb1e6ea41935559112c3c73 127.0.0.1:7004@17004 slave 3987291080a98eabd7b01e1a3f8eb964342e6b51 <span style="color:#ae81ff">0</span> <span style="color:#ae81ff">1619515765099</span> <span style="color:#ae81ff">5</span> connected
+3987291080a98eabd7b01e1a3f8eb964342e6b51 127.0.0.1:7001@17001 master - <span style="color:#ae81ff">0</span> <span style="color:#ae81ff">1619515766103</span> <span style="color:#ae81ff">2</span> connected 5461-10922
+1d85a7946efd02ee387ef3ee80f5489c3bea71a1 127.0.0.1:7003@17003 slave 6aba459a23797727eacd74b5c85dd1a9b7258eea <span style="color:#ae81ff">0</span> <span style="color:#ae81ff">1619515767107</span> <span style="color:#ae81ff">4</span> connected
+6aba459a23797727eacd74b5c85dd1a9b7258eea 127.0.0.1:7000@17000 myself,master - <span style="color:#ae81ff">0</span> <span style="color:#ae81ff">1619515764000</span> <span style="color:#ae81ff">1</span> connected 0-5460
+4c465ad84539eb98fda335c4ec90e22f3e39f482 127.0.0.1:7005@17005 master - <span style="color:#ae81ff">0</span> <span style="color:#ae81ff">1619515766000</span> <span style="color:#ae81ff">7</span> connected 10923-16383
+4b145114865fbaf9a7f2e628c2e5a57a645e1864 127.0.0.1:7002@17002 master,fail - <span style="color:#ae81ff">1619515701506</span> <span style="color:#ae81ff">1619515699000</span> <span style="color:#ae81ff">3</span> disconnected
+</code></pre></div><p>我们再将 7002 节点启动起来后, 在查询下集群中节点状态, 7002 现在是 Slave</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">luyang@dev:~/redis/7002$ nohup redis-server redis.conf &gt;&gt; 7002.log &amp;
+luyang@dev:~/redis/7002$ jobs
+<span style="color:#f92672">[</span>1<span style="color:#f92672">]</span>   Running   nohup redis-server redis.conf &gt;&gt; 7000.log &amp;  <span style="color:#f92672">(</span>wd: ~/redis/7000<span style="color:#f92672">)</span>
+<span style="color:#f92672">[</span>2<span style="color:#f92672">]</span>   Running   nohup redis-server redis.conf &gt;&gt; 7001.log &amp;  <span style="color:#f92672">(</span>wd: ~/redis/7001<span style="color:#f92672">)</span>
+<span style="color:#f92672">[</span>4<span style="color:#f92672">]</span>   Running   nohup redis-server redis.conf &gt;&gt; 7003.log &amp;  <span style="color:#f92672">(</span>wd: ~/redis/7003<span style="color:#f92672">)</span>
+<span style="color:#f92672">[</span>5<span style="color:#f92672">]</span>   Running   nohup redis-server redis.conf &gt;&gt; 7004.log &amp;  <span style="color:#f92672">(</span>wd: ~/redis/7004<span style="color:#f92672">)</span>
+<span style="color:#f92672">[</span>6<span style="color:#f92672">]</span>-  Running   nohup redis-server redis.conf &gt;&gt; 7005.log &amp;  <span style="color:#f92672">(</span>wd: ~/redis/7005<span style="color:#f92672">)</span>
+<span style="color:#f92672">[</span>7<span style="color:#f92672">]</span>+  Running   nohup redis-server redis.conf &gt;&gt; 7002.log &amp;
+
+luyang@dev:~$ redis-cli -p <span style="color:#ae81ff">7000</span> cluster nodes
+9ae63ac64cfa2ed94eb1e6ea41935559112c3c73 127.0.0.1:7004@17004 slave 3987291080a98eabd7b01e1a3f8eb964342e6b51 <span style="color:#ae81ff">0</span> <span style="color:#ae81ff">1619516226345</span> <span style="color:#ae81ff">5</span> connected
+3987291080a98eabd7b01e1a3f8eb964342e6b51 127.0.0.1:7001@17001 master - <span style="color:#ae81ff">0</span> <span style="color:#ae81ff">1619516226546</span> <span style="color:#ae81ff">2</span> connected 5461-10922
+1d85a7946efd02ee387ef3ee80f5489c3bea71a1 127.0.0.1:7003@17003 slave 6aba459a23797727eacd74b5c85dd1a9b7258eea <span style="color:#ae81ff">0</span> <span style="color:#ae81ff">1619516226000</span> <span style="color:#ae81ff">4</span> connected
+6aba459a23797727eacd74b5c85dd1a9b7258eea 127.0.0.1:7000@17000 myself,master - <span style="color:#ae81ff">0</span> <span style="color:#ae81ff">1619516227000</span> <span style="color:#ae81ff">1</span> connected 0-5460
+4c465ad84539eb98fda335c4ec90e22f3e39f482 127.0.0.1:7005@17005 master - <span style="color:#ae81ff">0</span> <span style="color:#ae81ff">1619516227347</span> <span style="color:#ae81ff">7</span> connected 10923-16383
+4b145114865fbaf9a7f2e628c2e5a57a645e1864 127.0.0.1:7002@17002 slave 4c465ad84539eb98fda335c4ec90e22f3e39f482 <span style="color:#ae81ff">0</span> <span style="color:#ae81ff">1619516226546</span> <span style="color:#ae81ff">7</span> connected
+</code></pre></div><h4 id="redis-cluster-添加节点">Redis Cluster 添加节点</h4>
+<p>在创建一个新实例 7006, 通过以下命令将其加入到集群中</p>
+<blockquote>
+<p>redis-cli &ndash;cluster add-node 127.0.0.1:7006 [任意集群中接口IP]</p>
+</blockquote>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">luyang@dev:~/redis/7006$ redis-cli --cluster add-node 127.0.0.1:7006 127.0.0.1:7000
+&gt;&gt;&gt; Adding node 127.0.0.1:7006 to cluster 127.0.0.1:7000
+&gt;&gt;&gt; Performing Cluster Check <span style="color:#f92672">(</span>using node 127.0.0.1:7000<span style="color:#f92672">)</span>
+M: 6aba459a23797727eacd74b5c85dd1a9b7258eea 127.0.0.1:7000
+   slots:<span style="color:#f92672">[</span>0-5460<span style="color:#f92672">]</span> <span style="color:#f92672">(</span><span style="color:#ae81ff">5461</span> slots<span style="color:#f92672">)</span> master
+   <span style="color:#ae81ff">1</span> additional replica<span style="color:#f92672">(</span>s<span style="color:#f92672">)</span>
+S: 9ae63ac64cfa2ed94eb1e6ea41935559112c3c73 127.0.0.1:7004
+   slots: <span style="color:#f92672">(</span><span style="color:#ae81ff">0</span> slots<span style="color:#f92672">)</span> slave
+   replicates 3987291080a98eabd7b01e1a3f8eb964342e6b51
+M: 3987291080a98eabd7b01e1a3f8eb964342e6b51 127.0.0.1:7001
+   slots:<span style="color:#f92672">[</span>5461-10922<span style="color:#f92672">]</span> <span style="color:#f92672">(</span><span style="color:#ae81ff">5462</span> slots<span style="color:#f92672">)</span> master
+   <span style="color:#ae81ff">1</span> additional replica<span style="color:#f92672">(</span>s<span style="color:#f92672">)</span>
+S: 1d85a7946efd02ee387ef3ee80f5489c3bea71a1 127.0.0.1:7003
+   slots: <span style="color:#f92672">(</span><span style="color:#ae81ff">0</span> slots<span style="color:#f92672">)</span> slave
+   replicates 6aba459a23797727eacd74b5c85dd1a9b7258eea
+M: 4c465ad84539eb98fda335c4ec90e22f3e39f482 127.0.0.1:7005
+   slots:<span style="color:#f92672">[</span>10923-16383<span style="color:#f92672">]</span> <span style="color:#f92672">(</span><span style="color:#ae81ff">5461</span> slots<span style="color:#f92672">)</span> master
+   <span style="color:#ae81ff">1</span> additional replica<span style="color:#f92672">(</span>s<span style="color:#f92672">)</span>
+S: 4b145114865fbaf9a7f2e628c2e5a57a645e1864 127.0.0.1:7002
+   slots: <span style="color:#f92672">(</span><span style="color:#ae81ff">0</span> slots<span style="color:#f92672">)</span> slave
+   replicates 4c465ad84539eb98fda335c4ec90e22f3e39f482
+<span style="color:#f92672">[</span>OK<span style="color:#f92672">]</span> All nodes agree about slots configuration.
+&gt;&gt;&gt; Check <span style="color:#66d9ef">for</span> open slots...
+&gt;&gt;&gt; Check slots coverage...
+<span style="color:#f92672">[</span>OK<span style="color:#f92672">]</span> All <span style="color:#ae81ff">16384</span> slots covered.
+&gt;&gt;&gt; Send CLUSTER MEET to node 127.0.0.1:7006 to make it join the cluster.
+<span style="color:#f92672">[</span>OK<span style="color:#f92672">]</span> New node added correctly.
+</code></pre></div><p>这时查看下集群状态</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">luyang@dev:~$ redis-cli -p <span style="color:#ae81ff">7000</span> cluster nodes
+9ae63ac64cfa2ed94eb1e6ea41935559112c3c73 127.0.0.1:7004@17004 slave 3987291080a98eabd7b01e1a3f8eb964342e6b51 <span style="color:#ae81ff">0</span> <span style="color:#ae81ff">1619517303000</span> <span style="color:#ae81ff">5</span> connected
+3987291080a98eabd7b01e1a3f8eb964342e6b51 127.0.0.1:7001@17001 master - <span style="color:#ae81ff">0</span> <span style="color:#ae81ff">1619517304034</span> <span style="color:#ae81ff">2</span> connected 5461-10922
+1d85a7946efd02ee387ef3ee80f5489c3bea71a1 127.0.0.1:7003@17003 slave 6aba459a23797727eacd74b5c85dd1a9b7258eea <span style="color:#ae81ff">0</span> <span style="color:#ae81ff">1619517304000</span> <span style="color:#ae81ff">4</span> connected
+6aba459a23797727eacd74b5c85dd1a9b7258eea 127.0.0.1:7000@17000 myself,master - <span style="color:#ae81ff">0</span> <span style="color:#ae81ff">1619517302000</span> <span style="color:#ae81ff">1</span> connected 0-5460
+4c465ad84539eb98fda335c4ec90e22f3e39f482 127.0.0.1:7005@17005 master - <span style="color:#ae81ff">0</span> <span style="color:#ae81ff">1619517305036</span> <span style="color:#ae81ff">7</span> connected 10923-16383
+4b145114865fbaf9a7f2e628c2e5a57a645e1864 127.0.0.1:7002@17002 slave 4c465ad84539eb98fda335c4ec90e22f3e39f482 <span style="color:#ae81ff">0</span> <span style="color:#ae81ff">1619517303032</span> <span style="color:#ae81ff">7</span> connected
+01e39d8ce6df2ddba9ce6e3d824582ae4d1b4c7e 127.0.0.1:7006@17006 master - <span style="color:#ae81ff">0</span> <span style="color:#ae81ff">1619517304000</span> <span style="color:#ae81ff">0</span> connected
+</code></pre></div><p>新加入的节点 7006 随是 Master, 但是没有负责对应的哈希槽, 这时需要对哈希槽进行 <strong>resharding</strong> 操作</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">luyang@dev:~$ redis-cli --cluster reshard 127.0.0.1:7000
+&gt;&gt;&gt; Performing Cluster Check <span style="color:#f92672">(</span>using node 127.0.0.1:7000<span style="color:#f92672">)</span>
+M: 6aba459a23797727eacd74b5c85dd1a9b7258eea 127.0.0.1:7000
+   slots:<span style="color:#f92672">[</span>0-5460<span style="color:#f92672">]</span> <span style="color:#f92672">(</span><span style="color:#ae81ff">5461</span> slots<span style="color:#f92672">)</span> master
+   <span style="color:#ae81ff">1</span> additional replica<span style="color:#f92672">(</span>s<span style="color:#f92672">)</span>
+S: 9ae63ac64cfa2ed94eb1e6ea41935559112c3c73 127.0.0.1:7004
+   slots: <span style="color:#f92672">(</span><span style="color:#ae81ff">0</span> slots<span style="color:#f92672">)</span> slave
+   replicates 3987291080a98eabd7b01e1a3f8eb964342e6b51
+M: 3987291080a98eabd7b01e1a3f8eb964342e6b51 127.0.0.1:7001
+   slots:<span style="color:#f92672">[</span>5461-10922<span style="color:#f92672">]</span> <span style="color:#f92672">(</span><span style="color:#ae81ff">5462</span> slots<span style="color:#f92672">)</span> master
+   <span style="color:#ae81ff">1</span> additional replica<span style="color:#f92672">(</span>s<span style="color:#f92672">)</span>
+S: 1d85a7946efd02ee387ef3ee80f5489c3bea71a1 127.0.0.1:7003
+   slots: <span style="color:#f92672">(</span><span style="color:#ae81ff">0</span> slots<span style="color:#f92672">)</span> slave
+   replicates 6aba459a23797727eacd74b5c85dd1a9b7258eea
+M: 4c465ad84539eb98fda335c4ec90e22f3e39f482 127.0.0.1:7005
+   slots:<span style="color:#f92672">[</span>10923-16383<span style="color:#f92672">]</span> <span style="color:#f92672">(</span><span style="color:#ae81ff">5461</span> slots<span style="color:#f92672">)</span> master
+   <span style="color:#ae81ff">1</span> additional replica<span style="color:#f92672">(</span>s<span style="color:#f92672">)</span>
+S: 4b145114865fbaf9a7f2e628c2e5a57a645e1864 127.0.0.1:7002
+   slots: <span style="color:#f92672">(</span><span style="color:#ae81ff">0</span> slots<span style="color:#f92672">)</span> slave
+   replicates 4c465ad84539eb98fda335c4ec90e22f3e39f482
+M: 01e39d8ce6df2ddba9ce6e3d824582ae4d1b4c7e 127.0.0.1:7006
+   slots: <span style="color:#f92672">(</span><span style="color:#ae81ff">0</span> slots<span style="color:#f92672">)</span> master
+<span style="color:#f92672">[</span>OK<span style="color:#f92672">]</span> All nodes agree about slots configuration.
+&gt;&gt;&gt; Check <span style="color:#66d9ef">for</span> open slots...
+&gt;&gt;&gt; Check slots coverage...
+<span style="color:#f92672">[</span>OK<span style="color:#f92672">]</span> All <span style="color:#ae81ff">16384</span> slots covered.
+How many slots <span style="color:#66d9ef">do</span> you want to move <span style="color:#f92672">(</span>from <span style="color:#ae81ff">1</span> to 16384<span style="color:#f92672">)</span>? <span style="color:#ae81ff">888</span> // 指定新节点负责的哈希槽个数
+What is the receiving node ID? 01e39d8ce6df2ddba9ce6e3d824582ae4d1b4c7e // 接收负责哈希槽节点ID
+Please enter all the source node IDs.
+  Type <span style="color:#e6db74">&#39;all&#39;</span> to use all the nodes as source nodes <span style="color:#66d9ef">for</span> the hash slots.
+  Type <span style="color:#e6db74">&#39;done&#39;</span> once you entered all the source nodes IDs.
+Source node <span style="color:#75715e">#1: 4c465ad84539eb98fda335c4ec90e22f3e39f482</span>
+Source node <span style="color:#75715e">#2: 6aba459a23797727eacd74b5c85dd1a9b7258eea</span>
+Source node <span style="color:#75715e">#3: done</span>
+// all: 从所有节点中取哈希槽, <span style="color:#66d9ef">done</span>: 确定执行
+
+Ready to move <span style="color:#ae81ff">888</span> slots.
+  Source nodes:
+    M: 4c465ad84539eb98fda335c4ec90e22f3e39f482 127.0.0.1:7005
+       slots:<span style="color:#f92672">[</span>10923-16383<span style="color:#f92672">]</span> <span style="color:#f92672">(</span><span style="color:#ae81ff">5461</span> slots<span style="color:#f92672">)</span> master
+       <span style="color:#ae81ff">1</span> additional replica<span style="color:#f92672">(</span>s<span style="color:#f92672">)</span>
+    M: 6aba459a23797727eacd74b5c85dd1a9b7258eea 127.0.0.1:7000
+       slots:<span style="color:#f92672">[</span>0-5460<span style="color:#f92672">]</span> <span style="color:#f92672">(</span><span style="color:#ae81ff">5461</span> slots<span style="color:#f92672">)</span> master
+       <span style="color:#ae81ff">1</span> additional replica<span style="color:#f92672">(</span>s<span style="color:#f92672">)</span>
+  Destination node:
+    M: 01e39d8ce6df2ddba9ce6e3d824582ae4d1b4c7e 127.0.0.1:7006
+       slots: <span style="color:#f92672">(</span><span style="color:#ae81ff">0</span> slots<span style="color:#f92672">)</span> master
+  Resharding plan:
+    Moving slot <span style="color:#ae81ff">10923</span> from 4c465ad84539eb98fda335c4ec90e22f3e39f482
+    Moving slot <span style="color:#ae81ff">10924</span> from 4c465ad84539eb98fda335c4ec90e22f3e39f482
+    ...哪个节点负责的哪些哈希槽要分配给新的节点负责
+    Moving slot <span style="color:#ae81ff">442</span> from 6aba459a23797727eacd74b5c85dd1a9b7258eea
+    Moving slot <span style="color:#ae81ff">443</span> from 6aba459a23797727eacd74b5c85dd1a9b7258eea
+Do you want to proceed with the proposed reshard plan <span style="color:#f92672">(</span>yes/no<span style="color:#f92672">)</span>? yes
+Moving slot <span style="color:#ae81ff">10923</span> from 4c465ad84539eb98fda335c4ec90e22f3e39f482
+    Moving slot <span style="color:#ae81ff">10923</span> from 127.0.0.1:7005 to 127.0.0.1:7006:
+    Moving slot <span style="color:#ae81ff">10924</span> from 127.0.0.1:7005 to 127.0.0.1:7006:
+    ...执行分配
+    Moving slot <span style="color:#ae81ff">442</span> from 127.0.0.1:7000 to 127.0.0.1:7006:
+    Moving slot <span style="color:#ae81ff">443</span> from 127.0.0.1:7000 to 127.0.0.1:7006:
+</code></pre></div><p>此时在查看下集群状态</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">luyang@dev:~$ redis-cli -p <span style="color:#ae81ff">7000</span> cluster nodes
+9ae63ac64cfa2ed94eb1e6ea41935559112c3c73 127.0.0.1:7004@17004 slave 3987291080a98eabd7b01e1a3f8eb964342e6b51 <span style="color:#ae81ff">0</span> <span style="color:#ae81ff">1619518233000</span> <span style="color:#ae81ff">5</span> connected
+3987291080a98eabd7b01e1a3f8eb964342e6b51 127.0.0.1:7001@17001 master - <span style="color:#ae81ff">0</span> <span style="color:#ae81ff">1619518233582</span> <span style="color:#ae81ff">2</span> connected 5760-10922
+1d85a7946efd02ee387ef3ee80f5489c3bea71a1 127.0.0.1:7003@17003 slave 6aba459a23797727eacd74b5c85dd1a9b7258eea <span style="color:#ae81ff">0</span> <span style="color:#ae81ff">1619518233000</span> <span style="color:#ae81ff">4</span> connected
+6aba459a23797727eacd74b5c85dd1a9b7258eea 127.0.0.1:7000@17000 myself,master - <span style="color:#ae81ff">0</span> <span style="color:#ae81ff">1619518232000</span> <span style="color:#ae81ff">1</span> connected 295-5460
+4c465ad84539eb98fda335c4ec90e22f3e39f482 127.0.0.1:7005@17005 master - <span style="color:#ae81ff">0</span> <span style="color:#ae81ff">1619518233000</span> <span style="color:#ae81ff">7</span> connected 11218-16383
+4b145114865fbaf9a7f2e628c2e5a57a645e1864 127.0.0.1:7002@17002 slave 4c465ad84539eb98fda335c4ec90e22f3e39f482 <span style="color:#ae81ff">0</span> <span style="color:#ae81ff">1619518234384</span> <span style="color:#ae81ff">7</span> connected
+01e39d8ce6df2ddba9ce6e3d824582ae4d1b4c7e 127.0.0.1:7006@17006 master - <span style="color:#ae81ff">0</span> <span style="color:#ae81ff">1619518233883</span> <span style="color:#ae81ff">8</span> connected 0-443 10923-11366
+</code></pre></div><p>新加入的节点 7006 负责 0-443], 10923-11366 2个区间的哈希槽.</p>
+        </p>
+    </div>
+    
+
+    
+
+    <div class="page-footer">
+        
+        <hr class="footer-divider">
+        
+            <a class="tag" href="/tags/redis">#Redis</a>
+        
+            <a class="tag" href="/tags/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0">#学习笔记</a>
+        
+      
+    </div>
+
+
+        
+
+<link rel="stylesheet" type="text/css" href="/css/katex.min.css" crossorigin="anonymous">
+<script type="text/javascript" src="/js/katex.min.js" crossorigin="anonymous"></script>
+<script type="text/javascript" src="/js/auto-render.min.js"onload="renderMathInElement(document.body);" crossorigin="anonymous"></script>
+
+        </div>
+        <footer class="footer-mobile">
+	<div class="social-icons">
+        
+    <a class="social-icon" href="0xd1ef@gmail.com" target="_blank" rel="noopener" title="Email">
+        <svg width="28px" height="28px" viewBox="0 0 28 28" version="1.1" fill="#ABABAB" xmlns="https://www.w3.org/2000/svg" xmlns:xlink="https://www.w3.org/1999/xlink">
+            <path d="M25.2794292,5.59128519 L14,16.8707144 L2.72057081,5.59128519 C3.06733103,5.30237414 3.51336915,5.12857603 4,5.12857603 L24,5.12857603 C24.4866308,5.12857603 24.932669,5.30237414 25.2794292,5.59128519 Z M25.9956978,6.99633695 C25.998551,7.04004843 26,7.08414302 26,7.12857603 L26,20.871424 C26,21.0798433 25.9681197,21.2808166 25.9089697,21.4697335 L18.7156355,14.2763993 L25.9956978,6.99633695 Z M24.9498374,22.6319215 C24.6672737,22.7846939 24.3437653,22.871424 24,22.871424 L4,22.871424 C3.5268522,22.871424 3.09207889,22.7071233 2.74962118,22.432463 L10.0950247,15.0870594 L13.9848068,18.9768415 L14.1878486,18.7737996 L14.2030419,18.7889929 L17.6549753,15.3370594 L24.9498374,22.6319215 Z M2.00810114,21.0526627 C2.00273908,20.9929669 2,20.9325153 2,20.871424 L2,7.12857603 C2,7.08414302 2.00144896,7.04004843 2.00430222,6.99633695 L9.03436454,14.0263993 L2.00810114,21.0526627 Z"></path>
+        </svg>
+    </a>
+    
+
+    
+
+    
+    <a class="social-icon" href="https://twitter.com/luyang87" target="_blank" rel="noopener" title="Twitter">
+        <svg width="28px" height="28px" viewBox="0 0 28 28" version="1.1" fill="#ABABAB" xmlns="https://www.w3.org/2000/svg" xmlns:xlink="https://www.w3.org/1999/xlink">
+            <path d="M8.991284,24.971612 C19.180436,24.971612 24.752372,16.530224 24.752372,9.210524 C24.752372,8.970656 24.747512,8.731868 24.736496,8.494376 C25.818008,7.712564 26.758256,6.737 27.5,5.62622 C26.507372,6.067076 25.439252,6.364292 24.318752,6.498212 C25.462472,5.812628 26.340512,4.727444 26.754584,3.434036 C25.684088,4.068536 24.499004,4.53002 23.23724,4.778528 C22.226468,3.701876 20.786828,3.028388 19.193828,3.028388 C16.134404,3.028388 13.653536,5.509256 13.653536,8.567492 C13.653536,9.0023 13.702244,9.424904 13.797176,9.830552 C9.19346,9.599108 5.11106,7.39472 2.3792,4.04294 C1.903028,4.861364 1.629032,5.812628 1.629032,6.827072 C1.629032,8.74904 2.606972,10.445612 4.094024,11.438132 C3.185528,11.41016 2.331788,11.160464 1.585184,10.745096 C1.583888,10.768208 1.583888,10.791428 1.583888,10.815728 C1.583888,13.49888 3.493652,15.738584 6.028088,16.246508 C5.562932,16.373084 5.07326,16.44134 4.56782,16.44134 C4.210988,16.44134 3.863876,16.406024 3.526484,16.34144 C4.231724,18.542264 6.276596,20.143796 8.701412,20.18894 C6.805148,21.674696 4.416836,22.56008 1.821488,22.56008 C1.374476,22.56008 0.93362,22.534592 0.5,22.4834 C2.951708,24.054476 5.862524,24.971612 8.991284,24.971612"></path>
+        </svg>
+    </a>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <a class="social-icon" href="https://weibo.com/0xd1ef" target="_blank" rel="noopener" title="Weibo">
+        <svg width="28px" height="28px" viewBox="0 0 28 28" version="1.1" fill="#ABABAB" xmlns="https://www.w3.org/2000/svg" xmlns:xlink="https://www.w3.org/1999/xlink">
+            <path d="M11.7643305,23.68043 C16.3966564,23.2245381 19.9124334,20.3848721 19.6072176,17.3404411 C19.3097287,14.2998735 15.3071519,12.2019978 10.6709625,12.6617533 C6.03863666,13.1215087 2.52285972,15.9573112 2.82421203,19.0017422 C3.12556434,22.0423098 7.12814116,24.1401855 11.7643305,23.68043 Z M21.0328458,13.5774007 C22.6400581,14.075791 24.4288545,15.2812003 24.424991,17.4061204 C24.424991,20.9180339 19.3599541,25.3417312 11.7450131,25.3417312 C5.93818589,25.3417312 -2.23820962e-13,22.5252462 -2.23820962e-13,17.8967838 C-2.23820962e-13,15.4743748 1.53380598,12.6733438 4.17257044,10.0345793 C7.69993785,6.50721189 11.8145559,4.89999957 13.3599524,6.44925952 C14.0399268,7.13309745 14.1056062,8.31146225 13.6690317,9.72163652 C13.4372222,10.4286554 14.3335521,10.0384428 14.3335521,10.0384428 C17.1848086,8.84462403 19.6728969,8.77508119 20.5808173,10.0732142 C21.0676172,10.7686426 21.0212553,11.7383789 20.5730903,12.8626548 C20.3683253,13.3803626 20.6387697,13.4576325 21.0328458,13.5774007 Z M26.0901557,5.1047646 C27.9291775,7.14082443 28.4275678,9.91867457 27.6394156,12.3488105 C27.6394156,12.3488105 27.6394156,12.352674 27.6394156,12.352674 C27.4578316,12.9128802 26.8551269,13.2219595 26.2910572,13.0403754 C25.7269875,12.8587913 25.4179082,12.2560867 25.5994923,11.692017 C26.1596985,9.96117297 25.8042573,7.98692899 24.4983973,6.53811982 C23.1925373,5.08931064 21.2646553,4.5368314 19.4835858,4.91545354 C18.9040622,5.03908525 18.336129,4.67205359 18.2124973,4.09252992 C18.0888655,3.51686974 18.4558972,2.94507305 19.0354209,2.82144134 C21.5389631,2.28827956 24.2511339,3.06484128 26.0901557,5.1047646 Z M23.2659437,7.65466876 C24.1622736,8.64758598 24.4018101,9.99980788 24.0193244,11.1858997 C23.8609213,11.6726995 23.3432135,11.9354169 22.8564136,11.7808773 C22.3696137,11.6224742 22.1068963,11.1009029 22.261436,10.6179665 C22.450747,10.0384428 22.3309788,9.37778581 21.8944043,8.89098592 C21.4578298,8.40804953 20.8087633,8.22260195 20.2137857,8.35009716 C19.7192588,8.45827491 19.2285954,8.14146864 19.1204177,7.64307828 C19.0161034,7.14468793 19.3329097,6.65016106 19.8313,6.5458468 C21.0482998,6.2831294 22.3696137,6.66175153 23.2659437,7.65466876 Z M12.0193209,18.1710916 C12.1738606,17.8890568 12.0734098,17.576114 11.7952385,17.4756632 C11.5209306,17.3674855 11.1770799,17.4988442 11.0148133,17.7692886 C10.8564101,18.039733 10.9414069,18.3526757 11.2195783,18.464717 C11.4977496,18.5806217 11.8570543,18.449263 12.0193209,18.1710916 Z M10.5396038,20.0642023 C10.9800418,19.3417295 10.7482324,18.5188059 10.021896,18.2058631 C9.30328667,17.9045108 8.3760488,18.2135901 7.93174732,18.9090185 C7.48358235,19.6083104 7.69607436,20.438961 8.40695673,20.7634942 C9.12942957,21.091891 10.0914389,20.7789482 10.5396038,20.0642023 Z M12.224086,15.0030289 C14.5074092,15.5941431 15.6741836,17.7461076 14.7392187,19.8401198 C13.7926634,21.9766304 11.0727656,23.1202238 8.76239791,22.37457 C6.53702702,21.6559607 5.59047169,19.4537707 6.56793494,17.4717998 C7.52608075,15.5284637 10.0180325,14.4273687 12.224086,15.0030289 Z"></path>
+        </svg>
+    </a>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    
+    
+
+    
+    
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+</div>
+
+
+
+
+	<div class="footer-mobile-links">
+		<p><a href="https://github.com/kimcc/hugo-theme-noteworthy" target="_blank" rel="noopener">Noteworthy theme</a></p>
+		<span class="divider-bar">|</span>
+		<p><a href="https://gohugo.io" target="_blank" rel="noopener">Built with Hugo</a></p>
+	</div>
+
+	<script src="https://luyangx.github.io/js/main.min.fa5c2b23e07b5d9bfad267a52b4b24fdb053e6fb7524993383594926a3ac270c.js" integrity="sha256-+lwrI+B7XZv60melK0sk/bBT5vt1JJkzg1lJJqOsJww=" crossorigin="anonymous"></script>
+</footer>
+    </body>
+</html>
