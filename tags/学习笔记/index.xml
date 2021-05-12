@@ -44,6 +44,15 @@
     </item>
     
     <item>
+      <title>Go 之 Context 并发控制</title>
+      <link>https://luyangx.github.io/posts/go-context/</link>
+      <pubDate>Sat, 26 May 2018 15:32:02 +0800</pubDate>
+      
+      <guid>https://luyangx.github.io/posts/go-context/</guid>
+      <description>&lt;p&gt;Go 在 1.7 版本标准库中提供了 &lt;a href=&#34;https://golang.org/pkg/context/&#34;&gt;context&lt;/a&gt;, 可以方便的在 goroutine 之间进行上下文的传递, 以及对 goroutine 的控制操作&lt;/p&gt;</description>
+    </item>
+    
+    <item>
       <title>Go 语言基础 . 错误和异常</title>
       <link>https://luyangx.github.io/posts/go-error-exception/</link>
       <pubDate>Sat, 05 May 2018 19:54:42 +0800</pubDate>

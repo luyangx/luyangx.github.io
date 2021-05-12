@@ -98,6 +98,11 @@
   </url>
   
   <url>
+    <loc>https://luyangx.github.io/posts/go-context/</loc>
+    <lastmod>2018-05-26T15:32:02+08:00</lastmod>
+  </url>
+  
+  <url>
     <loc>https://luyangx.github.io/posts/go-error-exception/</loc>
     <lastmod>2018-05-05T19:54:42+08:00</lastmod>
   </url>
