@@ -26,6 +26,15 @@
     </item>
     
     <item>
+      <title>公司电视购物直播系统重构记录</title>
+      <link>https://luyangx.github.io/posts/ott-live/</link>
+      <pubDate>Sat, 19 Dec 2020 23:18:03 +0800</pubDate>
+      
+      <guid>https://luyangx.github.io/posts/ott-live/</guid>
+      <description>&lt;p&gt;一个简单的重构, 单机轻松上 10W QPS, 这里简单记录下&lt;/p&gt;</description>
+    </item>
+    
+    <item>
       <title>About</title>
       <link>https://luyangx.github.io/about/</link>
       <pubDate>Tue, 06 Oct 2020 00:00:00 +0000</pubDate>
