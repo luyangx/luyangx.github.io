@@ -71,6 +71,15 @@
     </item>
     
     <item>
+      <title>Go 之 Defer</title>
+      <link>https://luyangx.github.io/posts/go-defer/</link>
+      <pubDate>Mon, 11 Jun 2018 20:18:34 +0800</pubDate>
+      
+      <guid>https://luyangx.github.io/posts/go-defer/</guid>
+      <description>&lt;p&gt;defer 在 Go 函数中经常用来做一些清理工作, 比如: 关闭各种链接,文件描述符,释放资源等洗地任务, 类似 PHP 中 class 的析构方法(destruct, 虽然不常用)&lt;/p&gt;</description>
+    </item>
+    
+    <item>
       <title>Go 之 Context 并发控制</title>
       <link>https://luyangx.github.io/posts/go-context/</link>
       <pubDate>Sat, 26 May 2018 15:32:02 +0800</pubDate>

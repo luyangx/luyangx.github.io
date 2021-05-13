@@ -98,6 +98,11 @@
   </url>
   
   <url>
+    <loc>https://luyangx.github.io/posts/go-defer/</loc>
+    <lastmod>2018-06-11T20:18:34+08:00</lastmod>
+  </url>
+  
+  <url>
     <loc>https://luyangx.github.io/posts/go-context/</loc>
     <lastmod>2018-05-26T15:32:02+08:00</lastmod>
   </url>
