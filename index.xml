@@ -26,12 +26,21 @@
     </item>
     
     <item>
+      <title>crontab 支持以秒为单位执行任务</title>
+      <link>https://luyangx.github.io/posts/cron-s/</link>
+      <pubDate>Wed, 23 Dec 2020 18:01:45 +0800</pubDate>
+      
+      <guid>https://luyangx.github.io/posts/cron-s/</guid>
+      <description>&lt;p&gt;crontab 众所周知最小时间纬度是分钟, 那怎么让 crontab 支持秒纬度呢?&lt;/p&gt;</description>
+    </item>
+    
+    <item>
       <title>公司电视购物直播系统重构记录</title>
       <link>https://luyangx.github.io/posts/ott-live/</link>
       <pubDate>Sat, 19 Dec 2020 23:18:03 +0800</pubDate>
       
       <guid>https://luyangx.github.io/posts/ott-live/</guid>
-      <description>&lt;p&gt;一个简单的重构, 单机轻松上 10W QPS, 这里简单记录下&lt;/p&gt;</description>
+      <description>&lt;p&gt;花了几天, 重构了一个播放服务, 单机轻松上 10W QPS, 这里简单记录下&lt;/p&gt;</description>
     </item>
     
     <item>
