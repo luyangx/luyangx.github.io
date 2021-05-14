@@ -183,7 +183,7 @@ http://vo.ottcom/sd-00102.ts
 <li>通过 nginx 对外提供 m3u8 地址</li>
 </ol>
 <p>至此一个伪直播系统就可以工作了, 因为直接用 nginx 对外提供 &ldquo;静态&rdquo; 的 m3u8 文件, 所以服务器的性能也就取决与 nginx, 众所众知 nginx 以高性能著称, 有着占有内存少，并发能力强的特点, 应对后面的导流 <strong>So Easy</strong></p>
-<p>最后附上 wrk 内网压测信息</p>
+<p>最后附上 wrk 内网压测信息, 机器配置: 4核8g</p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sh" data-lang="sh">$ wrk -t8 -c800 -d30s http://172.xx.xx.117/ch1.m3u8
 Running 30s test @ http://172.xx.xx.117/ch1.m3u8
   <span style="color:#ae81ff">8</span> threads and <span style="color:#ae81ff">800</span> connections
