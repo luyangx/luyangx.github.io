@@ -17,6 +17,15 @@
     </item>
     
     <item>
+      <title>Go 之 Test 单元测试</title>
+      <link>https://luyangx.github.io/posts/go-test/</link>
+      <pubDate>Wed, 03 Jun 2020 22:28:45 +0800</pubDate>
+      
+      <guid>https://luyangx.github.io/posts/go-test/</guid>
+      <description>&lt;p&gt;之前一直写 php, 习惯了 &lt;code&gt;echo / print_r; exit()&lt;/code&gt; 这套操作, 而 Go 提供了&lt;a href=&#34;https://golang.org/pkg/testing/&#34;&gt;testing&lt;/a&gt; 标准库来进行单元测试, 可以很方便写出可测试代码&lt;/p&gt;</description>
+    </item>
+    
+    <item>
       <title>Go 之 etcd</title>
       <link>https://luyangx.github.io/posts/go-etcd/</link>
       <pubDate>Sat, 23 May 2020 19:32:12 +0800</pubDate>
